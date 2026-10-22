@@ -136,7 +136,7 @@ export default function LoginScreen({ onLoginSuccess, availableUsers = [] }) {
 
               {/* Title & Description */}
               <div className="mb-6 text-center">
-                <h2 className="text-3xl sm:text-4xl font-black text-slate-900 tracking-wider leading-loose select-none block pb-3">
+                <h2 className="text-3xl sm:text-4xl font-black text-cyan-700 tracking-wider leading-loose select-none block pb-3">
                   ꦱꦸꦒꦼꦁ ꦫꦮꦸꦃ
                 </h2>
                 <p className="text-xs font-semibold text-slate-500 tracking-wide mt-2">
@@ -267,7 +267,7 @@ export default function LoginScreen({ onLoginSuccess, availableUsers = [] }) {
       {/* Footer System Info */}
       <footer className="relative z-10 text-center py-4 text-xs text-slate-400">
         <p>
-          &copy; {new Date().getFullYear()} <span className="font-bold text-slate-300">Co.</span> (Collaborative Document Tools) &bull; Badan Perencanaan Pembangunan Daerah Kabupaten Cilacap
+          &copy; {new Date().getFullYear()} <span className="font-bold text-slate-300">Co.</span>
         </p>
       </footer>
     </div>
