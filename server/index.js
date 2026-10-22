@@ -967,11 +967,16 @@ app.post('/api/documents/:id/open-word-desktop', (req, res) => {
       details: `Membuka naskah langsung di Microsoft Word Desktop: "${resolved.fileName}"`
     });
 
+    const safeFileName = (doc.chapter || doc.title || 'BAB').replace(/[^a-zA-Z0-9_-]/g, '_');
+    const wordBridgePath = `/api/word-bridge/${req.currentUser.id || 'user_admin'}/${doc.id}/Naskah_${safeFileName}.docx`;
+
     res.json({
       success: true,
       message: `Membuka "${resolved.fileName}" di Microsoft Word Desktop. Setiap kali Anda menekan Ctrl+S di Word, perubahan langsung tersimpan ke server Codot!`,
       fileName: resolved.fileName,
       filePath: resolved.filePath,
+      wordBridgePath,
+      isLocalServer: process.platform === 'win32',
       watcherActive: templateWatcherActive
     });
   } catch (err) {
@@ -1552,18 +1557,54 @@ app.options(['/api/word-bridge/:token/:id/:filename', '/api/word-bridge/:token/:
   res.status(200).end();
 });
 
-// Stream clean DOCX directly into Microsoft Word Desktop
+// Stream clean DOCX directly into Microsoft Word Desktop (Supports both Document / Bab and Section)
 const handleWordBridgeGet = async (req, res) => {
   try {
-    const sectionId = req.params.id;
+    const targetId = req.params.id;
     const token = req.params.token || req.query.token || req.headers['x-user-id'] || 'user_admin';
-    const section = db.getSectionById(sectionId);
-    if (!section) {
-      return res.status(404).json({ success: false, message: 'Bagian naskah tidak ditemukan' });
+
+    // 1. Check if targetId is a Document (Bab I s/d Bab VII)
+    const doc = db.getDocumentById(targetId) || db.data.documents.find(d => d.id === targetId);
+    if (doc) {
+      let buffer = null;
+      let filename = `Naskah_RKPD_${(doc.chapter || doc.title).replace(/[/\\?%*:|"<>]/g, '_')}.docx`;
+
+      // Priority 1: If original template exists in Template/, stream the exact disk file
+      const resolved = resolveTemplateDocx(doc);
+      if (resolved && fs.existsSync(resolved.filePath)) {
+        buffer = fs.readFileSync(resolved.filePath);
+        filename = resolved.fileName;
+      } else {
+        // Priority 2: Generate complete DOCX from all sections of this document
+        const sections = db.getSectionsByDocumentId(doc.id);
+        buffer = await exportSectionsToDocx(sections, doc);
+      }
+
+      const safeFilename = encodeURIComponent(filename);
+      res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document');
+      res.setHeader('Content-Disposition', `inline; filename="${safeFilename}"; filename*=UTF-8''${safeFilename}`);
+      res.setHeader('MS-Author-Via', 'DAV');
+      res.setHeader('DAV', '1, 2');
+      res.setHeader('ETag', `"${doc.updatedAt || Date.now()}"`);
+      res.setHeader('Last-Modified', new Date(doc.updatedAt || Date.now()).toUTCString());
+      res.setHeader('Cache-Control', 'no-cache, must-revalidate');
+
+      if (req.method === 'HEAD') {
+        res.setHeader('Content-Length', buffer.length);
+        return res.status(200).end();
+      }
+
+      return res.send(buffer);
     }
 
-    const doc = db.getDocumentById(section.documentId) || { title: 'DOKUMEN RKPD' };
-    const buffer = await exportSingleSectionToDocx(section, doc);
+    // 2. Otherwise, check if targetId is a Section
+    const section = db.getSectionById(targetId);
+    if (!section) {
+      return res.status(404).json({ success: false, message: 'Naskah atau Bagian tidak ditemukan' });
+    }
+
+    const parentDoc = db.getDocumentById(section.documentId) || { title: 'DOKUMEN RKPD' };
+    const buffer = await exportSingleSectionToDocx(section, parentDoc);
 
     const safeFilename = encodeURIComponent(`${section.code || 'Sec'}_${section.title}`.replace(/[/\\?%*:|"<>]/g, '_')) + '.docx';
     
@@ -1580,7 +1621,7 @@ const handleWordBridgeGet = async (req, res) => {
       return res.status(200).end();
     }
 
-    res.send(buffer);
+    return res.send(buffer);
   } catch (err) {
     console.error('Word bridge export error:', err);
     res.status(500).json({ success: false, message: 'Gagal membuka di Word: ' + err.message });
@@ -1593,11 +1634,72 @@ app.head(['/api/word-bridge/:token/:id/:filename', '/api/word-bridge/:token/:id'
 // Save back from Microsoft Word Desktop (Ctrl + S)
 const handleWordBridgePut = async (req, res) => {
   try {
-    const sectionId = req.params.id;
+    const targetId = req.params.id;
     const token = req.params.token || req.query.token || req.headers['x-user-id'] || 'user_admin';
     const user = db.getUserById(token) || req.currentUser || db.getUserById('user_admin');
 
-    const section = db.getSectionById(sectionId);
+    const docxBuffer = Buffer.isBuffer(req.body) ? req.body : Buffer.from(req.body || '');
+    if (!docxBuffer || docxBuffer.length === 0) {
+      return res.status(400).json({ success: false, message: 'File Word kosong' });
+    }
+
+    // 1. Check if targetId is a Document (Bab)
+    const doc = db.getDocumentById(targetId) || db.data.documents.find(d => d.id === targetId);
+    if (doc) {
+      const resolved = resolveTemplateDocx(doc);
+      if (resolved && fs.existsSync(TEMPLATE_DIR)) {
+        try {
+          fs.writeFileSync(resolved.filePath, docxBuffer);
+        } catch (e) {
+          console.warn('Could not write to Template dir directly:', e.message);
+        }
+      }
+
+      // Write temp file to parse with mammoth
+      const tmpFile = path.join(os.tmpdir(), `word_put_${Date.now()}_${targetId}.docx`);
+      fs.writeFileSync(tmpFile, docxBuffer);
+      const parsedSections = await parseDocxToSections(tmpFile, doc.id);
+      try { fs.unlinkSync(tmpFile); } catch (e) {}
+
+      // Update doc & sections in database
+      doc.fullContentHtml = parsedSections.fullHtml || '';
+      doc.updatedAt = new Date().toISOString();
+
+      const existingSections = db.getSectionsByDocumentId(doc.id);
+      if (existingSections.length > 0) {
+        parsedSections.forEach((pSec, idx) => {
+          if (existingSections[idx]) {
+            existingSections[idx].content = pSec.content;
+            existingSections[idx].orientation = pSec.orientation;
+            existingSections[idx].tableFontSize = pSec.tableFontSize;
+            existingSections[idx].hasTable = pSec.hasTable;
+            existingSections[idx].maxTableColumns = pSec.maxTableColumns;
+            existingSections[idx].updatedAt = new Date().toISOString();
+            if (existingSections[idx].status === 'DRAFT') {
+              existingSections[idx].status = 'IN_PROGRESS';
+            }
+          }
+        });
+      }
+
+      db.addLog({
+        documentId: doc.id,
+        userId: user.id,
+        userName: user.name,
+        action: 'EDIT_WORD_DESKTOP',
+        details: `Menyimpan naskah via Microsoft Word Desktop (Ctrl+S) pada "${doc.title}"`
+      });
+
+      db.save();
+
+      res.setHeader('MS-Author-Via', 'DAV');
+      res.setHeader('DAV', '1, 2');
+      res.setHeader('ETag', `"${Date.now()}"`);
+      return res.status(200).json({ success: true, message: 'Berhasil disimpan dari Microsoft Word' });
+    }
+
+    // 2. Otherwise, check if targetId is a Section
+    const section = db.getSectionById(targetId);
     if (!section) {
       return res.status(404).json({ success: false, message: 'Bagian naskah tidak ditemukan' });
     }
@@ -1605,11 +1707,6 @@ const handleWordBridgePut = async (req, res) => {
     const isAdmin = user.role === 'ADMIN';
     if (section.isLocked && !isAdmin) {
       return res.status(403).json({ success: false, message: 'Bagian ini terkunci' });
-    }
-
-    const docxBuffer = Buffer.isBuffer(req.body) ? req.body : Buffer.from(req.body || '');
-    if (!docxBuffer || docxBuffer.length === 0) {
-      return res.status(400).json({ success: false, message: 'File Word kosong' });
     }
 
     const parsed = await parseSingleDocxToContent(docxBuffer);

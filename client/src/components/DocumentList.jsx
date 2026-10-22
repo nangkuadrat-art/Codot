@@ -59,27 +59,58 @@ export default function DocumentList({
   const [syncingWordDocId, setSyncingWordDocId] = useState(null);
   const [toast, setToast] = useState(null);
 
-  const showToast = (message, type = 'info') => {
-    setToast({ message, type });
+  const showToast = (toastData, type = 'info') => {
+    if (typeof toastData === 'string') {
+      setToast({ message: toastData, type, title: type === 'error' ? 'Gagal' : 'Informasi' });
+    } else {
+      setToast({ type: 'info', ...toastData });
+    }
     setTimeout(() => {
       setToast(null);
-    }, 6000);
+    }, 12000);
   };
 
   const handleOpenWordDesktop = async (docId, docTitle) => {
     try {
       setOpeningWordDocId(docId);
-      const res = await api.openWordDesktop(docId);
-      if (res.success) {
-        showToast(res.message || 'Membuka Microsoft Word desktop... Tekan Ctrl+S di Word untuk menyimpan otomatis ke server Codot.', 'success');
-        setTimeout(() => {
-          onRefreshDocs?.();
-        }, 2500);
-      } else {
-        showToast(res.message || 'Gagal membuka Word desktop', 'error');
+      
+      const cleanName = (docTitle || 'BAB').replace(/[^a-zA-Z0-9_-]/g, '_');
+      const wordBridgePath = `/api/word-bridge/${currentUser?.id || 'user_admin'}/${docId}/Naskah_${cleanName}.docx`;
+      const fullWordBridgeUrl = `${window.location.origin}${wordBridgePath}`;
+      const officeUri = `ms-word:ofe|u|${fullWordBridgeUrl}`;
+
+      // 1. Tell backend to prepare document & launch cmd if on localhost
+      try {
+        await api.openWordDesktop(docId);
+      } catch (e) {
+        console.warn('Backend open-word-desktop notice:', e.message);
       }
+
+      // 2. Launch Microsoft Word directly on the client PC via Office URI protocol
+      // ms-word:ofe|u|URL tells Windows/macOS to launch desktop Word directly with this document
+      try {
+        const link = document.createElement('a');
+        link.href = officeUri;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+      } catch (errNav) {
+        console.warn('Office URI trigger notice:', errNav);
+      }
+
+      showToast({
+        title: 'Membuka Microsoft Word...',
+        message: 'Aplikasi Microsoft Word sedang diluncurkan di komputer Anda. Klik "Open Word" / "Izinkan" jika peramban meminta konfirmasi.',
+        wordUrl: officeUri,
+        directDownloadUrl: wordBridgePath,
+        type: 'success'
+      });
+
+      setTimeout(() => {
+        onRefreshDocs?.();
+      }, 3000);
     } catch (err) {
-      showToast('Gagal membuka file di Word: ' + err.message, 'error');
+      showToast({ message: 'Gagal membuka file di Word: ' + err.message, type: 'error' });
     } finally {
       setOpeningWordDocId(null);
     }
@@ -278,22 +309,50 @@ export default function DocumentList({
 
           {/* Toast Notification for Word Launch / Sync */}
           {toast && (
-            <div className={`p-4 rounded-xl border flex items-center justify-between gap-3 text-xs font-medium shadow-sm transition-all ${
+            <div className={`p-4 rounded-xl border flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs font-medium shadow-md transition-all ${
               toast.type === 'error'
                 ? 'bg-rose-50 border-rose-200 text-rose-900'
                 : toast.type === 'success'
                 ? 'bg-emerald-50 border-emerald-200 text-emerald-950'
                 : 'bg-blue-50 border-blue-200 text-blue-950'
             }`}>
-              <div className="flex items-center gap-2.5">
+              <div className="flex items-start gap-3">
                 {toast.type === 'success' ? (
-                  <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
+                  <CheckCircle2 className="w-5 h-5 text-emerald-600 shrink-0 mt-0.5" />
                 ) : (
-                  <Info className="w-4 h-4 text-blue-600 shrink-0" />
+                  <Info className="w-5 h-5 text-blue-600 shrink-0 mt-0.5" />
                 )}
-                <span>{toast.message}</span>
+                <div className="space-y-1">
+                  <div className="font-bold text-sm text-slate-900">{toast.title || 'Pemberitahuan'}</div>
+                  <div className="leading-relaxed text-slate-700">{toast.message}</div>
+                  
+                  {/* Fallback Action Links if Word didn't open automatically */}
+                  {(toast.wordUrl || toast.directDownloadUrl) && (
+                    <div className="mt-2.5 pt-1.5 border-t border-slate-200/60 flex flex-wrap items-center gap-2">
+                      {toast.wordUrl && (
+                        <a
+                          href={toast.wordUrl}
+                          className="px-2.5 py-1 bg-[#185abd] text-white rounded-lg font-bold text-[11px] shadow-2xs hover:bg-[#134794] transition flex items-center gap-1.5"
+                        >
+                          <WordIcon className="w-3.5 h-3.5" />
+                          <span>Klik di Sini untuk Buka Word (ms-word:)</span>
+                        </a>
+                      )}
+                      {toast.directDownloadUrl && (
+                        <a
+                          href={toast.directDownloadUrl}
+                          download
+                          className="px-2.5 py-1 bg-white border border-slate-300 text-slate-700 rounded-lg font-semibold text-[11px] shadow-2xs hover:bg-slate-50 transition flex items-center gap-1"
+                        >
+                          <Download className="w-3.5 h-3.5 text-slate-500" />
+                          <span>Unduh File .docx Manual</span>
+                        </a>
+                      )}
+                    </div>
+                  )}
+                </div>
               </div>
-              <button onClick={() => setToast(null)} className="text-slate-400 hover:text-slate-600 font-bold px-1.5 cursor-pointer">✕</button>
+              <button onClick={() => setToast(null)} className="text-slate-400 hover:text-slate-600 font-bold px-2 py-1 self-start sm:self-center cursor-pointer">✕</button>
             </div>
           )}
 
