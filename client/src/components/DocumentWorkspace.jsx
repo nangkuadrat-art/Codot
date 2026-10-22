@@ -423,7 +423,21 @@ export default function DocumentWorkspace({
   const handleLaunchWord = (sec = null) => {
     const target = sec || wordTargetSection || activeSection;
     if (!target) return;
-    api.launchWordDesktop(target.id);
+
+    const isHttps = window.location.protocol === 'https:';
+    if (isHttps) {
+      // Over HTTPS (Cloudflare Tunnel / Vercel), launch via ms-word: protocol with clean path (no query string)
+      api.launchWordDesktop(target.id);
+    } else {
+      // Over HTTP (localhost), trigger instant download so Word opens cleanly without Windows HTTP WebDAV security block
+      const link = document.createElement('a');
+      link.href = api.getWordBridgeUrl(target.id);
+      link.download = `${(target.code || 'Sec')}_${(target.title || 'Doc')}.docx`.replace(/[/\\?%*:|"<>]/g, '_');
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    }
+
     setWordSessionActive(true);
     setWordLastSync(new Date().toLocaleTimeString('id-ID'));
   };
@@ -4700,14 +4714,20 @@ export default function DocumentWorkspace({
                 <div className="flex items-center justify-between mb-2">
                   <span className="font-bold text-blue-950 flex items-center gap-1.5 text-xs">
                     <Sparkles className="w-3.5 h-3.5 text-blue-600" />
-                    <span>Metode 1: Luncurkan Otomatis (Direkomendasikan)</span>
+                    <span>
+                      {window.location.protocol === 'https:'
+                        ? 'Metode 1: Luncurkan Otomatis (Live Auto-Sync)'
+                        : 'Metode 1: Buka Naskah di Microsoft Word'}
+                    </span>
                   </span>
                   <span className="bg-emerald-100 text-emerald-800 font-bold px-2 py-0.5 rounded text-[9px]">
-                    Ctrl + S Auto-Sync
+                    {window.location.protocol === 'https:' ? 'Ctrl + S Langsung' : 'Format F4 Resmi'}
                   </span>
                 </div>
                 <p className="text-slate-600 leading-relaxed mb-3">
-                  Aplikasi Microsoft Word di komputer Anda akan terbuka otomatis. Setiap kali Anda menekan <strong>Ctrl + S (Simpan)</strong> di Word, naskah dan tabel langsung tersimpan ke server Codot.
+                  {window.location.protocol === 'https:'
+                    ? 'Microsoft Word akan terbuka langsung. Setiap kali Anda menekan Ctrl + S di Word, naskah dan tabel langsung tersimpan ke server.'
+                    : 'Klik tombol di bawah untuk membuka naskah di Microsoft Word desktop. Anda dapat mengedit teks, rumus, dan tabel dengan leluasa.'}
                 </p>
                 <button
                   type="button"
@@ -4715,7 +4735,11 @@ export default function DocumentWorkspace({
                   className="w-full py-2.5 px-4 bg-[#185abd] hover:bg-[#144b9e] text-white font-bold rounded-lg shadow-sm flex items-center justify-center gap-2 transition"
                 >
                   <FileText className="w-4 h-4 text-white" />
-                  <span>Buka di Microsoft Word Desktop Sekarang</span>
+                  <span>
+                    {window.location.protocol === 'https:'
+                      ? 'Luncurkan Microsoft Word Desktop (Auto-Sync)'
+                      : 'Buka di Microsoft Word Desktop Sekarang'}
+                  </span>
                 </button>
               </div>
 

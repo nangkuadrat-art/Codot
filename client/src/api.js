@@ -314,7 +314,9 @@ export const api = {
   // Microsoft Word Desktop Direct Collaboration Bridge
   getWordBridgeUrl(secId) {
     const origin = window.location.origin;
-    return `${origin}/api/sections/${secId}/word-bridge.docx?token=${activeUserId || 'user_admin'}`;
+    const token = activeUserId || 'user_admin';
+    // Clean static-looking path without '?' so Word desktop names local cache without illegal characters
+    return `${origin}/api/word-bridge/${token}/${secId}/Naskah_RKPD.docx`;
   },
 
   launchWordDesktop(secId) {

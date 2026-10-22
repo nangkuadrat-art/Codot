@@ -24,7 +24,7 @@ const isServerless = !!(process.env.VERCEL || process.env.AWS_LAMBDA_FUNCTION_NA
 
 // WebDAV & Office URI Protocol Handshake Middleware for Microsoft Word Desktop
 app.use((req, res, next) => {
-  if (req.url && req.url.includes('/word-bridge.docx')) {
+  if (req.url && (req.url.includes('/word-bridge') || req.url.includes('/word-bridge.docx'))) {
     res.setHeader('MS-Author-Via', 'DAV');
     res.setHeader('DAV', '1, 2');
     res.setHeader('Allow', 'OPTIONS, GET, HEAD, POST, PUT');
@@ -1252,8 +1252,8 @@ app.get('/api/documents/:id/export', async (req, res) => {
 
 // ================= MICROSOFT WORD DIRECT COLLABORATION BRIDGE =================
 
-// Section Word Bridge (OPTIONS for WebDAV capability handshake)
-app.options('/api/sections/:id/word-bridge.docx', (req, res) => {
+// Options handshake for WebDAV and Office URI scheme
+app.options(['/api/word-bridge/:token/:id/:filename', '/api/word-bridge/:token/:id', '/api/sections/:id/word-bridge.docx'], (req, res) => {
   res.setHeader('MS-Author-Via', 'DAV');
   res.setHeader('DAV', '1, 2');
   res.setHeader('Allow', 'OPTIONS, GET, HEAD, POST, PUT');
@@ -1264,12 +1264,12 @@ app.options('/api/sections/:id/word-bridge.docx', (req, res) => {
   res.status(200).end();
 });
 
-// Section Word Bridge (GET / HEAD: Stream DOCX directly into WINWORD.EXE)
-app.all('/api/sections/:id/word-bridge.docx', async (req, res, next) => {
-  if (req.method !== 'GET' && req.method !== 'HEAD') return next();
-
+// Stream clean DOCX directly into Microsoft Word Desktop
+const handleWordBridgeGet = async (req, res) => {
   try {
-    const section = db.getSectionById(req.params.id);
+    const sectionId = req.params.id;
+    const token = req.params.token || req.query.token || req.headers['x-user-id'] || 'user_admin';
+    const section = db.getSectionById(sectionId);
     if (!section) {
       return res.status(404).json({ success: false, message: 'Bagian naskah tidak ditemukan' });
     }
@@ -1297,20 +1297,24 @@ app.all('/api/sections/:id/word-bridge.docx', async (req, res, next) => {
     console.error('Word bridge export error:', err);
     res.status(500).json({ success: false, message: 'Gagal membuka di Word: ' + err.message });
   }
-});
+};
 
-// Section Word Bridge (PUT: When user clicks Save / Ctrl+S in Microsoft Word desktop)
-app.put('/api/sections/:id/word-bridge.docx', async (req, res) => {
+app.get(['/api/word-bridge/:token/:id/:filename', '/api/word-bridge/:token/:id', '/api/sections/:id/word-bridge.docx'], handleWordBridgeGet);
+app.head(['/api/word-bridge/:token/:id/:filename', '/api/word-bridge/:token/:id', '/api/sections/:id/word-bridge.docx'], handleWordBridgeGet);
+
+// Save back from Microsoft Word Desktop (Ctrl + S)
+const handleWordBridgePut = async (req, res) => {
   try {
-    const section = db.getSectionById(req.params.id);
+    const sectionId = req.params.id;
+    const token = req.params.token || req.query.token || req.headers['x-user-id'] || 'user_admin';
+    const user = db.getUserById(token) || req.currentUser || db.getUserById('user_admin');
+
+    const section = db.getSectionById(sectionId);
     if (!section) {
       return res.status(404).json({ success: false, message: 'Bagian naskah tidak ditemukan' });
     }
 
-    const user = req.currentUser;
     const isAdmin = user.role === 'ADMIN';
-    const isAssigned = section.assignedUserIds && section.assignedUserIds.includes(user.id);
-
     if (section.isLocked && !isAdmin) {
       return res.status(403).json({ success: false, message: 'Bagian ini terkunci' });
     }
@@ -1345,7 +1349,9 @@ app.put('/api/sections/:id/word-bridge.docx', async (req, res) => {
     console.error('Word bridge save error:', err);
     res.status(500).json({ success: false, message: 'Gagal menyimpan perubahan Word: ' + err.message });
   }
-});
+};
+
+app.put(['/api/word-bridge/:token/:id/:filename', '/api/word-bridge/:token/:id', '/api/sections/:id/word-bridge.docx'], handleWordBridgePut);
 
 // Manual Upload / Re-import Word file for a section (Dropzone or Upload Button)
 app.post('/api/sections/:id/reimport-word', upload.single('file'), async (req, res) => {
