@@ -135,12 +135,11 @@ export default function LoginScreen({ onLoginSuccess, availableUsers = [] }) {
               </div>
 
               {/* Title & Description */}
-              <div className="mb-6">
-                <h2 className="text-2xl font-black text-slate-900 tracking-wide">
+              <div className="mb-6 text-center">
+                <h2 className="text-3xl sm:text-4xl font-black text-slate-900 tracking-wider leading-relaxed select-none py-1">
                   ꦱꦸꦒꦼꦁ ꦫꦮꦸꦃ
-                  <span className="block text-sm font-bold text-slate-600 mt-0.5">Sugeng Rawuh</span>
                 </h2>
-                <p className="text-xs font-semibold text-slate-500 mt-1.5">
+                <p className="text-xs font-semibold text-slate-500 mt-1">
                   Mohon Doa Restu
                 </p>
               </div>
