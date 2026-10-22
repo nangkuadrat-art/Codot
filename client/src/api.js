@@ -311,6 +311,35 @@ export const api = {
     return res.json();
   },
 
+  // Microsoft Word Desktop Direct Collaboration Bridge
+  getWordBridgeUrl(secId) {
+    const origin = window.location.origin;
+    return `${origin}/api/sections/${secId}/word-bridge.docx?token=${activeUserId || 'user_admin'}`;
+  },
+
+  launchWordDesktop(secId) {
+    const directUrl = this.getWordBridgeUrl(secId);
+    window.location.href = `ms-word:ofe|u|${directUrl}`;
+  },
+
+  async reimportWordFile(secId, file) {
+    const formData = new FormData();
+    formData.append('file', file);
+    const res = await fetch(`/api/sections/${secId}/reimport-word`, {
+      method: 'POST',
+      headers: {
+        'x-user-id': activeUserId || 'user_admin'
+      },
+      body: formData
+    });
+    return res.json();
+  },
+
+  async getWordBridgeStatus(secId) {
+    const res = await fetch(`/api/sections/${secId}/word-bridge-status`, { headers: getHeaders() });
+    return res.json();
+  },
+
   // Export
   getExportUrl(docId) {
     return `/api/documents/${docId}/export`;

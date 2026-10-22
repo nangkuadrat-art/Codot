@@ -10,7 +10,9 @@ const db = require('./db');
 const {
   parseDocxToSections,
   generateRkpdBab2Template,
-  exportSectionsToDocx
+  exportSectionsToDocx,
+  exportSingleSectionToDocx,
+  parseSingleDocxToContent
 } = require('./docxService');
 const googleDriveService = require('./googleDriveService');
 const { analyzeConsistency } = require('./consistencyService');
@@ -20,9 +22,35 @@ const app = express();
 const PORT = process.env.PORT || 5000;
 const isServerless = !!(process.env.VERCEL || process.env.AWS_LAMBDA_FUNCTION_NAME);
 
+// WebDAV & Office URI Protocol Handshake Middleware for Microsoft Word Desktop
+app.use((req, res, next) => {
+  if (req.url && req.url.includes('/word-bridge.docx')) {
+    res.setHeader('MS-Author-Via', 'DAV');
+    res.setHeader('DAV', '1, 2');
+    res.setHeader('Allow', 'OPTIONS, GET, HEAD, POST, PUT');
+    res.setHeader('Public', 'OPTIONS, GET, HEAD, POST, PUT');
+    res.setHeader('Access-Control-Allow-Methods', 'GET, HEAD, OPTIONS, PUT, POST');
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization, X-User-Id, If-Match, If-None-Match, Lock-Token');
+    if (req.method === 'OPTIONS') {
+      return res.status(200).end();
+    }
+  }
+  next();
+});
+
 app.use(cors());
 app.use(express.json({ limit: '50mb' }));
 app.use(express.urlencoded({ extended: true, limit: '50mb' }));
+app.use(express.raw({
+  type: [
+    'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+    'application/octet-stream',
+    'application/msword',
+    'application/zip'
+  ],
+  limit: '50mb'
+}));
 
 // Setup file uploads safely (fallback to tmpdir in serverless)
 const UPLOAD_DIR = isServerless ? path.join(os.tmpdir(), 'rkpd_uploads') : path.join(__dirname, '..', 'uploads');
@@ -73,9 +101,9 @@ app.use((req, res, next) => {
   next();
 });
 
-// Middleware for checking current user from header
+// Middleware for checking current user from header or query param (for MS Word desktop)
 app.use((req, res, next) => {
-  const currentUserId = req.headers['x-user-id'] || 'user_admin';
+  const currentUserId = req.headers['x-user-id'] || req.query.token || req.query.userId || 'user_admin';
   req.currentUser = db.getUserById(currentUserId) || db.getUserById('user_admin');
   next();
 });
@@ -1220,6 +1248,160 @@ app.get('/api/documents/:id/export', async (req, res) => {
     console.error('Export error:', err);
     res.status(500).json({ success: false, message: 'Gagal mengekspor dokumen: ' + err.message });
   }
+});
+
+// ================= MICROSOFT WORD DIRECT COLLABORATION BRIDGE =================
+
+// Section Word Bridge (OPTIONS for WebDAV capability handshake)
+app.options('/api/sections/:id/word-bridge.docx', (req, res) => {
+  res.setHeader('MS-Author-Via', 'DAV');
+  res.setHeader('DAV', '1, 2');
+  res.setHeader('Allow', 'OPTIONS, GET, HEAD, POST, PUT');
+  res.setHeader('Public', 'OPTIONS, GET, HEAD, POST, PUT');
+  res.setHeader('Access-Control-Allow-Methods', 'GET, HEAD, OPTIONS, PUT, POST');
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization, X-User-Id, If-Match, If-None-Match, Lock-Token');
+  res.status(200).end();
+});
+
+// Section Word Bridge (GET / HEAD: Stream DOCX directly into WINWORD.EXE)
+app.all('/api/sections/:id/word-bridge.docx', async (req, res, next) => {
+  if (req.method !== 'GET' && req.method !== 'HEAD') return next();
+
+  try {
+    const section = db.getSectionById(req.params.id);
+    if (!section) {
+      return res.status(404).json({ success: false, message: 'Bagian naskah tidak ditemukan' });
+    }
+
+    const doc = db.getDocumentById(section.documentId) || { title: 'DOKUMEN RKPD' };
+    const buffer = await exportSingleSectionToDocx(section, doc);
+
+    const safeFilename = encodeURIComponent(`${section.code || 'Sec'}_${section.title}`.replace(/[/\\?%*:|"<>]/g, '_')) + '.docx';
+    
+    res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document');
+    res.setHeader('Content-Disposition', `inline; filename="${safeFilename}"; filename*=UTF-8''${safeFilename}`);
+    res.setHeader('MS-Author-Via', 'DAV');
+    res.setHeader('DAV', '1, 2');
+    res.setHeader('ETag', `"${section.updatedAt || Date.now()}"`);
+    res.setHeader('Last-Modified', new Date(section.updatedAt || Date.now()).toUTCString());
+    res.setHeader('Cache-Control', 'no-cache, must-revalidate');
+
+    if (req.method === 'HEAD') {
+      res.setHeader('Content-Length', buffer.length);
+      return res.status(200).end();
+    }
+
+    res.send(buffer);
+  } catch (err) {
+    console.error('Word bridge export error:', err);
+    res.status(500).json({ success: false, message: 'Gagal membuka di Word: ' + err.message });
+  }
+});
+
+// Section Word Bridge (PUT: When user clicks Save / Ctrl+S in Microsoft Word desktop)
+app.put('/api/sections/:id/word-bridge.docx', async (req, res) => {
+  try {
+    const section = db.getSectionById(req.params.id);
+    if (!section) {
+      return res.status(404).json({ success: false, message: 'Bagian naskah tidak ditemukan' });
+    }
+
+    const user = req.currentUser;
+    const isAdmin = user.role === 'ADMIN';
+    const isAssigned = section.assignedUserIds && section.assignedUserIds.includes(user.id);
+
+    if (section.isLocked && !isAdmin) {
+      return res.status(403).json({ success: false, message: 'Bagian ini terkunci' });
+    }
+
+    const docxBuffer = Buffer.isBuffer(req.body) ? req.body : Buffer.from(req.body || '');
+    if (!docxBuffer || docxBuffer.length === 0) {
+      return res.status(400).json({ success: false, message: 'File Word kosong' });
+    }
+
+    const parsed = await parseSingleDocxToContent(docxBuffer);
+
+    const updated = db.updateSection(section.id, {
+      content: parsed.contentHtml || section.content,
+      orientation: parsed.orientation,
+      tableFontSize: parsed.tableFontSize,
+      status: section.status === 'DRAFT' ? 'IN_PROGRESS' : section.status
+    });
+
+    db.addLog({
+      documentId: section.documentId,
+      userId: user.id,
+      userName: user.name,
+      action: 'EDIT_WORD_DESKTOP',
+      details: `Menyimpan perubahan via Microsoft Word Desktop (Ctrl+S) pada "${section.code} ${section.title}"`
+    });
+
+    res.setHeader('MS-Author-Via', 'DAV');
+    res.setHeader('DAV', '1, 2');
+    res.setHeader('ETag', `"${Date.now()}"`);
+    res.status(200).json({ success: true, message: 'Berhasil disimpan dari Microsoft Word', data: updated });
+  } catch (err) {
+    console.error('Word bridge save error:', err);
+    res.status(500).json({ success: false, message: 'Gagal menyimpan perubahan Word: ' + err.message });
+  }
+});
+
+// Manual Upload / Re-import Word file for a section (Dropzone or Upload Button)
+app.post('/api/sections/:id/reimport-word', upload.single('file'), async (req, res) => {
+  try {
+    const section = db.getSectionById(req.params.id);
+    if (!section) {
+      return res.status(404).json({ success: false, message: 'Bagian naskah tidak ditemukan' });
+    }
+
+    if (!req.file) {
+      return res.status(400).json({ success: false, message: 'File Word (.docx) tidak ditemukan' });
+    }
+
+    const user = req.currentUser;
+    const filePath = req.file.path;
+    const parsed = await parseSingleDocxToContent(filePath);
+
+    // Clean up uploaded file
+    try { fs.unlinkSync(filePath); } catch (e) {}
+
+    const updated = db.updateSection(section.id, {
+      content: parsed.contentHtml || section.content,
+      orientation: parsed.orientation,
+      tableFontSize: parsed.tableFontSize,
+      status: section.status === 'DRAFT' ? 'IN_PROGRESS' : section.status
+    });
+
+    db.addLog({
+      documentId: section.documentId,
+      userId: user.id,
+      userName: user.name,
+      action: 'IMPORT_WORD_SECTION',
+      details: `Mengunggah pembaruan naskah dari file Word "${req.file.originalname}" ke "${section.code} ${section.title}"`
+    });
+
+    res.json({ success: true, message: 'Naskah berhasil disinkronkan dari file Word', data: updated });
+  } catch (err) {
+    console.error('Manual word import error:', err);
+    res.status(500).json({ success: false, message: 'Gagal memproses file Word: ' + err.message });
+  }
+});
+
+// Section Word Bridge Status (for frontend polling / live update)
+app.get('/api/sections/:id/word-bridge-status', (req, res) => {
+  const section = db.getSectionById(req.params.id);
+  if (!section) return res.status(404).json({ success: false });
+  res.json({
+    success: true,
+    data: {
+      id: section.id,
+      updatedAt: section.updatedAt,
+      status: section.status,
+      orientation: section.orientation,
+      tableFontSize: section.tableFontSize
+    }
+  });
 });
 
 // Activity logs

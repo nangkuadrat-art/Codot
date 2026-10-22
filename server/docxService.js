@@ -20,10 +20,7 @@ const {
   PageOrientation,
   Header,
   Footer,
-  PageNumber,
-  LevelFormat,
-  ImageRun,
-  TabStopType
+  PageNumber
 } = docx;
 
 /**
@@ -445,126 +442,45 @@ function convertHtmlToDocxElements(html, isLandscape = false) {
   const elements = [];
   if (!html) return elements;
 
-  const $ = cheerio.load(`<div id="docx-export-root">${html}</div>`);
+  const $ = cheerio.load(`<div>${html}</div>`);
 
-  $('#docx-export-root').children().each((idx, el) => {
+  $('div').children().each((idx, el) => {
     const tagName = el.tagName ? el.tagName.toLowerCase() : '';
     const nodeText = $(el).text().trim();
 
-    // Check for image inside el
-    const imgEl = $(el).find('img');
-    if (imgEl.length > 0 || tagName === 'img') {
-      const targetImg = tagName === 'img' ? $(el) : imgEl.first();
-      const src = targetImg.attr('src') || '';
-      if (src.startsWith('data:image/')) {
-        try {
-          const base64Data = src.split(',')[1];
-          if (base64Data) {
-            const imgBuffer = Buffer.from(base64Data, 'base64');
-            elements.push(
-              new Paragraph({
-                children: [
-                  new ImageRun({
-                    data: imgBuffer,
-                    transformation: {
-                      width: isLandscape ? 600 : 460,
-                      height: isLandscape ? 360 : 280
-                    }
-                  })
-                ],
-                alignment: AlignmentType.CENTER,
-                spacing: { before: 120, after: 120 }
-              })
-            );
-          }
-        } catch (e) {
-          console.error('Failed to parse image for docx:', e.message);
-        }
-      }
-    }
-
-    // Special handling for containers with child paragraphs/divs (e.g. bab-header-right)
-    if (tagName === 'div' && $(el).children('div, p').length > 0) {
-      const isRightHeader = $(el).hasClass('bab-header-right') || ($(el).attr('style') || '').includes('text-align: right');
-      $(el).children('div, p').each((cIdx, childEl) => {
-        const cText = $(childEl).text().trim();
-        if (!cText) return;
-        const cStyle = $(childEl).attr('style') || $(el).attr('style') || '';
-        let cAlign = AlignmentType.JUSTIFIED;
-        if (isRightHeader || cStyle.includes('text-align: right')) {
-          cAlign = AlignmentType.RIGHT;
-        } else if (cStyle.includes('text-align: center')) {
-          cAlign = AlignmentType.CENTER;
-        }
-
-        const isBabTitle = cText.startsWith('BAB ') || cText.includes('GAMBARAN UMUM') || cText.includes('KONDISI DAERAH');
-
-        elements.push(
-          new Paragraph({
-            children: [
-              new TextRun({
-                text: cText,
-                bold: isBabTitle || cStyle.includes('font-weight: bold') || cStyle.includes('font-weight:bold'),
-                font: 'Bookman Old Style',
-                size: isBabTitle ? 28 : 24
-              })
-            ],
-            alignment: cAlign,
-            spacing: { before: isBabTitle ? 40 : 0, after: isBabTitle ? 40 : 100 }
-          })
-        );
-      });
-      return;
-    }
-
     if (['p', 'div', 'blockquote'].includes(tagName)) {
       if (nodeText.length > 0) {
-        // Detect sub-bab numbering like 2.1, 2.1.1, 2.1.1.1., 1)
-        const isHeadingLike = /^(\d+(\.\d+)*\.?|[a-zA-Z0-9]+\))\s+/.test(nodeText);
-
         const runs = [];
         $(el).contents().each((_, child) => {
           const t = $(child).text();
           if (!t) return;
-          const isBold = isHeadingLike || child.name === 'strong' || child.name === 'b';
-          const isItalic = child.name === 'em' || child.name === 'i';
-          const isUnderline = child.name === 'u';
-          runs.push(
-            new TextRun({
-              text: t,
-              bold: isBold,
-              italics: isItalic,
-              underline: isUnderline ? {} : undefined,
-              font: 'Bookman Old Style',
-              size: 24
-            })
-          );
+          if (child.type === 'text') {
+            runs.push(new TextRun({ text: t, font: 'Bookman Old Style', size: 24 }));
+          } else if (child.name === 'strong' || child.name === 'b') {
+            runs.push(new TextRun({ text: t, bold: true, font: 'Bookman Old Style', size: 24 }));
+          } else if (child.name === 'em' || child.name === 'i') {
+            runs.push(new TextRun({ text: t, italics: true, font: 'Bookman Old Style', size: 24 }));
+          } else if (child.name === 'u') {
+            runs.push(new TextRun({ text: t, underline: {}, font: 'Bookman Old Style', size: 24 }));
+          } else {
+            runs.push(new TextRun({ text: t, font: 'Bookman Old Style', size: 24 }));
+          }
         });
 
         // Determine alignment
         let align = AlignmentType.JUSTIFIED;
         const style = $(el).attr('style') || '';
-        if (isHeadingLike) {
-          align = AlignmentType.LEFT;
-        } else if (style.includes('text-align: center') || $(el).hasClass('text-center') || $(el).hasClass('caption-center')) {
+        if (style.includes('text-align: center') || $(el).hasClass('text-center')) {
           align = AlignmentType.CENTER;
-        } else if (style.includes('text-align: right') || $(el).hasClass('text-right') || $(el).hasClass('bab-header-right')) {
+        } else if (style.includes('text-align: right') || $(el).hasClass('text-right')) {
           align = AlignmentType.RIGHT;
         }
 
-        // First line indent for narrative paragraphs
-        const hasIndent = !isHeadingLike && (style.includes('text-indent') || $(el).hasClass('with-indent'));
-
         elements.push(
           new Paragraph({
-            children: runs.length ? runs : [new TextRun({ text: nodeText, bold: isHeadingLike, font: 'Bookman Old Style', size: 24 })],
+            children: runs.length ? runs : [new TextRun({ text: nodeText, font: 'Bookman Old Style', size: 24 })],
             alignment: align,
-            indent: hasIndent ? { firstLine: 567 } : undefined, // ~1 cm first-line indent
-            spacing: {
-              before: isHeadingLike ? 140 : 0,
-              after: isHeadingLike ? 60 : 120,
-              line: 288 // 1.2 line spacing
-            }
+            spacing: { before: 0, after: 120, line: 288 } // 6pt after, 1.2 line spacing
           })
         );
       }
@@ -587,19 +503,14 @@ function convertHtmlToDocxElements(html, isLandscape = false) {
       const rows = [];
       let maxCols = 0;
 
-      // Detect borderless tables (such as boundary coordinates in Bab II)
-      const isBorderless = $(el).hasClass('table-boundary') ||
-        ($(el).attr('style') || '').includes('border: none') ||
-        ($(el).attr('style') || '').includes('border:none');
-
       // First pass to determine max columns
       $(el).find('tr').each((_, trEl) => {
         const cols = $(trEl).find('th, td').length;
         if (cols > maxCols) maxCols = cols;
       });
 
-      // Font size based on column density matching official Perbup (12pt for borderless coordinates)
-      const cellFontSize = isBorderless ? 24 : (maxCols >= 10 ? 17 : (maxCols >= 6 ? 18 : 20));
+      // Font size based on column density matching official Perbup
+      const cellFontSize = maxCols >= 10 ? 17 : (maxCols >= 6 ? 18 : 20); // 8.5pt, 9pt, or 10pt
 
       $(el).find('tr').each((trIdx, trEl) => {
         const cells = [];
@@ -610,40 +521,23 @@ function convertHtmlToDocxElements(html, isLandscape = false) {
           const isHeaderCell = cellEl.name === 'th' || isHeaderRow;
           const isNumeric = /^[0-9\.,\-\/%]+$/.test(cellText);
 
-          // Border for cells
-          const cellBorders = isBorderless ? {
-            top: { style: BorderStyle.NONE, size: 0, color: 'auto' },
-            bottom: { style: BorderStyle.NONE, size: 0, color: 'auto' },
-            left: { style: BorderStyle.NONE, size: 0, color: 'auto' },
-            right: { style: BorderStyle.NONE, size: 0, color: 'auto' }
-          } : undefined;
-
-          // Alignment: in borderless coordinates table, col 1 is left, col 2 is center (:), col 3 is left/justify
-          let cellAlign = AlignmentType.LEFT;
-          if (isBorderless) {
-            cellAlign = tdIdx === 1 ? AlignmentType.CENTER : AlignmentType.LEFT;
-          } else if (isHeaderCell || isNumeric) {
-            cellAlign = AlignmentType.CENTER;
-          }
-
           cells.push(
             new TableCell({
-              borders: cellBorders,
               children: [
                 new Paragraph({
                   children: [
                     new TextRun({
-                      text: cellText || ' ',
-                      bold: isHeaderCell && !isBorderless,
+                      text: cellText,
+                      bold: isHeaderCell,
                       font: 'Bookman Old Style',
                       size: cellFontSize
                     })
                   ],
-                  alignment: cellAlign,
+                  alignment: isHeaderCell || isNumeric ? AlignmentType.CENTER : AlignmentType.LEFT,
                   spacing: { before: 20, after: 20 }
                 })
               ],
-              shading: (isHeaderCell && !isBorderless) ? { fill: 'F1F5F9' } : undefined,
+              shading: isHeaderCell ? { fill: 'F1F5F9' } : undefined,
               margins: {
                 top: 80,
                 bottom: 80,
@@ -658,7 +552,7 @@ function convertHtmlToDocxElements(html, isLandscape = false) {
           rows.push(
             new TableRow({
               children: cells,
-              tableHeader: isHeaderRow && !isBorderless, // Repeat header row across pages ala Word
+              tableHeader: isHeaderRow, // Repeat header row across pages ala Word
               cantSplit: true // Prevent row from splitting across page breaks
             })
           );
@@ -666,32 +560,15 @@ function convertHtmlToDocxElements(html, isLandscape = false) {
       });
 
       if (rows.length > 0) {
-        const tableBorders = isBorderless ? {
-          top: { style: BorderStyle.NONE, size: 0, color: 'auto' },
-          bottom: { style: BorderStyle.NONE, size: 0, color: 'auto' },
-          left: { style: BorderStyle.NONE, size: 0, color: 'auto' },
-          right: { style: BorderStyle.NONE, size: 0, color: 'auto' },
-          insideHorizontal: { style: BorderStyle.NONE, size: 0, color: 'auto' },
-          insideVertical: { style: BorderStyle.NONE, size: 0, color: 'auto' }
-        } : {
-          top: { style: BorderStyle.SINGLE, size: 4, color: 'CCCCCC' },
-          bottom: { style: BorderStyle.SINGLE, size: 4, color: 'CCCCCC' },
-          left: { style: BorderStyle.SINGLE, size: 4, color: 'CCCCCC' },
-          right: { style: BorderStyle.SINGLE, size: 4, color: 'CCCCCC' },
-          insideHorizontal: { style: BorderStyle.SINGLE, size: 4, color: 'E2E8F0' },
-          insideVertical: { style: BorderStyle.SINGLE, size: 4, color: 'E2E8F0' }
-        };
-
         elements.push(
           new Table({
             rows: rows,
-            borders: tableBorders,
             width: {
               size: 100,
               type: WidthType.PERCENTAGE
             }
           }),
-          new Paragraph({ spacing: { after: 120 } })
+          new Paragraph({ text: '', spacing: { after: 120 } })
         );
       }
     } else if (['h1', 'h2', 'h3', 'h4', 'h5', 'h6'].includes(tagName)) {
@@ -722,59 +599,50 @@ function convertHtmlToDocxElements(html, isLandscape = false) {
 async function exportSectionsToDocx(docMetadata, sections) {
   const isBab2 = (docMetadata.title || '').includes('BAB II');
 
-  // Factory for running header
-  function createRunningHeader() {
-    return new Header({
-      children: [
-        new Paragraph({
-          children: [
-            new TextRun({
-              text: 'RKPD Kabupaten Cilacap Tahun 2027',
-              font: 'Bookman Old Style',
-              size: 18,
-              color: '666666'
-            })
-          ],
-          alignment: AlignmentType.RIGHT,
-          spacing: { after: 100 }
-        })
-      ]
-    });
-  }
+  // Running Header ala official Perbup
+  const runningHeader = new Header({
+    children: [
+      new Paragraph({
+        children: [
+          new TextRun({
+            text: 'RKPD Kabupaten Cilacap Tahun 2027',
+            font: 'Bookman Old Style',
+            size: 18,
+            color: '666666'
+          })
+        ],
+        alignment: AlignmentType.RIGHT,
+        spacing: { after: 100 }
+      })
+    ]
+  });
 
-  // Factory for running footer with exact tab stop
-  function createRunningFooter(isLandscape) {
-    return new Footer({
-      children: [
-        new Paragraph({
-          tabStops: [
-            {
-              type: TabStopType.RIGHT,
-              position: isLandscape ? 15800 : 9900
-            }
-          ],
-          children: [
-            new TextRun({
-              text: 'RKPD Kabupaten Cilacap Tahun 2027',
-              font: 'Bookman Old Style',
-              size: 18
-            }),
-            new TextRun({
-              text: '\tHal. ',
-              font: 'Bookman Old Style',
-              size: 18
-            }),
-            new TextRun({
-              children: [PageNumber.CURRENT],
-              font: 'Bookman Old Style',
-              size: 18
-            })
-          ],
-          spacing: { before: 100 }
-        })
-      ]
-    });
-  }
+  // Running Footer ala official Perbup (RKPD Kabupaten Cilacap Tahun 2027  [Bab]-[Hal])
+  const runningFooter = new Footer({
+    children: [
+      new Paragraph({
+        children: [
+          new TextRun({
+            text: 'RKPD Kabupaten Cilacap Tahun 2027',
+            font: 'Bookman Old Style',
+            size: 18
+          }),
+          new TextRun({
+            text: '\t\tHal. ',
+            font: 'Bookman Old Style',
+            size: 18
+          }),
+          new TextRun({
+            children: [PageNumber.CURRENT],
+            font: 'Bookman Old Style',
+            size: 18
+          })
+        ],
+        alignment: AlignmentType.BOTH,
+        spacing: { before: 100 }
+      })
+    ]
+  });
 
   // Group consecutive sections by orientation
   const groupedSections = [];
@@ -802,40 +670,73 @@ async function exportSectionsToDocx(docMetadata, sections) {
   for (let gIdx = 0; gIdx < groupedSections.length; gIdx++) {
     const group = groupedSections[gIdx];
     const isLandscape = group.isLandscape;
-    const isFirstSection = gIdx === 0;
     const children = [];
+
+    // Title on very first section if compiling full document
+    if (gIdx === 0) {
+      children.push(
+        new Paragraph({
+          children: [
+            new TextRun({
+              text: docMetadata.title || 'DOKUMEN PERENCANAAN DAERAH',
+              bold: true,
+              font: 'Bookman Old Style',
+              size: 32 // 16pt
+            })
+          ],
+          alignment: AlignmentType.CENTER,
+          spacing: { after: 150 }
+        }),
+        new Paragraph({
+          children: [
+            new TextRun({
+              text: docMetadata.description || 'Pemerintah Kabupaten Cilacap - Badan Perencanaan Pembangunan Daerah',
+              font: 'Bookman Old Style',
+              size: 24 // 12pt
+            })
+          ],
+          alignment: AlignmentType.CENTER,
+          spacing: { after: 300 }
+        })
+      );
+    }
 
     // Add content for all sections in this orientation group
     for (const sec of group.sections) {
+      let headingSize = 24; // 12pt
+      let isBabHeader = sec.level === 1 || /^BAB\s+[IVXLCDM\d]+/i.test(sec.code || '');
+
+      if (isBabHeader) headingSize = 28; // 14pt
+      else if (sec.level >= 3) headingSize = 22; // 11pt
+
+      const fullTitle = sec.code ? `${sec.code} ${sec.title}` : sec.title;
+
+      children.push(
+        new Paragraph({
+          children: [
+            new TextRun({
+              text: fullTitle,
+              bold: true,
+              font: 'Bookman Old Style',
+              size: headingSize
+            })
+          ],
+          alignment: isBabHeader ? AlignmentType.CENTER : AlignmentType.LEFT,
+          spacing: { before: 240, after: 120 }
+        })
+      );
+
       if (sec.content) {
         const bodyChildren = convertHtmlToDocxElements(sec.content, isLandscape);
         children.push(...bodyChildren);
-      } else {
-        const fullTitle = sec.code ? `${sec.code} ${sec.title}` : sec.title;
-        children.push(
-          new Paragraph({
-            children: [
-              new TextRun({
-                text: fullTitle,
-                bold: true,
-                font: 'Bookman Old Style',
-                size: 24
-              })
-            ],
-            alignment: AlignmentType.LEFT,
-            spacing: { before: 240, after: 120 }
-          })
-        );
       }
     }
 
     // Official F4 / Folio Dimensions & Margins
     // Folio Portrait: 216mm x 330mm (12240 x 18720 dxa)
-    // NOTE: In docx library, when orientation is PageOrientation.LANDSCAPE,
-    // the library automatically swaps width and height to produce width=18720 and height=12240.
-    // Therefore, width MUST always be 12240 and height MUST always be 18720.
-    const pageWidth = 12240;
-    const pageHeight = 18720;
+    // Folio Landscape: 330mm x 216mm (18720 x 12240 dxa)
+    const pageWidth = isLandscape ? 18720 : 12240;
+    const pageHeight = isLandscape ? 12240 : 18720;
 
     const leftMarginDxa = isLandscape ? 1418 : (isBab2 ? 1985 : 2268); // 2.5cm landscape, 3.5cm Bab II, 4.0cm other
     const rightMarginDxa = isLandscape ? 1418 : (isBab2 ? 1191 : 1418); // 2.5cm landscape, 2.1cm Bab II, 2.5cm other
@@ -844,7 +745,6 @@ async function exportSectionsToDocx(docMetadata, sections) {
 
     docSections.push({
       properties: {
-        titlePage: isFirstSection, // Different first page (omits running header on page 1 of Bab)
         page: {
           size: {
             width: pageWidth,
@@ -860,57 +760,222 @@ async function exportSectionsToDocx(docMetadata, sections) {
         }
       },
       headers: {
-        default: createRunningHeader()
+        default: runningHeader
       },
       footers: {
-        default: createRunningFooter(isLandscape),
-        first: createRunningFooter(isLandscape)
+        default: runningFooter
       },
       children: children
     });
   }
 
   const doc = new Document({
-    numbering: {
-      config: [
-        {
-          reference: 'default-numbering',
-          levels: [
-            {
-              level: 0,
-              format: LevelFormat.DECIMAL,
-              text: '%1.',
-              alignment: AlignmentType.START,
-              style: {
-                paragraph: {
-                  indent: { left: 720, hanging: 360 }
-                }
-              }
-            },
-            {
-              level: 1,
-              format: LevelFormat.LOWER_LETTER,
-              text: '%2.',
-              alignment: AlignmentType.START,
-              style: {
-                paragraph: {
-                  indent: { left: 1080, hanging: 360 }
-                }
-              }
-            }
-          ]
-        }
-      ]
-    },
     sections: docSections
   });
 
   return await Packer.toBuffer(doc);
 }
 
+/**
+ * Export a single section as a complete standalone DOCX file for Direct Word Collaboration
+ */
+async function exportSingleSectionToDocx(section, docMetadata = {}) {
+  const isLandscape = (section.orientation || 'portrait').toLowerCase() === 'landscape';
+  const isBab2 = (docMetadata.title || '').includes('BAB II');
+
+  const runningHeader = new Header({
+    children: [
+      new Paragraph({
+        children: [
+          new TextRun({
+            text: 'RKPD Kabupaten Cilacap Tahun 2027',
+            font: 'Bookman Old Style',
+            size: 18,
+            color: '666666'
+          }),
+          new TextRun({
+            text: '\t\t' + (section.code ? `${section.code} ${section.title}` : (docMetadata.title || '')),
+            font: 'Bookman Old Style',
+            size: 18,
+            color: '888888'
+          })
+        ],
+        alignment: AlignmentType.BOTH,
+        spacing: { after: 120 }
+      })
+    ]
+  });
+
+  const runningFooter = new Footer({
+    children: [
+      new Paragraph({
+        children: [
+          new TextRun({
+            text: 'RKPD Kabupaten Cilacap Tahun 2027',
+            font: 'Bookman Old Style',
+            size: 18
+          }),
+          new TextRun({
+            text: '\t\tHal. ',
+            font: 'Bookman Old Style',
+            size: 18
+          }),
+          new TextRun({
+            children: [PageNumber.CURRENT],
+            font: 'Bookman Old Style',
+            size: 18
+          })
+        ],
+        alignment: AlignmentType.BOTH,
+        spacing: { before: 120 }
+      })
+    ]
+  });
+
+  const children = [];
+
+  // Opening Kop Lampiran if section order === 1
+  if (section.order === 1) {
+    children.push(
+      new Paragraph({
+        children: [
+          new TextRun({
+            text: 'LAMPIRAN\nPERATURAN BUPATI CILACAP\nNOMOR        TAHUN 2026\nTENTANG\nRENCANA KERJA PEMERINTAH DAERAH KABUPATEN CILACAP TAHUN 2027',
+            bold: true,
+            font: 'Bookman Old Style',
+            size: 21
+          })
+        ],
+        alignment: AlignmentType.RIGHT,
+        spacing: { after: 300 }
+      })
+    );
+  }
+
+  // Section Heading
+  let headingSize = 24; // 12pt
+  let isBabHeader = section.level === 1 || /^BAB\s+[IVXLCDM\d]+/i.test(section.code || '');
+  if (isBabHeader) headingSize = 28; // 14pt
+  else if (section.level >= 3) headingSize = 22; // 11pt
+
+  const fullTitle = section.code ? `${section.code} ${section.title}` : section.title;
+  children.push(
+    new Paragraph({
+      children: [
+        new TextRun({
+          text: fullTitle,
+          bold: true,
+          font: 'Bookman Old Style',
+          size: headingSize
+        })
+      ],
+      alignment: isBabHeader ? AlignmentType.CENTER : AlignmentType.LEFT,
+      spacing: { before: 200, after: 140 }
+    })
+  );
+
+  // Convert HTML content to docx elements
+  if (section.content) {
+    const bodyChildren = convertHtmlToDocxElements(section.content, isLandscape);
+    children.push(...bodyChildren);
+  }
+
+  const pageWidth = isLandscape ? 18720 : 12240;
+  const pageHeight = isLandscape ? 12240 : 18720;
+  const leftMarginDxa = isLandscape ? 1418 : (isBab2 ? 1985 : 2268);
+  const rightMarginDxa = isLandscape ? 1418 : (isBab2 ? 1191 : 1418);
+  const topMarginDxa = 1418;
+  const bottomMarginDxa = 1418;
+
+  const doc = new Document({
+    sections: [
+      {
+        properties: {
+          page: {
+            size: {
+              width: pageWidth,
+              height: pageHeight,
+              orientation: isLandscape ? PageOrientation.LANDSCAPE : PageOrientation.PORTRAIT
+            },
+            margin: {
+              top: topMarginDxa,
+              bottom: bottomMarginDxa,
+              left: leftMarginDxa,
+              right: rightMarginDxa
+            }
+          }
+        },
+        headers: { default: runningHeader },
+        footers: { default: runningFooter },
+        children: children
+      }
+    ]
+  });
+
+  return await Packer.toBuffer(doc);
+}
+
+/**
+ * Parse an updated single section DOCX (saved from Word desktop) back into clean HTML
+ */
+async function parseSingleDocxToContent(bufferOrPath) {
+  const mammothOptions = {
+    styleMap: [
+      "p[style-name='Heading 1'] => h1:fresh",
+      "p[style-name='Heading 2'] => h2:fresh",
+      "p[style-name='Heading 3'] => h3:fresh",
+      "p[style-name='Heading 4'] => h4:fresh",
+      "p[style-name='Heading 5'] => h5:fresh",
+      "p[style-name='Heading 6'] => h6:fresh"
+    ]
+  };
+
+  const input = typeof bufferOrPath === 'string'
+    ? { path: bufferOrPath }
+    : { buffer: bufferOrPath };
+
+  const result = await mammoth.convertToHtml(input, mammothOptions);
+  let rawHtml = result.value || '';
+  let html = enhanceWordHtml(rawHtml);
+
+  const $ = cheerio.load(html, null, false);
+
+  // Remove duplicate heading if the user didn't modify it or if it repeats the section title
+  const firstChild = $('body').children().first();
+  if (firstChild.is('h1, h2, h3, h4, h5, h6')) {
+    firstChild.remove();
+  }
+
+  const cleanedContent = $('body').html() || $.html();
+
+  // Detect tables & max columns for auto-orientation
+  let maxCols = 0;
+  let hasTable = false;
+  $('table').each((_, tbl) => {
+    hasTable = true;
+    $(tbl).find('tr').each((__, row) => {
+      const cols = $(row).find('th, td').length;
+      if (cols > maxCols) maxCols = cols;
+    });
+  });
+
+  const orientation = maxCols >= 6 ? 'landscape' : 'portrait';
+  const tableFontSize = maxCols >= 10 ? '8.5pt' : (maxCols >= 6 ? '9pt' : '10pt');
+
+  return {
+    contentHtml: cleanedContent.trim(),
+    orientation,
+    tableFontSize,
+    hasTable,
+    maxTableColumns: maxCols
+  };
+}
+
 module.exports = {
   enhanceWordHtml,
   parseDocxToSections,
   generateRkpdBab2Template,
-  exportSectionsToDocx
+  exportSectionsToDocx,
+  exportSingleSectionToDocx,
+  parseSingleDocxToContent
 };

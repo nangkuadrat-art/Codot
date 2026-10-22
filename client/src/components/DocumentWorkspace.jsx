@@ -193,6 +193,14 @@ export default function DocumentWorkspace({
 
   // Find & Replace Floating Toolbar
   const [showFindReplace, setShowFindReplace] = useState(false);
+
+  // Microsoft Word Desktop Direct Collaboration State (Pendekatan 1)
+  const [showWordModal, setShowWordModal] = useState(false);
+  const [wordSessionActive, setWordSessionActive] = useState(false);
+  const [wordSyncLoading, setWordSyncLoading] = useState(false);
+  const [wordLastSync, setWordLastSync] = useState(null);
+  const [wordTargetSection, setWordTargetSection] = useState(null);
+  const wordFileInputRef = useRef(null);
   const [findText, setFindText] = useState('');
   const [replaceText, setReplaceText] = useState('');
   const [findMatchesCount, setFindMatchesCount] = useState(0);
@@ -404,6 +412,81 @@ export default function DocumentWorkspace({
     }
   };
 
+
+  // Microsoft Word Desktop Direct Collaboration Handlers (Pendekatan 1)
+  const openWordCollaboration = (sec = null) => {
+    const target = sec || activeSection;
+    setWordTargetSection(target);
+    setShowWordModal(true);
+  };
+
+  const handleLaunchWord = (sec = null) => {
+    const target = sec || wordTargetSection || activeSection;
+    if (!target) return;
+    api.launchWordDesktop(target.id);
+    setWordSessionActive(true);
+    setWordLastSync(new Date().toLocaleTimeString('id-ID'));
+  };
+
+  const handleManualWordUpload = async (e) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    const target = wordTargetSection || activeSection;
+    if (!target) return;
+
+    try {
+      setWordSyncLoading(true);
+      const res = await api.reimportWordFile(target.id, file);
+      if (res.success && res.data) {
+        setSections(prev => prev.map(s => s.id === target.id ? { ...s, ...res.data } : s));
+        if (target.id === activeSectionId) {
+          setEditorHtml(res.data.content);
+          if (editorRef.current) {
+            editorRef.current.innerHTML = res.data.content;
+          }
+          if (res.data.orientation) {
+            setOrientation(res.data.orientation.toUpperCase());
+          }
+        }
+        setWordLastSync(new Date().toLocaleTimeString('id-ID'));
+        alert('Naskah berhasil disinkronkan dari file Microsoft Word!');
+        setShowWordModal(false);
+      } else {
+        alert('Gagal menyinkronkan: ' + (res.message || 'File tidak valid'));
+      }
+    } catch (err) {
+      alert('Error mengunggah file Word: ' + err.message);
+    } finally {
+      setWordSyncLoading(false);
+      e.target.value = '';
+    }
+  };
+
+  const handleRefreshFromWord = async (sec = null) => {
+    const target = sec || wordTargetSection || activeSection;
+    if (!target) return;
+    try {
+      setWordSyncLoading(true);
+      const res = await api.getSection(target.id);
+      if (res.success && res.data) {
+        setSections(prev => prev.map(s => s.id === target.id ? { ...s, ...res.data } : s));
+        if (target.id === activeSectionId) {
+          setEditorHtml(res.data.content);
+          if (editorRef.current) {
+            editorRef.current.innerHTML = res.data.content;
+          }
+          if (res.data.orientation) {
+            setOrientation(res.data.orientation.toUpperCase());
+          }
+        }
+        setWordLastSync(new Date().toLocaleTimeString('id-ID'));
+      }
+    } catch (err) {
+      console.error('Refresh from Word error:', err);
+    } finally {
+      setWordSyncLoading(false);
+    }
+  };
 
   // Roman Chapter detector & Document type
   const getRomanChapter = () => {
@@ -3602,6 +3685,15 @@ export default function DocumentWorkspace({
                         </button>
                         <button
                           type="button"
+                          onClick={() => openWordCollaboration(sec)}
+                          className="px-1.5 py-0.5 bg-[#185abd] hover:bg-[#144b9e] text-white rounded text-[10px] font-medium flex items-center gap-1"
+                          title="Buka sub-bab ini di Microsoft Word desktop"
+                        >
+                          <span className="font-bold">W</span>
+                          <span>Word</span>
+                        </button>
+                        <button
+                          type="button"
                           onClick={() => {
                             selectSection(sec);
                             setViewMode('SECTION_EDITOR');
@@ -3613,18 +3705,16 @@ export default function DocumentWorkspace({
                         </button>
                       </div>
 
-                      {/* Word Header on Page - Halaman 1 Bab tidak ada running header (Different First Page) */}
-                      {!isFirst && (
-                        <div className="pb-3 mb-6 border-b border-slate-300 flex items-center justify-between text-[10px] text-slate-500 select-none relative z-10 font-['Bookman_Old_Style',Georgia,serif]">
-                          <span className="font-semibold tracking-wide">RKPD Kabupaten Cilacap Tahun 2027</span>
-                          <span className="uppercase tracking-wide text-slate-400">
-                            {sec.code ? `${sec.code} ${sec.title}` : (doc?.title?.replace('RKPD 2027 PERBUP - ', '') || 'DOKUMEN RESMI')}
-                          </span>
-                        </div>
-                      )}
+                      {/* Word Header on Page */}
+                      <div className="pb-3 mb-6 border-b border-slate-300 flex items-center justify-between text-[10px] text-slate-500 select-none relative z-10 font-['Bookman_Old_Style',Georgia,serif]">
+                        <span className="font-semibold tracking-wide">RKPD Kabupaten Cilacap Tahun 2027</span>
+                        <span className="uppercase tracking-wide text-slate-400">
+                          {sec.code ? `${sec.code} ${sec.title}` : (doc?.title?.replace('RKPD 2027 PERBUP - ', '') || 'DOKUMEN RESMI')}
+                        </span>
+                      </div>
 
-                      {/* Kop Lampiran on First Page (Hanya jika dokumen khusus cover lampiran) */}
-                      {isFirst && doc?.isLampiranCover && (
+                      {/* Kop Lampiran on First Page */}
+                      {isFirst && (
                         <div className="kop-lampiran-perbup mb-8 text-right font-['Bookman_Old_Style',Georgia,serif]" style={{ marginLeft: 'auto', width: '360px', fontSize: '10.5pt', lineHeight: '1.35' }}>
                           <div className="font-bold tracking-wider">LAMPIRAN</div>
                           <div className="font-bold tracking-wider">PERATURAN BUPATI CILACAP</div>
@@ -3700,18 +3790,16 @@ export default function DocumentWorkspace({
                   </div>
                 )}
 
-                {/* Word Header on Page - Halaman 1 Bab tidak ada running header (Different First Page) */}
-                {activeSection?.order !== 1 && (
-                  <div className="pb-3 mb-6 border-b border-slate-300 flex items-center justify-between text-[10px] text-slate-500 select-none relative z-10 font-['Bookman_Old_Style',Georgia,serif]">
-                    <span className="font-semibold tracking-wide">RKPD Kabupaten Cilacap Tahun 2027</span>
-                    <span className="uppercase tracking-wide text-slate-400">
-                      {doc?.title?.replace('RKPD 2027 PERBUP - ', '') || 'DOKUMEN RESMI'}
-                    </span>
-                  </div>
-                )}
+                {/* Word Header on Page */}
+                <div className="pb-3 mb-6 border-b border-slate-300 flex items-center justify-between text-[10px] text-slate-500 select-none relative z-10 font-['Bookman_Old_Style',Georgia,serif]">
+                  <span className="font-semibold tracking-wide">RKPD Kabupaten Cilacap Tahun 2027</span>
+                  <span className="uppercase tracking-wide text-slate-400">
+                    {doc?.title?.replace('RKPD 2027 PERBUP - ', '') || 'DOKUMEN RESMI'}
+                  </span>
+                </div>
 
-                {/* Kop Lampiran on First Section (Hanya jika dokumen khusus cover lampiran) */}
-                {activeSection?.order === 1 && doc?.isLampiranCover && (
+                {/* Kop Lampiran on First Section */}
+                {activeSection?.order === 1 && (
                   <div className="kop-lampiran-perbup mb-8 text-right font-['Bookman_Old_Style',Georgia,serif]" style={{ marginLeft: 'auto', width: '360px', fontSize: '10.5pt', lineHeight: '1.35' }}>
                     <div className="font-bold tracking-wider">LAMPIRAN</div>
                     <div className="font-bold tracking-wider">PERATURAN BUPATI CILACAP</div>
@@ -4562,6 +4650,138 @@ export default function DocumentWorkspace({
                 className="px-5 py-2 bg-[#185abd] hover:bg-[#144b9e] text-white rounded-lg font-bold text-xs"
               >
                 Terapkan Pengaturan
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+
+      {/* ================= MICROSOFT WORD COLLABORATION MODAL (PENDEKATAN 1) ================= */}
+      {showWordModal && (
+        <div className="fixed inset-0 z-50 bg-black/60 flex items-center justify-center p-4 backdrop-blur-xs font-sans">
+          <div className="bg-white rounded-xl shadow-2xl max-w-lg w-full overflow-hidden border border-slate-300 animate-in fade-in zoom-in-95 duration-150">
+            {/* Header Modal with Word Blue */}
+            <div className="p-4 bg-[#185abd] text-white flex items-center justify-between">
+              <div className="flex items-center gap-2.5">
+                <div className="w-8 h-8 rounded bg-white text-[#185abd] flex items-center justify-center font-bold text-lg shadow-xs">
+                  W
+                </div>
+                <div>
+                  <h3 className="font-bold text-sm sm:text-base leading-tight">Kolaborasi Langsung Microsoft Word</h3>
+                  <p className="text-[11px] text-blue-100">Jadikan Microsoft Word sebagai lembar kerja utama naskah</p>
+                </div>
+              </div>
+              <button
+                onClick={() => setShowWordModal(false)}
+                className="text-white/80 hover:text-white p-1 rounded hover:bg-white/10"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            <div className="p-5 space-y-4 text-xs">
+              {/* Target Section Info */}
+              <div className="p-3 bg-slate-50 border border-slate-200 rounded-lg">
+                <span className="text-[10px] uppercase font-bold text-slate-400">Naskah yang dipilih:</span>
+                <p className="font-bold text-slate-800 text-sm mt-0.5">
+                  {wordTargetSection?.code || ''} {wordTargetSection?.title || 'Bagian Dokumen'}
+                </p>
+                <div className="mt-1 flex items-center gap-2 text-[11px] text-slate-500">
+                  <span className="bg-blue-100 text-blue-800 font-semibold px-1.5 py-0.5 rounded text-[10px]">
+                    {wordTargetSection?.orientation === 'landscape' ? 'Lanskap (330×216 mm)' : 'Potret (216×330 mm)'}
+                  </span>
+                  <span>• Kertas Folio F4 • Bookman Old Style</span>
+                </div>
+              </div>
+
+              {/* Option 1: Automatic Launch */}
+              <div className="border-2 border-blue-500/30 bg-blue-50/50 rounded-xl p-4">
+                <div className="flex items-center justify-between mb-2">
+                  <span className="font-bold text-blue-950 flex items-center gap-1.5 text-xs">
+                    <Sparkles className="w-3.5 h-3.5 text-blue-600" />
+                    <span>Metode 1: Luncurkan Otomatis (Direkomendasikan)</span>
+                  </span>
+                  <span className="bg-emerald-100 text-emerald-800 font-bold px-2 py-0.5 rounded text-[9px]">
+                    Ctrl + S Auto-Sync
+                  </span>
+                </div>
+                <p className="text-slate-600 leading-relaxed mb-3">
+                  Aplikasi Microsoft Word di komputer Anda akan terbuka otomatis. Setiap kali Anda menekan <strong>Ctrl + S (Simpan)</strong> di Word, naskah dan tabel langsung tersimpan ke server Codot.
+                </p>
+                <button
+                  type="button"
+                  onClick={() => handleLaunchWord()}
+                  className="w-full py-2.5 px-4 bg-[#185abd] hover:bg-[#144b9e] text-white font-bold rounded-lg shadow-sm flex items-center justify-center gap-2 transition"
+                >
+                  <FileText className="w-4 h-4 text-white" />
+                  <span>Buka di Microsoft Word Desktop Sekarang</span>
+                </button>
+              </div>
+
+              {/* Option 2: Manual Download & Re-upload */}
+              <div className="border border-slate-200 rounded-xl p-4 bg-white">
+                <div className="flex items-center justify-between mb-2">
+                  <span className="font-bold text-slate-800 text-xs">
+                    Metode 2: Unduh & Unggah Manual (Alternatif Offline)
+                  </span>
+                  <span className="text-[10px] text-slate-400">Bekerja tanpa internet</span>
+                </div>
+                <p className="text-slate-500 leading-relaxed mb-3">
+                  Jika firewall/kebijakan komputer membatasi sinkronisasi langsung dari Word, unduh naskah ini, edit di Word, lalu unggah file hasil revisinya.
+                </p>
+                <div className="flex items-center gap-2">
+                  <a
+                    href={api.getWordBridgeUrl(wordTargetSection?.id || activeSection?.id)}
+                    download={`${wordTargetSection?.code || 'Sec'}_${wordTargetSection?.title || 'Doc'}.docx`}
+                    className="flex-1 py-2 px-3 bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold rounded-lg border border-slate-300 flex items-center justify-center gap-1.5 transition text-center"
+                  >
+                    <FileDown className="w-3.5 h-3.5 text-slate-600" />
+                    <span>Unduh .docx</span>
+                  </a>
+
+                  <button
+                    type="button"
+                    onClick={() => wordFileInputRef.current?.click()}
+                    disabled={wordSyncLoading}
+                    className="flex-1 py-2 px-3 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold rounded-lg flex items-center justify-center gap-1.5 transition shadow-2xs"
+                  >
+                    <FilePlus className="w-3.5 h-3.5 text-white" />
+                    <span>{wordSyncLoading ? 'Memproses...' : 'Unggah Revisi Word'}</span>
+                  </button>
+                  <input
+                    ref={wordFileInputRef}
+                    type="file"
+                    accept=".docx"
+                    onChange={handleManualWordUpload}
+                    className="hidden"
+                  />
+                </div>
+              </div>
+
+              {/* Instructions */}
+              <div className="text-[11px] text-slate-500 bg-slate-100/70 p-3 rounded-lg leading-relaxed">
+                <span className="font-bold text-slate-700">💡 Tips Format:</span> Naskah ini telah dikonfigurasi dengan standar kertas Folio F4 (216×330 mm), font Bookman Old Style, dan garis batas tabel resmi. Penambahan tabel atau baris baru di Word akan otomatis disesuaikan saat disimpan ke sistem.
+              </div>
+            </div>
+
+            {/* Footer */}
+            <div className="p-3 bg-slate-50 border-t border-slate-200 flex items-center justify-between">
+              <button
+                type="button"
+                onClick={() => handleRefreshFromWord()}
+                disabled={wordSyncLoading}
+                className="text-xs font-semibold text-blue-700 hover:underline flex items-center gap-1"
+              >
+                <RotateCcw className="w-3 h-3" />
+                <span>Muat Ulang Perubahan dari Word</span>
+              </button>
+
+              <button
+                onClick={() => setShowWordModal(false)}
+                className="px-4 py-1.5 bg-slate-200 hover:bg-slate-300 text-slate-700 rounded-md font-semibold text-xs"
+              >
+                Tutup
               </button>
             </div>
           </div>
