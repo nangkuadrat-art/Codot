@@ -67,6 +67,38 @@ Layanan cloud gratis (Render/Koyeb free tier) memiliki sifat *ephemeral disk* (j
 
 ---
 
+## ⚡ METODE 3: Deploy ke Vercel
+
+Vercel adalah platform cloud berbasis **Serverless** yang sangat populer karena kecepatan akses CDN-nya yang luar biasa dan proses deploy 1-klik dari GitHub.
+
+### Status Kesiapan Vercel:
+Kami telah menyiapkan seluruh konfigurasi agar aplikasi ini **siap dideploy ke Vercel**:
+- `vercel.json` (Konfigurasi routing API + Frontend build SPA).
+- `api/index.js` (Serverless Function adapter untuk Express).
+- Optimasi Payload API (List dokumen diperingan dari 11.5 MB menjadi **5.6 KB** agar memenuhi batas payload Vercel Serverless Function).
+- Penanganan sistem file *read-only* di serverless (`/tmp` fallback).
+
+### Cara Deploy ke Vercel:
+1. Pastikan kode sudah terunggah ke repositori GitHub Anda (gunakan `PUSH_KE_GITHUB.bat`).
+2. Kunjungi [vercel.com](https://vercel.com) dan login menggunakan akun **GitHub**.
+3. Klik tombol **"Add New..."** ➔ **"Project"**.
+4. Pilih repositori `codot-rkpd` dari daftar GitHub Anda, lalu klik **Import**.
+5. Pada bagian **Framework Preset**, biarkan **Vite** (atau *Other*). Vercel akan otomatis mendeteksi konfigurasi dari file `vercel.json`.
+6. Klik tombol **Deploy**.
+7. Dalam 1–2 menit, aplikasi Anda akan aktif dengan tautan seperti:
+   `https://codot-rkpd.vercel.app`
+
+### 💡 Hal Penting Mengenai Karakteristik Vercel untuk Aplikasi Ini:
+| Fitur / Karakteristik | Vercel (Serverless) | Render / Koyeb (Container) | Cloudflare Tunnel (Lokal) |
+| :--- | :--- | :--- | :--- |
+| **Kecepatan Buka Web** | ⚡ Super Cepat (Global CDN) | ⏳ Sedang (ada wake-up jika idle) | ⚡ Cepat (tergantung koneksi PC) |
+| **Tipe Server** | Serverless / AWS Lambda | Container Node.js 24/7 | Node.js di PC / Laptop |
+| **Penyimpanan Data File** | **Read-Only / Ephemeral** (Data di `/tmp` reset saat lambda selesai) | Tersimpan di container (reset saat redeploy) | **100% Permanen di SSD Anda** (Paling Aman) |
+| **Batas Ukuran Upload** | Maksimal 4.5 MB per request | Hingga 50 MB (Word .docx besar) | Tanpa batas ukuran |
+| **Kesesuaian Penggunaan** | Sangat cocok untuk **Demo UI, Presentasi, atau jika disambungkan ke Database Cloud (Supabase/MongoDB)** | Cocok untuk uji coba kolaborasi online beberapa hari | **Paling ideal untuk penyusunan naskah asli RKPD antar-OPD** |
+
+---
+
 ## 📋 Akun Login Bawaan untuk Uji Coba:
 - **Admin Bappeda**: `admin` / Password: `12345@`
 - **Reviewer Ahli**: `reviewer_ahli` / Password: `12345@`
