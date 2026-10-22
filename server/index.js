@@ -3,6 +3,7 @@ const cors = require('cors');
 const multer = require('multer');
 const path = require('path');
 const fs = require('fs');
+const os = require('os');
 const { v4: uuidv4 } = require('uuid');
 
 const db = require('./db');
@@ -17,15 +18,20 @@ const { runComprehensiveConsistencyAnalysis } = require('./comprehensiveConsiste
 
 const app = express();
 const PORT = process.env.PORT || 5000;
+const isServerless = !!(process.env.VERCEL || process.env.AWS_LAMBDA_FUNCTION_NAME);
 
 app.use(cors());
 app.use(express.json({ limit: '50mb' }));
 app.use(express.urlencoded({ extended: true, limit: '50mb' }));
 
-// Setup file uploads
-const UPLOAD_DIR = path.join(__dirname, '..', 'uploads');
-if (!fs.existsSync(UPLOAD_DIR)) {
-  fs.mkdirSync(UPLOAD_DIR, { recursive: true });
+// Setup file uploads safely (fallback to tmpdir in serverless)
+const UPLOAD_DIR = isServerless ? path.join(os.tmpdir(), 'rkpd_uploads') : path.join(__dirname, '..', 'uploads');
+try {
+  if (!fs.existsSync(UPLOAD_DIR)) {
+    fs.mkdirSync(UPLOAD_DIR, { recursive: true });
+  }
+} catch (e) {
+  // Ignored in read-only environment
 }
 
 const storage = multer.diskStorage({
@@ -349,8 +355,9 @@ app.get('/api/documents', (req, res) => {
   const docs = db.getDocuments(stageId);
   const user = req.currentUser;
 
-  // Enrich with user-specific responsibility metadata
+  // Enrich with user-specific responsibility metadata (strip fullContentHtml for lightweight list)
   const enrichedDocs = docs.map(doc => {
+    const { fullContentHtml, ...docMeta } = doc;
     const docSections = db.getSectionsByDocumentId(doc.id);
     const assignedSectionsCount = docSections.filter(s => (s.assignedUserIds || []).includes(user.id)).length;
     const isReviewerForThisDoc = user.role === 'ADMIN' || (user.role === 'REVIEWER' && (user.reviewedChapters || []).includes(doc.chapter));
@@ -359,7 +366,7 @@ app.get('/api/documents', (req, res) => {
       : (user.role === 'REVIEWER' ? isReviewerForThisDoc : assignedSectionsCount > 0);
 
     return {
-      ...doc,
+      ...docMeta,
       assignedSectionsCount,
       isReviewerForThisDoc,
       isMyResponsibility,
@@ -1306,16 +1313,20 @@ if (fs.existsSync(clientDist)) {
 }
 
 // Start server
-app.listen(PORT, () => {
-  console.log(`🚀 RKPD Document Collaboration Server running on http://localhost:${PORT}`);
+if (process.env.NODE_ENV !== 'test' && require.main === module) {
+  app.listen(PORT, () => {
+    console.log(`🚀 RKPD Document Collaboration Server running on http://localhost:${PORT}`);
 
-  // Auto-seed Stage 1 if database has 0 documents
-  if (db.data.documents.length === 0) {
-    console.log('📦 Inisialisasi otomatis naskah template 7 Bab RKPD ke Tahap 1...');
-    seedTemplatesForStage('stage_1').then(docs => {
-      console.log(`✅ Berhasil menginisialisasi ${docs.length} Bab Dokumen RKPD ke Tahap 1`);
-    }).catch(err => {
-      console.error('Gagal inisialisasi naskah otomatis:', err.message);
-    });
-  }
-});
+    // Auto-seed Stage 1 if database has 0 documents
+    if (db.data.documents.length === 0) {
+      console.log('📦 Inisialisasi otomatis naskah template 7 Bab RKPD ke Tahap 1...');
+      seedTemplatesForStage('stage_1').then(docs => {
+        console.log(`✅ Berhasil menginisialisasi ${docs.length} Bab Dokumen RKPD ke Tahap 1`);
+      }).catch(err => {
+        console.error('Gagal inisialisasi naskah otomatis:', err.message);
+      });
+    }
+  });
+}
+
+module.exports = app;

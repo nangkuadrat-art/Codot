@@ -1,12 +1,19 @@
 const fs = require('fs');
 const path = require('path');
+const os = require('os');
 
+const isServerless = !!(process.env.VERCEL || process.env.AWS_LAMBDA_FUNCTION_NAME);
 const DATA_DIR = path.join(__dirname, '..', 'data');
 const DB_FILE = path.join(DATA_DIR, 'database.json');
+const TMP_DB_FILE = path.join(os.tmpdir(), 'rkpd_database.json');
 
-// Ensure data directory exists
-if (!fs.existsSync(DATA_DIR)) {
-  fs.mkdirSync(DATA_DIR, { recursive: true });
+// Ensure data directory exists if writable
+try {
+  if (!fs.existsSync(DATA_DIR)) {
+    fs.mkdirSync(DATA_DIR, { recursive: true });
+  }
+} catch (e) {
+  // Ignored in read-only / serverless environment
 }
 
 const DEFAULT_USERS = [
@@ -248,8 +255,13 @@ class Database {
 
   load() {
     try {
-      if (fs.existsSync(DB_FILE)) {
-        const raw = fs.readFileSync(DB_FILE, 'utf-8');
+      let sourceFile = DB_FILE;
+      if (isServerless && fs.existsSync(TMP_DB_FILE)) {
+        sourceFile = TMP_DB_FILE;
+      }
+
+      if (fs.existsSync(sourceFile)) {
+        const raw = fs.readFileSync(sourceFile, 'utf-8');
         const parsed = JSON.parse(raw);
         this.data = {
           users: parsed.users?.length ? parsed.users : [...DEFAULT_USERS],
@@ -307,7 +319,15 @@ class Database {
     try {
       fs.writeFileSync(DB_FILE, JSON.stringify(this.data, null, 2), 'utf-8');
     } catch (err) {
-      console.error('Failed to save DB:', err.message);
+      if (err.code === 'EROFS' || isServerless) {
+        try {
+          fs.writeFileSync(TMP_DB_FILE, JSON.stringify(this.data, null, 2), 'utf-8');
+        } catch (tmpErr) {
+          console.error('Failed to save DB in tmpdir:', tmpErr.message);
+        }
+      } else {
+        console.error('Failed to save DB:', err.message);
+      }
     }
   }
 
