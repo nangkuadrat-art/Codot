@@ -136,10 +136,10 @@ export default function LoginScreen({ onLoginSuccess, availableUsers = [] }) {
 
               {/* Title & Description */}
               <div className="mb-6 text-center">
-                <h2 className="text-3xl sm:text-4xl font-black text-slate-900 tracking-wider leading-relaxed select-none py-1">
+                <h2 className="text-3xl sm:text-4xl font-black text-slate-900 tracking-wider leading-loose select-none block pb-3">
                   ꦱꦸꦒꦼꦁ ꦫꦮꦸꦃ
                 </h2>
-                <p className="text-xs font-semibold text-slate-500 mt-1">
+                <p className="text-xs font-semibold text-slate-500 tracking-wide mt-2">
                   Mohon Doa Restu
                 </p>
               </div>
@@ -226,7 +226,7 @@ export default function LoginScreen({ onLoginSuccess, availableUsers = [] }) {
                     <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
                   ) : (
                     <>
-                      <span>Masuk ke Co. (Codot)</span>
+                      <span>Log in</span>
                       <ArrowRight className="w-4 h-4" />
                     </>
                   )}
