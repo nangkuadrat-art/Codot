@@ -1,14 +1,18 @@
 const fs = require('fs');
 const path = require('path');
+const os = require('os');
 const crypto = require('crypto');
 
-const DATA_DIR = path.join(__dirname, '..', 'data');
+const isServerless = !!(process.env.VERCEL || process.env.AWS_LAMBDA_FUNCTION_NAME);
+const DATA_DIR = fs.existsSync(path.join(process.cwd(), 'data'))
+  ? path.join(process.cwd(), 'data')
+  : path.join(__dirname, '..', 'data');
 const CONFIG_FILE = path.join(DATA_DIR, 'gdrive_config.json');
 
 // Default sync directory (preferred on D: drive where there is plenty of space, or fallback to data folder)
 const DEFAULT_SYNC_DIR = fs.existsSync('D:\\')
   ? 'D:\\RKPD_GOOGLE_DRIVE_BACKUP'
-  : path.join(__dirname, '..', 'gdrive_backup');
+  : (isServerless ? path.join(os.tmpdir(), 'gdrive_backup') : path.join(__dirname, '..', 'gdrive_backup'));
 
 const DEFAULT_CONFIG = {
   enabled: true,
@@ -32,8 +36,6 @@ class GoogleDriveService {
       if (fs.existsSync(CONFIG_FILE)) {
         const raw = fs.readFileSync(CONFIG_FILE, 'utf-8');
         this.config = { ...DEFAULT_CONFIG, ...JSON.parse(raw) };
-      } else {
-        this.saveConfig();
       }
     } catch (err) {
       console.error('Error loading Google Drive config:', err.message);
@@ -43,11 +45,13 @@ class GoogleDriveService {
   saveConfig(newConfig = {}) {
     try {
       this.config = { ...this.config, ...newConfig };
-      fs.writeFileSync(CONFIG_FILE, JSON.stringify(this.config, null, 2), 'utf-8');
+      if (!isServerless && fs.existsSync(DATA_DIR)) {
+        fs.writeFileSync(CONFIG_FILE, JSON.stringify(this.config, null, 2), 'utf-8');
+      }
       return this.config;
     } catch (err) {
-      console.error('Error saving Google Drive config:', err.message);
-      throw err;
+      console.warn('Notice: Could not persist Google Drive config to disk:', err.message);
+      return this.config;
     }
   }
 

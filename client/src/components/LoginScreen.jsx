@@ -42,7 +42,15 @@ export default function LoginScreen({ onLoginSuccess, availableUsers = [] }) {
         body: JSON.stringify({ username: username.trim(), password })
       });
 
-      const data = await res.json();
+      const rawText = await res.text();
+      let data;
+      try {
+        data = JSON.parse(rawText);
+      } catch (parseErr) {
+        setErrorMessage(`Server Vercel mengembalikan respon non-JSON (${res.status}): ${rawText.substring(0, 120)}`);
+        return;
+      }
+
       if (data.success && data.data?.user) {
         onLoginSuccess(data.data.user, rememberMe);
       } else {
@@ -55,32 +63,37 @@ export default function LoginScreen({ onLoginSuccess, availableUsers = [] }) {
     }
   };
 
-  const handleQuickLogin = (user) => {
+  const handleQuickLogin = async (user) => {
     setUsername(user.username || user.id);
     setPassword('12345@');
     setErrorMessage('');
     
     // Langsung submit otomatis
     setLoading(true);
-    fetch('/api/auth/login', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ username: user.username || user.id, password: '12345@' })
-    })
-      .then(res => res.json())
-      .then(data => {
-        if (data.success && data.data?.user) {
-          onLoginSuccess(data.data.user, rememberMe);
-        } else {
-          setErrorMessage(data.message || 'Gagal login cepat.');
-        }
-      })
-      .catch(err => {
-        setErrorMessage('Gagal menghubungkan: ' + err.message);
-      })
-      .finally(() => {
-        setLoading(false);
+    try {
+      const res = await fetch('/api/auth/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ username: user.username || user.id, password: '12345@' })
       });
+      const rawText = await res.text();
+      let data;
+      try {
+        data = JSON.parse(rawText);
+      } catch (parseErr) {
+        setErrorMessage(`Server Vercel mengembalikan respon non-JSON (${res.status}): ${rawText.substring(0, 120)}`);
+        return;
+      }
+      if (data.success && data.data?.user) {
+        onLoginSuccess(data.data.user, rememberMe);
+      } else {
+        setErrorMessage(data.message || 'Gagal login cepat.');
+      }
+    } catch (err) {
+      setErrorMessage('Gagal menghubungkan: ' + err.message);
+    } finally {
+      setLoading(false);
+    }
   };
 
   const filteredUsers = availableUsers.filter(u => {
