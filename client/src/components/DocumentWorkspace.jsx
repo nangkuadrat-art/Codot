@@ -3632,22 +3632,7 @@ export default function DocumentWorkspace({
                         </div>
                       )}
 
-                      {/* Section Heading */}
-                      <div className="mb-4">
-                        {sec.level === 1 ? (
-                          <h1 className="text-center font-bold text-[14pt] leading-tight uppercase font-['Bookman_Old_Style',Georgia,serif] mb-4 text-black">
-                            {sec.code} <br /> {sec.title}
-                          </h1>
-                        ) : sec.level === 2 ? (
-                          <h2 className="font-bold text-[12pt] leading-snug font-['Bookman_Old_Style',Georgia,serif] mb-2 text-black">
-                            {sec.code} {sec.title}
-                          </h2>
-                        ) : (
-                          <h3 className="font-bold text-[11pt] leading-snug font-['Bookman_Old_Style',Georgia,serif] mb-2 text-black">
-                            {sec.code} {sec.title}
-                          </h3>
-                        )}
-                      </div>
+
 
                       {/* Section Content with Table Anti-Overflow */}
                       <div
@@ -3670,8 +3655,8 @@ export default function DocumentWorkspace({
                       {/* Word Footer on Page */}
                       <div className="mt-14 pt-3 border-t border-slate-300 flex items-center justify-between text-[10px] text-slate-600 select-none clear-both relative z-10 font-['Bookman_Old_Style',Georgia,serif]">
                         <span className="tracking-wide">RKPD Kabupaten Cilacap Tahun 2027</span>
-                        <span className="font-semibold">
-                          {getRomanChapter()} - {secIdx + 1}
+                        <span className="font-semibold font-mono">
+                          {sec.pageLabel || `${getRomanChapter()}-${secIdx + 1}`}
                         </span>
                       </div>
                     </div>
@@ -3763,31 +3748,64 @@ export default function DocumentWorkspace({
                     </div>
                   )}
 
-                  {/* Word Sub-Bab Quick Layout & Anti-Overflow Bar */}
-                  <div className="mb-4 px-3 py-1.5 bg-slate-50 border border-slate-200 rounded-lg flex flex-wrap items-center justify-between gap-2 text-xs font-sans select-none shadow-2xs">
+                  {/* Word Page Navigation & Anti-Overflow Bar */}
+                  <div className="mb-4 px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg flex flex-wrap items-center justify-between gap-2 text-xs font-sans select-none shadow-2xs">
                     <div className="flex items-center gap-2">
+                      {/* Prev Page Button */}
+                      <button
+                        type="button"
+                        disabled={currentIndex <= 0}
+                        onClick={() => selectSection(sections[currentIndex - 1])}
+                        className="px-2 py-1 bg-white hover:bg-slate-100 disabled:opacity-40 text-slate-700 font-semibold rounded border border-slate-300 text-xs flex items-center gap-1 transition cursor-pointer"
+                        title="Ke Halaman Sebelumnya"
+                      >
+                        <ChevronLeft className="w-3.5 h-3.5" />
+                        <span>Sebelumnya</span>
+                      </button>
+
+                      {/* Current Page Pill */}
+                      <div className="px-2.5 py-1 bg-blue-100/80 border border-blue-200 text-[#185abd] font-bold rounded text-xs">
+                        Halaman {activeSection?.pageLabel || `${getRomanChapter()}-${currentIndex + 1}`} ({currentIndex + 1} dari {sections.length})
+                      </div>
+
+                      {/* Next Page Button */}
+                      <button
+                        type="button"
+                        disabled={currentIndex >= sections.length - 1}
+                        onClick={() => selectSection(sections[currentIndex + 1])}
+                        className="px-2 py-1 bg-white hover:bg-slate-100 disabled:opacity-40 text-slate-700 font-semibold rounded border border-slate-300 text-xs flex items-center gap-1 transition cursor-pointer"
+                        title="Ke Halaman Selanjutnya"
+                      >
+                        <span>Selanjutnya</span>
+                        <ChevronRight className="w-3.5 h-3.5" />
+                      </button>
+
+                      <span className="text-slate-300">|</span>
+
+                      {/* Orientation Toggle Button */}
                       <button
                         type="button"
                         onClick={() => toggleSectionOrientation()}
-                        className={`px-2.5 py-1 rounded font-semibold text-xs border flex items-center gap-1.5 transition ${
+                        className={`px-2.5 py-1 rounded font-semibold text-xs border flex items-center gap-1.5 transition cursor-pointer ${
                           orientation === 'LANDSCAPE'
                             ? 'bg-amber-100 text-amber-900 border-amber-300 hover:bg-amber-200'
                             : 'bg-blue-50 text-blue-800 border-blue-200 hover:bg-blue-100'
                         }`}
-                        title="Ubah Orientasi Sub-Bab (Lanskap 330×216 mm untuk tabel matriks lebar)"
+                        title="Ubah Orientasi Halaman (Lanskap 330×216 mm untuk tabel matriks lebar)"
                       >
                         <LayoutTemplate className="w-3.5 h-3.5" />
                         <span>{orientation === 'LANDSCAPE' ? 'Lanskap (330 × 216 mm)' : 'Potret (216 × 330 mm)'}</span>
                       </button>
 
+                      {/* AutoFit Table Button */}
                       <button
                         type="button"
                         onClick={() => handleAutoFitTables()}
-                        className="px-2.5 py-1 bg-emerald-50 hover:bg-emerald-100 text-emerald-800 font-semibold rounded border border-emerald-200 text-xs flex items-center gap-1 transition"
+                        className="px-2.5 py-1 bg-emerald-50 hover:bg-emerald-100 text-emerald-800 font-semibold rounded border border-emerald-200 text-xs flex items-center gap-1 transition cursor-pointer"
                         title="AutoFit ala Word: Sesuaikan seluruh tabel agar pas dalam margin kertas Folio tanpa overflow"
                       >
                         <TableIcon className="w-3.5 h-3.5 text-emerald-600" />
-                        <span>Paskan Tabel (AutoFit)</span>
+                        <span>Paskan Tabel</span>
                       </button>
 
                       <div className="flex items-center gap-1 pl-2 border-l border-slate-200">
@@ -3883,8 +3901,8 @@ export default function DocumentWorkspace({
                 {/* Word Footer on Page */}
                 <div className="mt-14 pt-3 border-t border-slate-300 flex items-center justify-between text-[10px] text-slate-600 select-none clear-both relative z-10 font-['Bookman_Old_Style',Georgia,serif]">
                   <span className="tracking-wide">RKPD Kabupaten Cilacap Tahun 2027</span>
-                  <span className="font-semibold">
-                    {getRomanChapter()} - {currentIndex + 1}
+                  <span className="font-semibold font-mono">
+                    {activeSection?.pageLabel || `${getRomanChapter()}-${currentIndex + 1}`}
                   </span>
                 </div>
               </div>
