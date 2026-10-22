@@ -3,7 +3,9 @@ const path = require('path');
 const os = require('os');
 
 const isServerless = !!(process.env.VERCEL || process.env.AWS_LAMBDA_FUNCTION_NAME);
-const DATA_DIR = path.join(__dirname, '..', 'data');
+const DATA_DIR = fs.existsSync(path.join(process.cwd(), 'data'))
+  ? path.join(process.cwd(), 'data')
+  : path.join(__dirname, '..', 'data');
 const DB_FILE = path.join(DATA_DIR, 'database.json');
 const TMP_DB_FILE = path.join(os.tmpdir(), 'rkpd_database.json');
 
