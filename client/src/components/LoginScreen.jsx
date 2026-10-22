@@ -17,8 +17,8 @@ import {
 } from 'lucide-react';
 
 export default function LoginScreen({ onLoginSuccess, availableUsers = [] }) {
-  const [username, setUsername] = useState('admin');
-  const [password, setPassword] = useState('12345@');
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [rememberMe, setRememberMe] = useState(true);
   const [loading, setLoading] = useState(false);
@@ -129,18 +129,19 @@ export default function LoginScreen({ onLoginSuccess, availableUsers = [] }) {
                     <span className="text-3xl font-black text-slate-900 tracking-tight">Co.</span>
                   </div>
                   <p className="text-xs font-semibold text-slate-500 tracking-wide">
-                    Collaborative Dokument Tools
+                    Collaborative Document Tools
                   </p>
                 </div>
               </div>
 
               {/* Title & Description */}
               <div className="mb-6">
-                <h2 className="text-xl font-extrabold text-slate-900">
-                  Selamat Datang Kembali
+                <h2 className="text-2xl font-black text-slate-900 tracking-wide">
+                  ꦱꦸꦒꦼꦁ ꦫꦮꦸꦃ
+                  <span className="block text-sm font-bold text-slate-600 mt-0.5">Sugeng Rawuh</span>
                 </h2>
-                <p className="text-xs text-slate-500 mt-1 leading-relaxed">
-                  Masuk ke sistem penyusunan naskah perencanaan daerah kolaboratif 8 Tahapan RKPD Kabupaten Cilacap.
+                <p className="text-xs font-semibold text-slate-500 mt-1.5">
+                  Mohon Doa Restu
                 </p>
               </div>
 
@@ -273,7 +274,7 @@ export default function LoginScreen({ onLoginSuccess, availableUsers = [] }) {
       {/* Footer System Info */}
       <footer className="relative z-10 text-center py-4 text-xs text-slate-400">
         <p>
-          &copy; 2026/2027 <span className="font-bold text-slate-300">Co.</span> (Collaborative Dokument Tools) &bull; Badan Perencanaan Pembangunan Daerah Kabupaten Cilacap
+          &copy; 2026/2027 <span className="font-bold text-slate-300">Co.</span> (Collaborative Document Tools) &bull; Badan Perencanaan Pembangunan Daerah Kabupaten Cilacap
         </p>
       </footer>
     </div>

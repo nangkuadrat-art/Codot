@@ -1,4 +1,4 @@
-// API Client for Co. (Codot) - Collaborative Dokument Tools
+// API Client for Co. (Codot) - Collaborative Document Tools
 
 let activeUserId = localStorage.getItem('codot_active_user_id') || localStorage.getItem('rkpd_active_user_id') || '';
 
