@@ -3,7 +3,7 @@ const path = require('path');
 const mammoth = require('mammoth');
 const cheerio = require('cheerio');
 const docx = require('docx');
-const { v4: uuidv4 } = require('uuid');
+const uuidv4 = () => require('crypto').randomUUID();
 
 const {
   Document,

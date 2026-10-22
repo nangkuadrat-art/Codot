@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "description": "Aplikasi Kolaboratif Multi-User Penyusunan Naskah RKPD dengan Kontrol Hak Akses per Bab",
   "main": "server/index.js",
+  "engines": {
+    "node": "22.x"
+  },
   "scripts": {
     "start": "node server/index.js",
     "build": "npm --prefix client install && npm --prefix client run build",
@@ -16,7 +19,6 @@
     "docx": "^9.6.1",
     "express": "^5.2.1",
     "mammoth": "^1.11.1",
-    "multer": "^2.1.2",
-    "uuid": "^13.0.0"
+    "multer": "^2.1.2"
   }
 }
