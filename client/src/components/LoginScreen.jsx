@@ -127,9 +127,6 @@ export default function LoginScreen({ onLoginSuccess, availableUsers = [] }) {
                 <div>
                   <div className="flex items-baseline space-x-2">
                     <span className="text-3xl font-black text-slate-900 tracking-tight">Co.</span>
-                    <span className="text-sm font-bold text-blue-600 bg-blue-50 border border-blue-200 px-2 py-0.5 rounded-full">
-                      dibaca <span className="uppercase text-blue-700 tracking-wide font-extrabold">Codot</span>
-                    </span>
                   </div>
                   <p className="text-xs font-semibold text-slate-500 tracking-wide">
                     Collaborative Dokument Tools
@@ -183,15 +180,6 @@ export default function LoginScreen({ onLoginSuccess, availableUsers = [] }) {
                     <label className="block text-xs font-bold text-slate-700">
                       Password
                     </label>
-                    <button
-                      type="button"
-                      onClick={() => setPassword('12345@')}
-                      className="text-[10px] text-blue-600 hover:text-blue-800 font-bold flex items-center space-x-1 cursor-pointer"
-                      title="Klik untuk mengisi password default"
-                    >
-                      <KeyRound className="w-3 h-3" />
-                      <span>Pakai Default (12345@)</span>
-                    </button>
                   </div>
                   <div className="relative">
                     <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400">
@@ -213,17 +201,6 @@ export default function LoginScreen({ onLoginSuccess, availableUsers = [] }) {
                       {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                     </button>
                   </div>
-                </div>
-
-                {/* Password Hint Badge */}
-                <div className="p-2.5 rounded-xl bg-blue-50/80 border border-blue-100 text-blue-900 text-[11px] flex items-center justify-between">
-                  <div className="flex items-center space-x-1.5 font-medium">
-                    <KeyRound className="w-3.5 h-3.5 text-blue-600 shrink-0" />
-                    <span>Password default seluruh akun:</span>
-                  </div>
-                  <span className="font-mono font-bold bg-white px-2 py-0.5 rounded border border-blue-200 text-blue-700 select-all shadow-2xs">
-                    12345@
-                  </span>
                 </div>
 
                 {/* Remember Me */}
@@ -264,112 +241,19 @@ export default function LoginScreen({ onLoginSuccess, availableUsers = [] }) {
             </div>
           </div>
 
-          {/* Right Column: Quick Role Switcher / Demo Accounts */}
-          <div className="lg:col-span-5 bg-gradient-to-br from-slate-50 via-blue-50/40 to-indigo-50/50 p-6 sm:p-8 border-t lg:border-t-0 lg:border-l border-slate-200 flex flex-col justify-between">
-            <div>
-              <div className="flex items-center space-x-2 mb-3">
-                <Users className="w-4 h-4 text-blue-600" />
-                <h3 className="text-xs font-bold text-slate-900 uppercase tracking-wider">
-                  Pilih Akun & Masuk Cepat
-                </h3>
-              </div>
-              <p className="text-[11px] text-slate-500 mb-4 leading-relaxed">
-                Pilih profil di bawah untuk langsung mencoba hak akses tiap peran (password otomatis terisi):
+          {/* Right Column: Brand Panel */}
+          <div className="lg:col-span-5 bg-gradient-to-br from-slate-50 via-blue-50/40 to-indigo-50/50 p-6 sm:p-8 border-t lg:border-t-0 lg:border-l border-slate-200 flex flex-col justify-center">
+            <div className="flex flex-col items-center text-center">
+              <img
+                src="/logo-codot.png"
+                alt="Logo Co. (Codot)"
+                className="w-28 h-28 object-contain rounded-3xl shadow-lg p-2 bg-white border border-blue-100 mb-4"
+              />
+              <h3 className="text-lg font-black text-slate-900">Co. RKPD</h3>
+              <p className="text-[11px] text-slate-500 mt-1 leading-relaxed max-w-xs">
+                Penyusunan naskah RKPD Kabupaten Cilacap secara kolaboratif, terstruktur, dan terkendali.
               </p>
-
-              {/* Role Filter Tabs */}
-              <div className="flex items-center space-x-1 p-1 bg-slate-200/70 rounded-xl mb-3 text-[10px] font-bold">
-                <button
-                  onClick={() => setActiveCategory('ALL')}
-                  className={`flex-1 py-1 rounded-lg transition ${
-                    activeCategory === 'ALL' ? 'bg-white text-blue-700 shadow-2xs' : 'text-slate-600 hover:text-slate-900'
-                  }`}
-                >
-                  Semua ({availableUsers.length})
-                </button>
-                <button
-                  onClick={() => setActiveCategory('ADMIN')}
-                  className={`flex-1 py-1 rounded-lg transition ${
-                    activeCategory === 'ADMIN' ? 'bg-white text-blue-700 shadow-2xs' : 'text-slate-600 hover:text-slate-900'
-                  }`}
-                >
-                  Admin
-                </button>
-                <button
-                  onClick={() => setActiveCategory('REVIEWER')}
-                  className={`flex-1 py-1 rounded-lg transition ${
-                    activeCategory === 'REVIEWER' ? 'bg-white text-blue-700 shadow-2xs' : 'text-slate-600 hover:text-slate-900'
-                  }`}
-                >
-                  Reviewer
-                </button>
-                <button
-                  onClick={() => setActiveCategory('CONTRIBUTOR')}
-                  className={`flex-1 py-1 rounded-lg transition ${
-                    activeCategory === 'CONTRIBUTOR' ? 'bg-white text-blue-700 shadow-2xs' : 'text-slate-600 hover:text-slate-900'
-                  }`}
-                >
-                  PIC Bidang
-                </button>
-              </div>
-
-              {/* Quick Select User List */}
-              <div className="space-y-2 max-h-[360px] overflow-y-auto pr-1">
-                {filteredUsers.map((u) => {
-                  const isSelected = username === (u.username || u.id);
-                  return (
-                    <div
-                      key={u.id}
-                      onClick={() => handleQuickLogin(u)}
-                      className={`p-2.5 rounded-xl border text-left cursor-pointer transition flex items-center justify-between group ${
-                        isSelected
-                          ? 'bg-blue-600 text-white border-blue-600 shadow-sm'
-                          : 'bg-white hover:bg-blue-50/60 border-slate-200 hover:border-blue-300'
-                      }`}
-                    >
-                      <div className="flex items-center space-x-2.5 min-w-0">
-                        <div
-                          className="w-7 h-7 rounded-full flex items-center justify-center font-bold text-xs text-white shrink-0 shadow-2xs"
-                          style={{ backgroundColor: u.color || '#3b82f6' }}
-                        >
-                          {u.name.charAt(0)}
-                        </div>
-                        <div className="min-w-0">
-                          <div className={`text-xs font-bold truncate ${isSelected ? 'text-white' : 'text-slate-900'}`}>
-                            {u.name}
-                          </div>
-                          <div className={`text-[10px] truncate ${isSelected ? 'text-blue-100' : 'text-slate-500'}`}>
-                            {u.opd}
-                          </div>
-                        </div>
-                      </div>
-
-                      <div className="flex items-center space-x-1.5 shrink-0 ml-2">
-                        <span
-                          className={`text-[9px] font-black px-1.5 py-0.5 rounded uppercase tracking-wider ${
-                            isSelected
-                              ? 'bg-blue-800 text-white'
-                              : u.role === 'ADMIN'
-                              ? 'bg-purple-100 text-purple-800'
-                              : u.role === 'REVIEWER'
-                              ? 'bg-cyan-100 text-cyan-800'
-                              : 'bg-emerald-100 text-emerald-800'
-                          }`}
-                        >
-                          {u.role === 'CONTRIBUTOR' ? 'PIC' : u.role}
-                        </span>
-                        <ArrowRight
-                          className={`w-3.5 h-3.5 transition group-hover:translate-x-0.5 ${
-                            isSelected ? 'text-white' : 'text-slate-400 group-hover:text-blue-600'
-                          }`}
-                        />
-                      </div>
-                    </div>
-                  );
-                })}
-              </div>
             </div>
-
             {/* Quick Feature highlights */}
             <div className="mt-6 pt-4 border-t border-slate-200/80 text-[11px] text-slate-500 space-y-1.5">
               <div className="flex items-center space-x-2">
