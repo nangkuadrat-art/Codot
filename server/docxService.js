@@ -445,9 +445,9 @@ function convertHtmlToDocxElements(html, isLandscape = false) {
   const elements = [];
   if (!html) return elements;
 
-  const $ = cheerio.load(`<div>${html}</div>`);
+  const $ = cheerio.load(`<div id="docx-export-root">${html}</div>`);
 
-  $('div').children().each((idx, el) => {
+  $('#docx-export-root').children().each((idx, el) => {
     const tagName = el.tagName ? el.tagName.toLowerCase() : '';
     const nodeText = $(el).text().trim();
 
@@ -483,39 +483,88 @@ function convertHtmlToDocxElements(html, isLandscape = false) {
       }
     }
 
+    // Special handling for containers with child paragraphs/divs (e.g. bab-header-right)
+    if (tagName === 'div' && $(el).children('div, p').length > 0) {
+      const isRightHeader = $(el).hasClass('bab-header-right') || ($(el).attr('style') || '').includes('text-align: right');
+      $(el).children('div, p').each((cIdx, childEl) => {
+        const cText = $(childEl).text().trim();
+        if (!cText) return;
+        const cStyle = $(childEl).attr('style') || $(el).attr('style') || '';
+        let cAlign = AlignmentType.JUSTIFIED;
+        if (isRightHeader || cStyle.includes('text-align: right')) {
+          cAlign = AlignmentType.RIGHT;
+        } else if (cStyle.includes('text-align: center')) {
+          cAlign = AlignmentType.CENTER;
+        }
+
+        const isBabTitle = cText.startsWith('BAB ') || cText.includes('GAMBARAN UMUM') || cText.includes('KONDISI DAERAH');
+
+        elements.push(
+          new Paragraph({
+            children: [
+              new TextRun({
+                text: cText,
+                bold: isBabTitle || cStyle.includes('font-weight: bold') || cStyle.includes('font-weight:bold'),
+                font: 'Bookman Old Style',
+                size: isBabTitle ? 28 : 24
+              })
+            ],
+            alignment: cAlign,
+            spacing: { before: isBabTitle ? 40 : 0, after: isBabTitle ? 40 : 100 }
+          })
+        );
+      });
+      return;
+    }
+
     if (['p', 'div', 'blockquote'].includes(tagName)) {
       if (nodeText.length > 0) {
+        // Detect sub-bab numbering like 2.1, 2.1.1, 2.1.1.1., 1)
+        const isHeadingLike = /^(\d+(\.\d+)*\.?|[a-zA-Z0-9]+\))\s+/.test(nodeText);
+
         const runs = [];
         $(el).contents().each((_, child) => {
           const t = $(child).text();
           if (!t) return;
-          if (child.type === 'text') {
-            runs.push(new TextRun({ text: t, font: 'Bookman Old Style', size: 24 }));
-          } else if (child.name === 'strong' || child.name === 'b') {
-            runs.push(new TextRun({ text: t, bold: true, font: 'Bookman Old Style', size: 24 }));
-          } else if (child.name === 'em' || child.name === 'i') {
-            runs.push(new TextRun({ text: t, italics: true, font: 'Bookman Old Style', size: 24 }));
-          } else if (child.name === 'u') {
-            runs.push(new TextRun({ text: t, underline: {}, font: 'Bookman Old Style', size: 24 }));
-          } else {
-            runs.push(new TextRun({ text: t, font: 'Bookman Old Style', size: 24 }));
-          }
+          const isBold = isHeadingLike || child.name === 'strong' || child.name === 'b';
+          const isItalic = child.name === 'em' || child.name === 'i';
+          const isUnderline = child.name === 'u';
+          runs.push(
+            new TextRun({
+              text: t,
+              bold: isBold,
+              italics: isItalic,
+              underline: isUnderline ? {} : undefined,
+              font: 'Bookman Old Style',
+              size: 24
+            })
+          );
         });
 
         // Determine alignment
         let align = AlignmentType.JUSTIFIED;
         const style = $(el).attr('style') || '';
-        if (style.includes('text-align: center') || $(el).hasClass('text-center') || $(el).hasClass('caption-center')) {
+        if (isHeadingLike) {
+          align = AlignmentType.LEFT;
+        } else if (style.includes('text-align: center') || $(el).hasClass('text-center') || $(el).hasClass('caption-center')) {
           align = AlignmentType.CENTER;
-        } else if (style.includes('text-align: right') || $(el).hasClass('text-right')) {
+        } else if (style.includes('text-align: right') || $(el).hasClass('text-right') || $(el).hasClass('bab-header-right')) {
           align = AlignmentType.RIGHT;
         }
 
+        // First line indent for narrative paragraphs
+        const hasIndent = !isHeadingLike && (style.includes('text-indent') || $(el).hasClass('with-indent'));
+
         elements.push(
           new Paragraph({
-            children: runs.length ? runs : [new TextRun({ text: nodeText, font: 'Bookman Old Style', size: 24 })],
+            children: runs.length ? runs : [new TextRun({ text: nodeText, bold: isHeadingLike, font: 'Bookman Old Style', size: 24 })],
             alignment: align,
-            spacing: { before: 0, after: 120, line: 288 } // 6pt after, 1.2 line spacing
+            indent: hasIndent ? { firstLine: 567 } : undefined, // ~1 cm first-line indent
+            spacing: {
+              before: isHeadingLike ? 140 : 0,
+              after: isHeadingLike ? 60 : 120,
+              line: 288 // 1.2 line spacing
+            }
           })
         );
       }
@@ -549,8 +598,8 @@ function convertHtmlToDocxElements(html, isLandscape = false) {
         if (cols > maxCols) maxCols = cols;
       });
 
-      // Font size based on column density matching official Perbup
-      const cellFontSize = maxCols >= 10 ? 17 : (maxCols >= 6 ? 18 : 20); // 8.5pt, 9pt, or 10pt
+      // Font size based on column density matching official Perbup (12pt for borderless coordinates)
+      const cellFontSize = isBorderless ? 24 : (maxCols >= 10 ? 17 : (maxCols >= 6 ? 18 : 20));
 
       $(el).find('tr').each((trIdx, trEl) => {
         const cells = [];
@@ -569,6 +618,14 @@ function convertHtmlToDocxElements(html, isLandscape = false) {
             right: { style: BorderStyle.NONE, size: 0, color: 'auto' }
           } : undefined;
 
+          // Alignment: in borderless coordinates table, col 1 is left, col 2 is center (:), col 3 is left/justify
+          let cellAlign = AlignmentType.LEFT;
+          if (isBorderless) {
+            cellAlign = tdIdx === 1 ? AlignmentType.CENTER : AlignmentType.LEFT;
+          } else if (isHeaderCell || isNumeric) {
+            cellAlign = AlignmentType.CENTER;
+          }
+
           cells.push(
             new TableCell({
               borders: cellBorders,
@@ -582,7 +639,7 @@ function convertHtmlToDocxElements(html, isLandscape = false) {
                       size: cellFontSize
                     })
                   ],
-                  alignment: isHeaderCell || isNumeric ? AlignmentType.CENTER : AlignmentType.LEFT,
+                  alignment: cellAlign,
                   spacing: { before: 20, after: 20 }
                 })
               ],
@@ -745,65 +802,30 @@ async function exportSectionsToDocx(docMetadata, sections) {
   for (let gIdx = 0; gIdx < groupedSections.length; gIdx++) {
     const group = groupedSections[gIdx];
     const isLandscape = group.isLandscape;
+    const isFirstSection = gIdx === 0;
     const children = [];
-
-    // Title on very first section if compiling full document
-    if (gIdx === 0) {
-      children.push(
-        new Paragraph({
-          children: [
-            new TextRun({
-              text: docMetadata.title || 'DOKUMEN PERENCANAAN DAERAH',
-              bold: true,
-              font: 'Bookman Old Style',
-              size: 32 // 16pt
-            })
-          ],
-          alignment: AlignmentType.CENTER,
-          spacing: { after: 150 }
-        }),
-        new Paragraph({
-          children: [
-            new TextRun({
-              text: docMetadata.description || 'Pemerintah Kabupaten Cilacap - Badan Perencanaan Pembangunan Daerah',
-              font: 'Bookman Old Style',
-              size: 24 // 12pt
-            })
-          ],
-          alignment: AlignmentType.CENTER,
-          spacing: { after: 300 }
-        })
-      );
-    }
 
     // Add content for all sections in this orientation group
     for (const sec of group.sections) {
-      let headingSize = 24; // 12pt
-      let isBabHeader = sec.level === 1 || /^BAB\s+[IVXLCDM\d]+/i.test(sec.code || '');
-
-      if (isBabHeader) headingSize = 28; // 14pt
-      else if (sec.level >= 3) headingSize = 22; // 11pt
-
-      const fullTitle = sec.code ? `${sec.code} ${sec.title}` : sec.title;
-
-      children.push(
-        new Paragraph({
-          children: [
-            new TextRun({
-              text: fullTitle,
-              bold: true,
-              font: 'Bookman Old Style',
-              size: headingSize
-            })
-          ],
-          alignment: isBabHeader ? AlignmentType.CENTER : AlignmentType.LEFT,
-          spacing: { before: 240, after: 120 }
-        })
-      );
-
       if (sec.content) {
         const bodyChildren = convertHtmlToDocxElements(sec.content, isLandscape);
         children.push(...bodyChildren);
+      } else {
+        const fullTitle = sec.code ? `${sec.code} ${sec.title}` : sec.title;
+        children.push(
+          new Paragraph({
+            children: [
+              new TextRun({
+                text: fullTitle,
+                bold: true,
+                font: 'Bookman Old Style',
+                size: 24
+              })
+            ],
+            alignment: AlignmentType.LEFT,
+            spacing: { before: 240, after: 120 }
+          })
+        );
       }
     }
 
@@ -822,6 +844,7 @@ async function exportSectionsToDocx(docMetadata, sections) {
 
     docSections.push({
       properties: {
+        titlePage: isFirstSection, // Different first page (omits running header on page 1 of Bab)
         page: {
           size: {
             width: pageWidth,
@@ -840,7 +863,8 @@ async function exportSectionsToDocx(docMetadata, sections) {
         default: createRunningHeader()
       },
       footers: {
-        default: createRunningFooter(isLandscape)
+        default: createRunningFooter(isLandscape),
+        first: createRunningFooter(isLandscape)
       },
       children: children
     });

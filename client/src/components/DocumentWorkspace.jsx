@@ -3613,16 +3613,18 @@ export default function DocumentWorkspace({
                         </button>
                       </div>
 
-                      {/* Word Header on Page */}
-                      <div className="pb-3 mb-6 border-b border-slate-300 flex items-center justify-between text-[10px] text-slate-500 select-none relative z-10 font-['Bookman_Old_Style',Georgia,serif]">
-                        <span className="font-semibold tracking-wide">RKPD Kabupaten Cilacap Tahun 2027</span>
-                        <span className="uppercase tracking-wide text-slate-400">
-                          {sec.code ? `${sec.code} ${sec.title}` : (doc?.title?.replace('RKPD 2027 PERBUP - ', '') || 'DOKUMEN RESMI')}
-                        </span>
-                      </div>
+                      {/* Word Header on Page - Halaman 1 Bab tidak ada running header (Different First Page) */}
+                      {!isFirst && (
+                        <div className="pb-3 mb-6 border-b border-slate-300 flex items-center justify-between text-[10px] text-slate-500 select-none relative z-10 font-['Bookman_Old_Style',Georgia,serif]">
+                          <span className="font-semibold tracking-wide">RKPD Kabupaten Cilacap Tahun 2027</span>
+                          <span className="uppercase tracking-wide text-slate-400">
+                            {sec.code ? `${sec.code} ${sec.title}` : (doc?.title?.replace('RKPD 2027 PERBUP - ', '') || 'DOKUMEN RESMI')}
+                          </span>
+                        </div>
+                      )}
 
-                      {/* Kop Lampiran on First Page */}
-                      {isFirst && (
+                      {/* Kop Lampiran on First Page (Hanya jika dokumen khusus cover lampiran) */}
+                      {isFirst && doc?.isLampiranCover && (
                         <div className="kop-lampiran-perbup mb-8 text-right font-['Bookman_Old_Style',Georgia,serif]" style={{ marginLeft: 'auto', width: '360px', fontSize: '10.5pt', lineHeight: '1.35' }}>
                           <div className="font-bold tracking-wider">LAMPIRAN</div>
                           <div className="font-bold tracking-wider">PERATURAN BUPATI CILACAP</div>
@@ -3698,16 +3700,18 @@ export default function DocumentWorkspace({
                   </div>
                 )}
 
-                {/* Word Header on Page */}
-                <div className="pb-3 mb-6 border-b border-slate-300 flex items-center justify-between text-[10px] text-slate-500 select-none relative z-10 font-['Bookman_Old_Style',Georgia,serif]">
-                  <span className="font-semibold tracking-wide">RKPD Kabupaten Cilacap Tahun 2027</span>
-                  <span className="uppercase tracking-wide text-slate-400">
-                    {doc?.title?.replace('RKPD 2027 PERBUP - ', '') || 'DOKUMEN RESMI'}
-                  </span>
-                </div>
+                {/* Word Header on Page - Halaman 1 Bab tidak ada running header (Different First Page) */}
+                {activeSection?.order !== 1 && (
+                  <div className="pb-3 mb-6 border-b border-slate-300 flex items-center justify-between text-[10px] text-slate-500 select-none relative z-10 font-['Bookman_Old_Style',Georgia,serif]">
+                    <span className="font-semibold tracking-wide">RKPD Kabupaten Cilacap Tahun 2027</span>
+                    <span className="uppercase tracking-wide text-slate-400">
+                      {doc?.title?.replace('RKPD 2027 PERBUP - ', '') || 'DOKUMEN RESMI'}
+                    </span>
+                  </div>
+                )}
 
-                {/* Kop Lampiran on First Section */}
-                {activeSection?.order === 1 && (
+                {/* Kop Lampiran on First Section (Hanya jika dokumen khusus cover lampiran) */}
+                {activeSection?.order === 1 && doc?.isLampiranCover && (
                   <div className="kop-lampiran-perbup mb-8 text-right font-['Bookman_Old_Style',Georgia,serif]" style={{ marginLeft: 'auto', width: '360px', fontSize: '10.5pt', lineHeight: '1.35' }}>
                     <div className="font-bold tracking-wider">LAMPIRAN</div>
                     <div className="font-bold tracking-wider">PERATURAN BUPATI CILACAP</div>
