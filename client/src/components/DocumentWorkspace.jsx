@@ -138,7 +138,8 @@ export default function DocumentWorkspace({
 
   // Document Page Setup & Design
   const [orientation, setOrientation] = useState('PORTRAIT'); // 'PORTRAIT' or 'LANDSCAPE'
-  const [paperSize, setPaperSize] = useState('A4'); // 'A4', 'F4', 'LETTER'
+  const [paperSize, setPaperSize] = useState('F4'); // Default Folio F4 (216x330mm) standard Permendagri 86
+  const [tableFontSize, setTableFontSize] = useState('9pt'); // 9pt / 8.5pt / 10pt official table font size // 'A4', 'F4', 'LETTER'
   const [marginPreset, setMarginPreset] = useState('PERBUP'); // 'PERBUP', 'NORMAL', 'NARROW', 'WIDE'
   const [pageColor, setPageColor] = useState('#ffffff');
   const [pageBorder, setPageBorder] = useState('none'); // 'none', 'box', 'double', 'shadow', 'perbup'
@@ -160,10 +161,10 @@ export default function DocumentWorkspace({
   
   // Active Centimeter Margins & Ruler State ala Microsoft Word
   const [marginCm, setMarginCm] = useState({
-    left: 4.0,   // Perbup Cilacap: Kiri 4 cm
-    top: 3.0,    // Atas 3 cm
-    right: 3.0,  // Kanan 3 cm
-    bottom: 3.5  // Bawah 3.5 cm
+    left: 4.0,   // Perbup Cilacap standard (3.5cm for Bab II)
+    top: 2.5,    // Atas 2.5 cm
+    right: 2.5,  // Kanan 2.5 cm (2.1cm for Bab II)
+    bottom: 2.5  // Bawah 2.5 cm
   });
   const [firstLineIndentCm, setFirstLineIndentCm] = useState(1.27); // Standar 1.27 cm (0.5 in)
   const [activeDrag, setActiveDrag] = useState(null); // 'FIRST_LINE', 'LEFT_MARGIN', 'RIGHT_MARGIN'
@@ -294,6 +295,26 @@ export default function DocumentWorkspace({
     setSaveStatus('IDLE');
     calculateStats(sec.content || '');
 
+    // Synchronize section orientation and typography matching Word template
+    const secOrient = (sec.orientation || 'portrait').toUpperCase();
+    setOrientation(secOrient);
+    if (sec.tableFontSize) {
+      setTableFontSize(sec.tableFontSize);
+    } else if (secOrient === 'LANDSCAPE') {
+      setTableFontSize('8.5pt');
+    } else {
+      setTableFontSize('9pt');
+    }
+
+    const isBab2 = (doc?.title || '').includes('BAB II');
+    if (isBab2) {
+      setMarginCm({ left: 3.5, right: 2.1, top: 2.5, bottom: 2.5 });
+    } else if (secOrient === 'LANDSCAPE') {
+      setMarginCm({ left: 2.5, right: 2.5, top: 2.5, bottom: 2.5 });
+    } else {
+      setMarginCm({ left: 4.0, right: 2.5, top: 2.5, bottom: 2.5 });
+    }
+
     if (editorRef.current) {
       editorRef.current.innerHTML = sec.content || '';
     }
@@ -383,15 +404,134 @@ export default function DocumentWorkspace({
     }
   };
 
+
+  // Roman Chapter detector & Document type
+  const getRomanChapter = () => {
+    if (!doc?.title) return 'II';
+    const m = doc.title.match(/BAB\s+([IVXLCDM\d]+)/i);
+    return m ? m[1].toUpperCase() : 'II';
+  };
+  const isBab2Doc = (doc?.title || '').includes('BAB II');
+
+  // Toggle Section Orientation between Portrait and Landscape
+  const toggleSectionOrientation = async (targetVal, secToUpdate = null) => {
+    const sec = secToUpdate || activeSection;
+    const nextOrient = targetVal || (orientation === 'PORTRAIT' ? 'LANDSCAPE' : 'PORTRAIT');
+    setOrientation(nextOrient);
+
+    if (isBab2Doc) {
+      setMarginCm({ left: 3.5, right: 2.1, top: 2.5, bottom: 2.5 });
+    } else if (nextOrient === 'LANDSCAPE') {
+      setMarginCm({ left: 2.5, right: 2.5, top: 2.5, bottom: 2.5 });
+    } else {
+      setMarginCm({ left: 4.0, right: 2.5, top: 2.5, bottom: 2.5 });
+    }
+
+    if (sec) {
+      const lower = nextOrient.toLowerCase();
+      setSections(prev => prev.map(s => s.id === sec.id ? { ...s, orientation: lower } : s));
+      try {
+        await api.updateSectionContent(sec.id, { orientation: lower });
+      } catch (e) {
+        console.error('Failed to save orientation:', e);
+      }
+    }
+  };
+
+  // AutoFit Table ala Microsoft Word: normalize width & eliminate overflow
+  const handleAutoFitTables = async (targetSec = null) => {
+    const targetCanvas = viewMode === 'FULL_DOCUMENT' ? fullDocEditorRef.current : editorRef.current;
+    if (!targetCanvas) return;
+
+    const tables = targetCanvas.querySelectorAll('table');
+    if (tables.length === 0) {
+      alert('Tidak ditemukan tabel dalam bagian ini.');
+      return;
+    }
+
+    let modifiedCount = 0;
+    tables.forEach(table => {
+      modifiedCount++;
+      table.removeAttribute('width');
+      table.style.width = '100%';
+      table.style.maxWidth = '100%';
+      table.style.tableLayout = 'auto';
+      table.style.borderCollapse = 'collapse';
+      table.style.margin = '12pt 0';
+      table.style.boxSizing = 'border-box';
+      table.style.wordBreak = 'break-word';
+      table.style.overflowWrap = 'anywhere';
+
+      let maxCols = 0;
+      table.querySelectorAll('tr').forEach(r => {
+        const c = r.querySelectorAll('th, td').length;
+        if (c > maxCols) maxCols = c;
+      });
+
+      if (maxCols >= 6 && orientation !== 'LANDSCAPE') {
+        toggleSectionOrientation('LANDSCAPE');
+      }
+
+      table.querySelectorAll('th, td').forEach(cell => {
+        cell.removeAttribute('width');
+        cell.style.wordBreak = 'break-word';
+        cell.style.overflowWrap = 'anywhere';
+        cell.style.boxSizing = 'border-box';
+        if (maxCols >= 10) {
+          cell.style.fontSize = '8.5pt';
+        } else if (maxCols >= 6) {
+          cell.style.fontSize = '9pt';
+        }
+      });
+    });
+
+    if (viewMode === 'SECTION_EDITOR') {
+      const updatedHtml = editorRef.current.innerHTML;
+      setEditorHtml(updatedHtml);
+      saveSectionContent(updatedHtml, sectionTitle, sectionCode);
+    } else {
+      handleFullDocInput({ currentTarget: targetCanvas });
+    }
+
+    alert(`AutoFit Selesai! Sebanyak ${modifiedCount} tabel telah disesuaikan agar pas dalam batas margin kertas Folio tanpa terpotong.`);
+  };
+
+  // Set Table Font Size ala Word (8pt, 8.5pt, 9pt, 10pt, 11pt)
+  const handleSetTableFontSize = (sizePt) => {
+    setTableFontSize(sizePt);
+    const targetCanvas = viewMode === 'FULL_DOCUMENT' ? fullDocEditorRef.current : editorRef.current;
+    if (!targetCanvas) return;
+
+    const tables = targetCanvas.querySelectorAll('table');
+    tables.forEach(table => {
+      table.style.setProperty('--tbl-data-size', sizePt);
+      table.querySelectorAll('td').forEach(td => {
+        td.style.fontSize = sizePt;
+      });
+    });
+
+    if (viewMode === 'SECTION_EDITOR') {
+      const updatedHtml = editorRef.current.innerHTML;
+      setEditorHtml(updatedHtml);
+      saveSectionContent(updatedHtml, sectionTitle, sectionCode);
+      if (activeSection) {
+        api.updateSectionContent(activeSection.id, { tableFontSize: sizePt });
+      }
+    } else {
+      handleFullDocInput({ currentTarget: targetCanvas });
+    }
+  };
+
   // Save Content
-  const saveSectionContent = async (htmlToSave, titleToSave, codeToSave) => {
+  const saveSectionContent = async (htmlToSave, titleToSave, codeToSave, orientToSave) => {
     if (!activeSection) return;
     try {
       setSaveStatus('SAVING');
       const res = await api.updateSectionContent(activeSection.id, {
         content: htmlToSave !== undefined ? htmlToSave : editorHtml,
         title: titleToSave !== undefined ? titleToSave : sectionTitle,
-        code: codeToSave !== undefined ? codeToSave : sectionCode
+        code: codeToSave !== undefined ? codeToSave : sectionCode,
+        orientation: (orientToSave || orientation).toLowerCase()
       });
 
       if (res.success) {
@@ -938,6 +1078,36 @@ export default function DocumentWorkspace({
       return { width: minHeight, minHeight: width };
     }
     return { width, minHeight };
+  };
+
+
+  const getSectionMarginStyle = (secOrient) => {
+    const isLand = (secOrient || '').toUpperCase() === 'LANDSCAPE';
+    const totalCm = isLand
+      ? (paperSize === 'F4' ? 33.0 : (paperSize === 'LETTER' ? 27.94 : 29.7))
+      : (paperSize === 'F4' ? 21.6 : (paperSize === 'LETTER' ? 21.59 : 21.0));
+    const pWidth = isLand ? 1247 : 816;
+    const pxPerCmVal = pWidth / totalCm;
+
+    let left = 4.0;
+    let right = 2.5;
+    let top = 2.5;
+    let bottom = 2.5;
+
+    if (isBab2Doc) {
+      left = 3.5;
+      right = 2.1;
+    } else if (isLand) {
+      left = 2.5;
+      right = 2.5;
+    }
+
+    return {
+      paddingLeft: `${Math.round(left * pxPerCmVal)}px`,
+      paddingRight: `${Math.round(right * pxPerCmVal)}px`,
+      paddingTop: `${Math.round(top * pxPerCmVal)}px`,
+      paddingBottom: `${Math.round(bottom * pxPerCmVal)}px`,
+    };
   };
 
   const paperDims = getPaperDimensions();
@@ -2264,6 +2434,50 @@ export default function DocumentWorkspace({
                   <span>Arrange</span>
                 </div>
               </div>
+
+              {/* Table AutoFit & Anti-Overflow Group ala Word */}
+              <div className="word-ribbon-group">
+                <div className="flex items-center gap-1.5 my-auto">
+                  <button
+                    onClick={() => handleAutoFitTables()}
+                    className="word-ribbon-btn-large bg-emerald-50/70 hover:bg-emerald-100 border border-emerald-200"
+                    title="AutoFit ke Halaman ala Word: Sesuaikan tabel dengan batas margin kertas Folio tanpa overflow"
+                  >
+                    <TableIcon className="w-5 h-5 text-emerald-700 mb-0.5" />
+                    <span className="text-[10px] font-bold text-emerald-900">AutoFit Table</span>
+                  </button>
+
+                  <div className="flex flex-col gap-1 pl-1 border-l border-slate-300">
+                    <div className="flex items-center gap-1">
+                      <span className="text-[10px] text-slate-500 font-medium">Font:</span>
+                      <select
+                        value={tableFontSize}
+                        onChange={(e) => handleSetTableFontSize(e.target.value)}
+                        className="px-1 py-0.5 bg-white border border-slate-300 rounded text-[10px] text-slate-700 font-semibold focus:outline-none cursor-pointer"
+                        title="Ukuran font tabel (Standar 9pt / 8.5pt untuk matriks lebar)"
+                      >
+                        <option value="8pt">8pt (Sangat Padat)</option>
+                        <option value="8.5pt">8.5pt (Matriks 10+ Kolom)</option>
+                        <option value="9pt">9pt (Standar Bab II/IV)</option>
+                        <option value="10pt">10pt (Standar Bab I/III/V)</option>
+                        <option value="11pt">11pt (Tabel Besar)</option>
+                      </select>
+                    </div>
+
+                    <button
+                      onClick={() => toggleSectionOrientation()}
+                      className="px-1.5 py-0.5 bg-blue-50 hover:bg-blue-100 text-blue-800 rounded border border-blue-200 text-[10px] font-semibold flex items-center gap-1"
+                      title="Ubah Orientasi Sub-Bab (Lanskap / Potret)"
+                    >
+                      <LayoutTemplate className="w-2.5 h-2.5" />
+                      <span>{orientation === 'LANDSCAPE' ? 'Set Potret' : 'Set Lanskap'}</span>
+                    </button>
+                  </div>
+                </div>
+                <div className="word-ribbon-group-label">
+                  <span>Tabel & Layout</span>
+                </div>
+              </div>
             </div>
           )}
 
@@ -3335,71 +3549,191 @@ export default function DocumentWorkspace({
             className="w-full flex justify-center transition-transform origin-top pb-24"
             style={{ transform: `scale(${zoomLevel / 100})` }}
           >
-            {/* REALISTIC MICROSOFT WORD PAGE CANVAS */}
-            <div
-              className={`word-page-sheet ${showGridlines ? 'show-gridlines' : ''}`}
-              style={{
-                width: `${paperDims.width}px`,
-                minHeight: `${paperDims.minHeight}px`,
-                backgroundColor: pageColor,
-                border: pageBorder === 'box'
-                  ? '1px solid #475569'
-                  : pageBorder === 'double'
-                  ? '4px double #334155'
-                  : pageBorder === 'shadow'
-                  ? '2px solid #0f172a'
-                  : pageBorder === 'perbup'
-                  ? '3px double #185abd'
-                  : '1px solid #d2d0ce',
-                boxShadow: pageBorder === 'shadow'
-                  ? '8px 8px 0px rgba(0,0,0,0.2)'
-                  : '0 4px 20px rgba(0,0,0,0.12)',
-                ...getMarginStyle()
-              }}
-            >
-              
-              {/* Watermark Diagonal Overlay */}
-              {watermark && (
-                <div className="absolute inset-0 flex items-center justify-center pointer-events-none select-none z-0 overflow-hidden">
-                  <span
-                    className="font-extrabold text-slate-900/5 tracking-widest uppercase transform -rotate-45"
-                    style={{ fontSize: orientation === 'LANDSCAPE' ? '9rem' : '7rem' }}
-                  >
-                    {watermark}
+            {/* ================= VIEW MODE 1: FULL DOCUMENT PREVIEW (IDENTIK PER SUB-BAB & TABEL DENGAN ORIENTASI ASLI) ================= */}
+            {viewMode === 'FULL_DOCUMENT' ? (
+              <div className="w-full flex flex-col items-center gap-10">
+                {sections.map((sec, secIdx) => {
+                  const isLand = (sec.orientation || 'portrait').toLowerCase() === 'landscape';
+                  const secWidth = isLand ? 1247 : 816;
+                  const secMinHeight = isLand ? 816 : 1247;
+                  const mStyle = getSectionMarginStyle(sec.orientation);
+                  const isFirst = secIdx === 0;
+
+                  return (
+                    <div
+                      key={sec.id}
+                      id={`full-sec-${sec.id}`}
+                      className={`word-page-sheet relative group ${showGridlines ? 'show-gridlines' : ''}`}
+                      style={{
+                        width: `${secWidth}px`,
+                        minHeight: `${secMinHeight}px`,
+                        backgroundColor: pageColor,
+                        border: '1px solid #d2d0ce',
+                        boxShadow: '0 4px 20px rgba(0,0,0,0.12)',
+                        ...mStyle
+                      }}
+                    >
+                      {/* Watermark Diagonal Overlay */}
+                      {watermark && (
+                        <div className="absolute inset-0 flex items-center justify-center pointer-events-none select-none z-0 overflow-hidden">
+                          <span
+                            className="font-extrabold text-slate-900/5 tracking-widest uppercase transform -rotate-45"
+                            style={{ fontSize: isLand ? '9rem' : '7rem' }}
+                          >
+                            {watermark}
+                          </span>
+                        </div>
+                      )}
+
+                      {/* Floating Quick Action Bar on Hover */}
+                      <div className="absolute -top-3 right-4 opacity-0 group-hover:opacity-100 transition-opacity bg-white/95 border border-slate-300 shadow-md rounded-md px-2 py-1 flex items-center gap-1.5 text-[11px] font-sans z-30 select-none">
+                        <span className="font-bold text-slate-700">{sec.code || `Bagian ${secIdx + 1}`}</span>
+                        <span className="text-slate-300">|</span>
+                        <span className={`px-1.5 py-0.5 rounded text-[10px] font-semibold ${isLand ? 'bg-amber-100 text-amber-800' : 'bg-blue-100 text-blue-800'}`}>
+                          {isLand ? 'Lanskap (330×216 mm)' : 'Potret (216×330 mm)'}
+                        </span>
+                        <button
+                          type="button"
+                          onClick={() => toggleSectionOrientation(isLand ? 'PORTRAIT' : 'LANDSCAPE', sec)}
+                          className="px-1.5 py-0.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded text-[10px] font-medium"
+                          title="Ganti Orientasi Sub-Bab"
+                        >
+                          Ubah Orientasi
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => {
+                            selectSection(sec);
+                            setViewMode('SECTION_EDITOR');
+                          }}
+                          className="px-1.5 py-0.5 bg-blue-600 hover:bg-blue-700 text-white rounded text-[10px] font-medium flex items-center gap-1"
+                        >
+                          <span>Sunting</span>
+                          <ArrowRight className="w-2.5 h-2.5" />
+                        </button>
+                      </div>
+
+                      {/* Word Header on Page */}
+                      <div className="pb-3 mb-6 border-b border-slate-300 flex items-center justify-between text-[10px] text-slate-500 select-none relative z-10 font-['Bookman_Old_Style',Georgia,serif]">
+                        <span className="font-semibold tracking-wide">RKPD Kabupaten Cilacap Tahun 2027</span>
+                        <span className="uppercase tracking-wide text-slate-400">
+                          {sec.code ? `${sec.code} ${sec.title}` : (doc?.title?.replace('RKPD 2027 PERBUP - ', '') || 'DOKUMEN RESMI')}
+                        </span>
+                      </div>
+
+                      {/* Kop Lampiran on First Page */}
+                      {isFirst && (
+                        <div className="kop-lampiran-perbup mb-8 text-right font-['Bookman_Old_Style',Georgia,serif]" style={{ marginLeft: 'auto', width: '360px', fontSize: '10.5pt', lineHeight: '1.35' }}>
+                          <div className="font-bold tracking-wider">LAMPIRAN</div>
+                          <div className="font-bold tracking-wider">PERATURAN BUPATI CILACAP</div>
+                          <div className="font-bold">NOMOR &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; TAHUN 2026</div>
+                          <div className="font-bold">TENTANG</div>
+                          <div className="font-bold">RENCANA KERJA PEMERINTAH DAERAH KABUPATEN CILACAP TAHUN 2027</div>
+                        </div>
+                      )}
+
+                      {/* Section Heading */}
+                      <div className="mb-4">
+                        {sec.level === 1 ? (
+                          <h1 className="text-center font-bold text-[14pt] leading-tight uppercase font-['Bookman_Old_Style',Georgia,serif] mb-4 text-black">
+                            {sec.code} <br /> {sec.title}
+                          </h1>
+                        ) : sec.level === 2 ? (
+                          <h2 className="font-bold text-[12pt] leading-snug font-['Bookman_Old_Style',Georgia,serif] mb-2 text-black">
+                            {sec.code} {sec.title}
+                          </h2>
+                        ) : (
+                          <h3 className="font-bold text-[11pt] leading-snug font-['Bookman_Old_Style',Georgia,serif] mb-2 text-black">
+                            {sec.code} {sec.title}
+                          </h3>
+                        )}
+                      </div>
+
+                      {/* Section Content with Table Anti-Overflow */}
+                      <div
+                        className={`word-content focus:outline-none ${firstLineIndent ? 'with-indent' : ''}`}
+                        style={{
+                          fontFamily: fontFamily,
+                          fontSize: fontSize,
+                          lineHeight: lineSpacing,
+                          textAlign: documentAlignment,
+                          columnCount: textColumns === 2 ? 2 : 1,
+                          columnGap: '28pt',
+                          '--p-spacing': `${spacingAfterPt}pt`,
+                          '--p-spacing-before': `${spacingBeforePt}pt`,
+                          '--tbl-data-size': sec.tableFontSize || (isLand ? '8.5pt' : '9pt'),
+                          '--tbl-header-size': isLand ? '9pt' : '9.5pt'
+                        }}
+                        dangerouslySetInnerHTML={{ __html: sec.content || '<p><em>Belum ada naskah narasi.</em></p>' }}
+                      />
+
+                      {/* Word Footer on Page */}
+                      <div className="mt-14 pt-3 border-t border-slate-300 flex items-center justify-between text-[10px] text-slate-600 select-none clear-both relative z-10 font-['Bookman_Old_Style',Georgia,serif]">
+                        <span className="tracking-wide">RKPD Kabupaten Cilacap Tahun 2027</span>
+                        <span className="font-semibold">
+                          {getRomanChapter()} - {secIdx + 1}
+                        </span>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            ) : (
+              /* ================= VIEW MODE 2: SECTION EDITOR (WORD CANVAS) ================= */
+              <div
+                className={`word-page-sheet ${showGridlines ? 'show-gridlines' : ''}`}
+                style={{
+                  width: `${paperDims.width}px`,
+                  minHeight: `${paperDims.minHeight}px`,
+                  backgroundColor: pageColor,
+                  border: pageBorder === 'box'
+                    ? '1px solid #475569'
+                    : pageBorder === 'double'
+                    ? '4px double #334155'
+                    : pageBorder === 'shadow'
+                    ? '2px solid #0f172a'
+                    : pageBorder === 'perbup'
+                    ? '3px double #185abd'
+                    : '1px solid #d2d0ce',
+                  boxShadow: pageBorder === 'shadow'
+                    ? '8px 8px 0px rgba(0,0,0,0.2)'
+                    : '0 4px 20px rgba(0,0,0,0.12)',
+                  ...getMarginStyle()
+                }}
+              >
+                {/* Watermark Diagonal Overlay */}
+                {watermark && (
+                  <div className="absolute inset-0 flex items-center justify-center pointer-events-none select-none z-0 overflow-hidden">
+                    <span
+                      className="font-extrabold text-slate-900/5 tracking-widest uppercase transform -rotate-45"
+                      style={{ fontSize: orientation === 'LANDSCAPE' ? '9rem' : '7rem' }}
+                    >
+                      {watermark}
+                    </span>
+                  </div>
+                )}
+
+                {/* Word Header on Page */}
+                <div className="pb-3 mb-6 border-b border-slate-300 flex items-center justify-between text-[10px] text-slate-500 select-none relative z-10 font-['Bookman_Old_Style',Georgia,serif]">
+                  <span className="font-semibold tracking-wide">RKPD Kabupaten Cilacap Tahun 2027</span>
+                  <span className="uppercase tracking-wide text-slate-400">
+                    {doc?.title?.replace('RKPD 2027 PERBUP - ', '') || 'DOKUMEN RESMI'}
                   </span>
                 </div>
-              )}
 
-              {/* Word Header on Page */}
-              <div className="pb-3 mb-8 border-b border-slate-200 flex items-center justify-between text-[10px] text-slate-400 uppercase tracking-wider select-none font-sans relative z-10">
-                <span>Rancangan RKPD Kabupaten Cilacap Tahun 2027</span>
-                <span>{doc?.title || 'DOKUMEN RESMI'}</span>
-              </div>
+                {/* Kop Lampiran on First Section */}
+                {activeSection?.order === 1 && (
+                  <div className="kop-lampiran-perbup mb-8 text-right font-['Bookman_Old_Style',Georgia,serif]" style={{ marginLeft: 'auto', width: '360px', fontSize: '10.5pt', lineHeight: '1.35' }}>
+                    <div className="font-bold tracking-wider">LAMPIRAN</div>
+                    <div className="font-bold tracking-wider">PERATURAN BUPATI CILACAP</div>
+                    <div className="font-bold">NOMOR &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; TAHUN 2026</div>
+                    <div className="font-bold">TENTANG</div>
+                    <div className="font-bold">RENCANA KERJA PEMERINTAH DAERAH KABUPATEN CILACAP TAHUN 2027</div>
+                  </div>
+                )}
 
-              {/* ================= VIEW MODE 1: FULL DOCUMENT PREVIEW (100% SAMA IDENTIK DENGAN ASLINYA) ================= */}
-              {viewMode === 'FULL_DOCUMENT' ? (
-                <div
-                  ref={fullDocEditorRef}
-                  contentEditable={isFullEditMode}
-                  onInput={handleFullDocInput}
-                  suppressContentEditableWarning={true}
-                  className={`word-content focus:outline-none ${firstLineIndent ? 'with-indent' : ''}`}
-                  style={{
-                    fontFamily: fontFamily,
-                    fontSize: fontSize,
-                    lineHeight: lineSpacing,
-                    textAlign: documentAlignment,
-                    columnCount: textColumns === 2 ? 2 : 1,
-                    columnGap: '28pt',
-                    '--p-spacing': `${spacingAfterPt}pt`,
-                    '--p-spacing-before': `${spacingBeforePt}pt`,
-                    '--indent-size': `${Math.round(firstLineIndentCm * pxPerCm)}px`
-                  }}
-                  dangerouslySetInnerHTML={{ __html: fullDocHtml }}
-                />
-              ) : (
-                /* ================= VIEW MODE 2: SECTION EDITOR ================= */
                 <div className="relative z-10">
+                  {/* Read-only notification */}
                   {!activeSection?.canEdit && (
                     <div className="mb-3 px-3 py-2 rounded-lg bg-amber-50 border border-amber-200 text-amber-900 text-xs flex items-center justify-between select-none font-sans">
                       <div className="flex items-center gap-2">
@@ -3428,6 +3762,58 @@ export default function DocumentWorkspace({
                       )}
                     </div>
                   )}
+
+                  {/* Word Sub-Bab Quick Layout & Anti-Overflow Bar */}
+                  <div className="mb-4 px-3 py-1.5 bg-slate-50 border border-slate-200 rounded-lg flex flex-wrap items-center justify-between gap-2 text-xs font-sans select-none shadow-2xs">
+                    <div className="flex items-center gap-2">
+                      <button
+                        type="button"
+                        onClick={() => toggleSectionOrientation()}
+                        className={`px-2.5 py-1 rounded font-semibold text-xs border flex items-center gap-1.5 transition ${
+                          orientation === 'LANDSCAPE'
+                            ? 'bg-amber-100 text-amber-900 border-amber-300 hover:bg-amber-200'
+                            : 'bg-blue-50 text-blue-800 border-blue-200 hover:bg-blue-100'
+                        }`}
+                        title="Ubah Orientasi Sub-Bab (Lanskap 330×216 mm untuk tabel matriks lebar)"
+                      >
+                        <LayoutTemplate className="w-3.5 h-3.5" />
+                        <span>{orientation === 'LANDSCAPE' ? 'Lanskap (330 × 216 mm)' : 'Potret (216 × 330 mm)'}</span>
+                      </button>
+
+                      <button
+                        type="button"
+                        onClick={() => handleAutoFitTables()}
+                        className="px-2.5 py-1 bg-emerald-50 hover:bg-emerald-100 text-emerald-800 font-semibold rounded border border-emerald-200 text-xs flex items-center gap-1 transition"
+                        title="AutoFit ala Word: Sesuaikan seluruh tabel agar pas dalam margin kertas Folio tanpa overflow"
+                      >
+                        <TableIcon className="w-3.5 h-3.5 text-emerald-600" />
+                        <span>Paskan Tabel (AutoFit)</span>
+                      </button>
+
+                      <div className="flex items-center gap-1 pl-2 border-l border-slate-200">
+                        <span className="text-[11px] text-slate-500 font-medium">Font Tabel:</span>
+                        <select
+                          value={tableFontSize}
+                          onChange={(e) => handleSetTableFontSize(e.target.value)}
+                          className="px-1.5 py-0.5 bg-white border border-slate-300 rounded text-xs text-slate-700 font-medium focus:outline-none focus:border-blue-500 cursor-pointer"
+                          title="Ukuran font tabel (Standar 9pt / 8.5pt untuk matriks lebar)"
+                        >
+                          <option value="8pt">8pt (Sangat Padat)</option>
+                          <option value="8.5pt">8.5pt (Matriks 10+ Kolom)</option>
+                          <option value="9pt">9pt (Standar Bab II/IV)</option>
+                          <option value="10pt">10pt (Standar Bab I/III/V)</option>
+                          <option value="11pt">11pt (Tabel Besar)</option>
+                        </select>
+                      </div>
+                    </div>
+
+                    <div className="flex items-center gap-2 text-[11px] text-slate-500">
+                      <span className="bg-slate-200/70 text-slate-700 px-2 py-0.5 rounded font-mono font-medium">
+                        Margin {marginCm.left}cm / {marginCm.right}cm
+                      </span>
+                      <span>• Folio F4</span>
+                    </div>
+                  </div>
 
                   {/* Section Title Inputs */}
                   <div className="mb-5 pb-2 border-b border-slate-200 flex items-center gap-2 font-sans select-none">
@@ -3487,23 +3873,22 @@ export default function DocumentWorkspace({
                       columnGap: '28pt',
                       '--p-spacing': `${spacingAfterPt}pt`,
                       '--p-spacing-before': `${spacingBeforePt}pt`,
-                      '--indent-size': `${Math.round(firstLineIndentCm * pxPerCm)}px`
+                      '--indent-size': `${Math.round(firstLineIndentCm * pxPerCm)}px`,
+                      '--tbl-data-size': tableFontSize,
+                      '--tbl-header-size': orientation === 'LANDSCAPE' ? '9pt' : '9.5pt'
                     }}
                   />
                 </div>
-              )}
 
-              {/* Word Footer on Page */}
-              <div className="mt-16 pt-3 border-t border-slate-200 flex items-center justify-between text-[10px] text-slate-400 select-none font-sans clear-both relative z-10">
-                <span>Pemerintah Daerah Kabupaten Cilacap</span>
-                <span>
-                  {viewMode === 'FULL_DOCUMENT'
-                    ? `Naskah Dokumen Lengkap (${sections.length} Bagian)`
-                    : `Halaman Bagian ${currentIndex + 1} dari ${sections.length}`}
-                </span>
+                {/* Word Footer on Page */}
+                <div className="mt-14 pt-3 border-t border-slate-300 flex items-center justify-between text-[10px] text-slate-600 select-none clear-both relative z-10 font-['Bookman_Old_Style',Georgia,serif]">
+                  <span className="tracking-wide">RKPD Kabupaten Cilacap Tahun 2027</span>
+                  <span className="font-semibold">
+                    {getRomanChapter()} - {currentIndex + 1}
+                  </span>
+                </div>
               </div>
-
-            </div>
+            )}
           </div>
 
         </main>

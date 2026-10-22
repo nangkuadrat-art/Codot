@@ -453,7 +453,11 @@
       "reviewedAt": null,
       "reviewNotes": null,
       "lastModifiedBy": null,
-      "lastModifiedAt": null
+      "lastModifiedAt": null,
+      "orientation": "portrait",
+      "tableFontSize": "10pt",
+      "hasTable": false,
+      "maxTableColumns": 0
     },
     {
       "id": "sec_ca568521",
@@ -475,7 +479,11 @@
       "reviewedAt": null,
       "reviewNotes": null,
       "lastModifiedBy": null,
-      "lastModifiedAt": null
+      "lastModifiedAt": null,
+      "orientation": "portrait",
+      "tableFontSize": "10pt",
+      "hasTable": false,
+      "maxTableColumns": 0
     },
     {
       "id": "sec_e74ccf13",
@@ -497,7 +505,11 @@
       "reviewedAt": null,
       "reviewNotes": null,
       "lastModifiedBy": null,
-      "lastModifiedAt": null
+      "lastModifiedAt": null,
+      "orientation": "portrait",
+      "tableFontSize": "10pt",
+      "hasTable": false,
+      "maxTableColumns": 0
     },
     {
       "id": "sec_97ae0ca8",
@@ -519,7 +531,11 @@
       "reviewedAt": null,
       "reviewNotes": null,
       "lastModifiedBy": null,
-      "lastModifiedAt": null
+      "lastModifiedAt": null,
+      "orientation": "portrait",
+      "tableFontSize": "10pt",
+      "hasTable": false,
+      "maxTableColumns": 0
     },
     {
       "id": "sec_d04b0cf9",
@@ -541,7 +557,11 @@
       "reviewedAt": null,
       "reviewNotes": null,
       "lastModifiedBy": null,
-      "lastModifiedAt": null
+      "lastModifiedAt": null,
+      "orientation": "portrait",
+      "tableFontSize": "10pt",
+      "hasTable": false,
+      "maxTableColumns": 0
     },
     {
       "id": "sec_2219b66a",
@@ -563,7 +583,11 @@
       "reviewedAt": null,
       "reviewNotes": null,
       "lastModifiedBy": null,
-      "lastModifiedAt": null
+      "lastModifiedAt": null,
+      "orientation": "portrait",
+      "tableFontSize": "10pt",
+      "hasTable": true,
+      "maxTableColumns": 3
     },
     {
       "id": "sec_47ae6f7d",
@@ -585,7 +609,11 @@
       "reviewedAt": null,
       "reviewNotes": null,
       "lastModifiedBy": null,
-      "lastModifiedAt": null
+      "lastModifiedAt": null,
+      "orientation": "portrait",
+      "tableFontSize": "10pt",
+      "hasTable": false,
+      "maxTableColumns": 0
     },
     {
       "id": "sec_24d9a16c",
@@ -607,7 +635,11 @@
       "reviewedAt": null,
       "reviewNotes": null,
       "lastModifiedBy": null,
-      "lastModifiedAt": null
+      "lastModifiedAt": null,
+      "orientation": "portrait",
+      "tableFontSize": "10pt",
+      "hasTable": false,
+      "maxTableColumns": 0
     },
     {
       "id": "sec_ba297f7c",
@@ -629,7 +661,11 @@
       "reviewedAt": null,
       "reviewNotes": null,
       "lastModifiedBy": null,
-      "lastModifiedAt": null
+      "lastModifiedAt": null,
+      "orientation": "portrait",
+      "tableFontSize": "10pt",
+      "hasTable": false,
+      "maxTableColumns": 0
     },
     {
       "id": "sec_e56bae23",
@@ -651,7 +687,11 @@
       "reviewedAt": null,
       "reviewNotes": null,
       "lastModifiedBy": null,
-      "lastModifiedAt": null
+      "lastModifiedAt": null,
+      "orientation": "portrait",
+      "tableFontSize": "10pt",
+      "hasTable": false,
+      "maxTableColumns": 0
     },
     {
       "id": "sec_6accb977",
@@ -673,7 +713,11 @@
       "reviewedAt": null,
       "reviewNotes": null,
       "lastModifiedBy": null,
-      "lastModifiedAt": null
+      "lastModifiedAt": null,
+      "orientation": "landscape",
+      "tableFontSize": "9pt",
+      "hasTable": true,
+      "maxTableColumns": 7
     },
     {
       "id": "sec_0e615600",
@@ -695,7 +739,11 @@
       "reviewedAt": null,
       "reviewNotes": null,
       "lastModifiedBy": null,
-      "lastModifiedAt": null
+      "lastModifiedAt": null,
+      "orientation": "portrait",
+      "tableFontSize": "10pt",
+      "hasTable": false,
+      "maxTableColumns": 0
     },
     {
       "id": "sec_fc9cb8e0",
@@ -717,7 +765,11 @@
       "reviewedAt": null,
       "reviewNotes": null,
       "lastModifiedBy": null,
-      "lastModifiedAt": null
+      "lastModifiedAt": null,
+      "orientation": "portrait",
+      "tableFontSize": "10pt",
+      "hasTable": true,
+      "maxTableColumns": 4
     },
     {
       "id": "sec_3131d470",
@@ -739,7 +791,11 @@
       "reviewedAt": null,
       "reviewNotes": null,
       "lastModifiedBy": null,
-      "lastModifiedAt": null
+      "lastModifiedAt": null,
+      "orientation": "portrait",
+      "tableFontSize": "10pt",
+      "hasTable": false,
+      "maxTableColumns": 0
     },
     {
       "id": "sec_4838d2b5",
@@ -761,7 +817,11 @@
       "reviewedAt": null,
       "reviewNotes": null,
       "lastModifiedBy": null,
-      "lastModifiedAt": null
+      "lastModifiedAt": null,
+      "orientation": "portrait",
+      "tableFontSize": "10pt",
+      "hasTable": false,
+      "maxTableColumns": 0
     },
     {
       "id": "sec_9eadb053",
@@ -783,7 +843,11 @@
       "reviewedAt": null,
       "reviewNotes": null,
       "lastModifiedBy": null,
-      "lastModifiedAt": null
+      "lastModifiedAt": null,
+      "orientation": "portrait",
+      "tableFontSize": "10pt",
+      "hasTable": false,
+      "maxTableColumns": 0
     },
     {
       "id": "sec_186b535d",
@@ -805,7 +869,11 @@
       "reviewedAt": null,
       "reviewNotes": null,
       "lastModifiedBy": null,
-      "lastModifiedAt": null
+      "lastModifiedAt": null,
+      "orientation": "portrait",
+      "tableFontSize": "10pt",
+      "hasTable": true,
+      "maxTableColumns": 5
     },
     {
       "id": "sec_40d9a56f",
@@ -827,7 +895,11 @@
       "reviewedAt": null,
       "reviewNotes": null,
       "lastModifiedBy": null,
-      "lastModifiedAt": null
+      "lastModifiedAt": null,
+      "orientation": "portrait",
+      "tableFontSize": "10pt",
+      "hasTable": true,
+      "maxTableColumns": 3
     },
     {
       "id": "sec_a5bcbb87",
@@ -849,7 +921,11 @@
       "reviewedAt": null,
       "reviewNotes": null,
       "lastModifiedBy": null,
-      "lastModifiedAt": null
+      "lastModifiedAt": null,
+      "orientation": "portrait",
+      "tableFontSize": "10pt",
+      "hasTable": true,
+      "maxTableColumns": 3
     },
     {
       "id": "sec_a6d15c89",
@@ -871,7 +947,11 @@
       "reviewedAt": null,
       "reviewNotes": null,
       "lastModifiedBy": null,
-      "lastModifiedAt": null
+      "lastModifiedAt": null,
+      "orientation": "landscape",
+      "tableFontSize": "9pt",
+      "hasTable": true,
+      "maxTableColumns": 9
     },
     {
       "id": "sec_6cde1802",
@@ -893,7 +973,11 @@
       "reviewedAt": null,
       "reviewNotes": null,
       "lastModifiedBy": null,
-      "lastModifiedAt": null
+      "lastModifiedAt": null,
+      "orientation": "portrait",
+      "tableFontSize": "10pt",
+      "hasTable": false,
+      "maxTableColumns": 0
     },
     {
       "id": "sec_fd0443ee",
@@ -915,7 +999,11 @@
       "reviewedAt": null,
       "reviewNotes": null,
       "lastModifiedBy": null,
-      "lastModifiedAt": null
+      "lastModifiedAt": null,
+      "orientation": "landscape",
+      "tableFontSize": "9pt",
+      "hasTable": true,
+      "maxTableColumns": 7
     },
     {
       "id": "sec_13f79db5",
@@ -937,7 +1025,11 @@
       "reviewedAt": null,
       "reviewNotes": null,
       "lastModifiedBy": null,
-      "lastModifiedAt": null
+      "lastModifiedAt": null,
+      "orientation": "portrait",
+      "tableFontSize": "10pt",
+      "hasTable": false,
+      "maxTableColumns": 0
     },
     {
       "id": "sec_c299bff3",
@@ -959,7 +1051,11 @@
       "reviewedAt": null,
       "reviewNotes": null,
       "lastModifiedBy": null,
-      "lastModifiedAt": null
+      "lastModifiedAt": null,
+      "orientation": "portrait",
+      "tableFontSize": "10pt",
+      "hasTable": false,
+      "maxTableColumns": 0
     },
     {
       "id": "sec_cf003601",
@@ -981,7 +1077,11 @@
       "reviewedAt": null,
       "reviewNotes": null,
       "lastModifiedBy": null,
-      "lastModifiedAt": null
+      "lastModifiedAt": null,
+      "orientation": "landscape",
+      "tableFontSize": "9pt",
+      "hasTable": true,
+      "maxTableColumns": 7
     },
     {
       "id": "sec_cda0907f",
@@ -1003,7 +1103,11 @@
       "reviewedAt": null,
       "reviewNotes": null,
       "lastModifiedBy": null,
-      "lastModifiedAt": null
+      "lastModifiedAt": null,
+      "orientation": "landscape",
+      "tableFontSize": "9pt",
+      "hasTable": true,
+      "maxTableColumns": 6
     },
     {
       "id": "sec_972d1cda",
@@ -1025,7 +1129,11 @@
       "reviewedAt": null,
       "reviewNotes": null,
       "lastModifiedBy": null,
-      "lastModifiedAt": null
+      "lastModifiedAt": null,
+      "orientation": "portrait",
+      "tableFontSize": "10pt",
+      "hasTable": false,
+      "maxTableColumns": 0
     },
     {
       "id": "sec_e881a6fb",
@@ -1047,7 +1155,11 @@
       "reviewedAt": null,
       "reviewNotes": null,
       "lastModifiedBy": null,
-      "lastModifiedAt": null
+      "lastModifiedAt": null,
+      "orientation": "landscape",
+      "tableFontSize": "8.5pt",
+      "hasTable": true,
+      "maxTableColumns": 11
     },
     {
       "id": "sec_d3014425",
@@ -1069,7 +1181,11 @@
       "reviewedAt": null,
       "reviewNotes": null,
       "lastModifiedBy": null,
-      "lastModifiedAt": null
+      "lastModifiedAt": null,
+      "orientation": "portrait",
+      "tableFontSize": "10pt",
+      "hasTable": false,
+      "maxTableColumns": 0
     },
     {
       "id": "sec_d72cd3a9",
@@ -1091,7 +1207,11 @@
       "reviewedAt": null,
       "reviewNotes": null,
       "lastModifiedBy": null,
-      "lastModifiedAt": null
+      "lastModifiedAt": null,
+      "orientation": "portrait",
+      "tableFontSize": "10pt",
+      "hasTable": false,
+      "maxTableColumns": 0
     },
     {
       "id": "sec_8f6b5f42",
@@ -1113,7 +1233,11 @@
       "reviewedAt": null,
       "reviewNotes": null,
       "lastModifiedBy": null,
-      "lastModifiedAt": null
+      "lastModifiedAt": null,
+      "orientation": "landscape",
+      "tableFontSize": "8.5pt",
+      "hasTable": true,
+      "maxTableColumns": 11
     },
     {
       "id": "sec_641606b7",
@@ -1135,7 +1259,11 @@
       "reviewedAt": null,
       "reviewNotes": null,
       "lastModifiedBy": null,
-      "lastModifiedAt": null
+      "lastModifiedAt": null,
+      "orientation": "landscape",
+      "tableFontSize": "9pt",
+      "hasTable": true,
+      "maxTableColumns": 8
     },
     {
       "id": "sec_e93de7b0",
@@ -1157,7 +1285,11 @@
       "reviewedAt": null,
       "reviewNotes": null,
       "lastModifiedBy": null,
-      "lastModifiedAt": null
+      "lastModifiedAt": null,
+      "orientation": "portrait",
+      "tableFontSize": "10pt",
+      "hasTable": false,
+      "maxTableColumns": 0
     },
     {
       "id": "sec_7e4a4ac7",
@@ -1179,7 +1311,11 @@
       "reviewedAt": null,
       "reviewNotes": null,
       "lastModifiedBy": null,
-      "lastModifiedAt": null
+      "lastModifiedAt": null,
+      "orientation": "portrait",
+      "tableFontSize": "10pt",
+      "hasTable": false,
+      "maxTableColumns": 0
     },
     {
       "id": "sec_f43fa47c",
@@ -1201,7 +1337,11 @@
       "reviewedAt": null,
       "reviewNotes": null,
       "lastModifiedBy": null,
-      "lastModifiedAt": null
+      "lastModifiedAt": null,
+      "orientation": "portrait",
+      "tableFontSize": "10pt",
+      "hasTable": false,
+      "maxTableColumns": 0
     },
     {
       "id": "sec_fdb3e77b",
@@ -1223,7 +1363,11 @@
       "reviewedAt": null,
       "reviewNotes": null,
       "lastModifiedBy": null,
-      "lastModifiedAt": null
+      "lastModifiedAt": null,
+      "orientation": "landscape",
+      "tableFontSize": "9pt",
+      "hasTable": true,
+      "maxTableColumns": 8
     },
     {
       "id": "sec_e4f35e30",
@@ -1245,7 +1389,11 @@
       "reviewedAt": null,
       "reviewNotes": null,
       "lastModifiedBy": null,
-      "lastModifiedAt": null
+      "lastModifiedAt": null,
+      "orientation": "landscape",
+      "tableFontSize": "9pt",
+      "hasTable": true,
+      "maxTableColumns": 9
     },
     {
       "id": "sec_4467bec9",
@@ -1267,7 +1415,11 @@
       "reviewedAt": null,
       "reviewNotes": null,
       "lastModifiedBy": null,
-      "lastModifiedAt": null
+      "lastModifiedAt": null,
+      "orientation": "landscape",
+      "tableFontSize": "9pt",
+      "hasTable": true,
+      "maxTableColumns": 8
     },
     {
       "id": "sec_5e590922",
@@ -1289,7 +1441,11 @@
       "reviewedAt": null,
       "reviewNotes": null,
       "lastModifiedBy": null,
-      "lastModifiedAt": null
+      "lastModifiedAt": null,
+      "orientation": "portrait",
+      "tableFontSize": "10pt",
+      "hasTable": false,
+      "maxTableColumns": 0
     },
     {
       "id": "sec_a88dd8b7",
@@ -1311,7 +1467,11 @@
       "reviewedAt": null,
       "reviewNotes": null,
       "lastModifiedBy": null,
-      "lastModifiedAt": null
+      "lastModifiedAt": null,
+      "orientation": "portrait",
+      "tableFontSize": "10pt",
+      "hasTable": false,
+      "maxTableColumns": 0
     },
     {
       "id": "sec_1096d941",
@@ -1333,7 +1493,11 @@
       "reviewedAt": null,
       "reviewNotes": null,
       "lastModifiedBy": null,
-      "lastModifiedAt": null
+      "lastModifiedAt": null,
+      "orientation": "portrait",
+      "tableFontSize": "10pt",
+      "hasTable": false,
+      "maxTableColumns": 0
     },
     {
       "id": "sec_dae5c81e",
@@ -1355,7 +1519,11 @@
       "reviewedAt": null,
       "reviewNotes": null,
       "lastModifiedBy": null,
-      "lastModifiedAt": null
+      "lastModifiedAt": null,
+      "orientation": "landscape",
+      "tableFontSize": "9pt",
+      "hasTable": true,
+      "maxTableColumns": 8
     },
     {
       "id": "sec_757a958d",
@@ -1377,7 +1545,11 @@
       "reviewedAt": null,
       "reviewNotes": null,
       "lastModifiedBy": null,
-      "lastModifiedAt": null
+      "lastModifiedAt": null,
+      "orientation": "landscape",
+      "tableFontSize": "9pt",
+      "hasTable": true,
+      "maxTableColumns": 8
     },
     {
       "id": "sec_4f0c179d",
@@ -1399,7 +1571,11 @@
       "reviewedAt": null,
       "reviewNotes": null,
       "lastModifiedBy": null,
-      "lastModifiedAt": null
+      "lastModifiedAt": null,
+      "orientation": "landscape",
+      "tableFontSize": "9pt",
+      "hasTable": true,
+      "maxTableColumns": 8
     },
     {
       "id": "sec_faa48cc7",
@@ -1421,7 +1597,11 @@
       "reviewedAt": null,
       "reviewNotes": null,
       "lastModifiedBy": null,
-      "lastModifiedAt": null
+      "lastModifiedAt": null,
+      "orientation": "landscape",
+      "tableFontSize": "9pt",
+      "hasTable": true,
+      "maxTableColumns": 8
     },
     {
       "id": "sec_f70702cf",
@@ -1443,7 +1623,11 @@
       "reviewedAt": null,
       "reviewNotes": null,
       "lastModifiedBy": null,
-      "lastModifiedAt": null
+      "lastModifiedAt": null,
+      "orientation": "portrait",
+      "tableFontSize": "10pt",
+      "hasTable": false,
+      "maxTableColumns": 0
     },
     {
       "id": "sec_fd2db732",
@@ -1465,7 +1649,11 @@
       "reviewedAt": null,
       "reviewNotes": null,
       "lastModifiedBy": null,
-      "lastModifiedAt": null
+      "lastModifiedAt": null,
+      "orientation": "landscape",
+      "tableFontSize": "9pt",
+      "hasTable": true,
+      "maxTableColumns": 8
     },
     {
       "id": "sec_3cd0eed8",
@@ -1487,7 +1675,11 @@
       "reviewedAt": null,
       "reviewNotes": null,
       "lastModifiedBy": null,
-      "lastModifiedAt": null
+      "lastModifiedAt": null,
+      "orientation": "landscape",
+      "tableFontSize": "9pt",
+      "hasTable": true,
+      "maxTableColumns": 8
     },
     {
       "id": "sec_a3b5caa5",
@@ -1509,7 +1701,11 @@
       "reviewedAt": null,
       "reviewNotes": null,
       "lastModifiedBy": null,
-      "lastModifiedAt": null
+      "lastModifiedAt": null,
+      "orientation": "landscape",
+      "tableFontSize": "9pt",
+      "hasTable": true,
+      "maxTableColumns": 7
     },
     {
       "id": "sec_79aa2335",
@@ -1531,7 +1727,11 @@
       "reviewedAt": null,
       "reviewNotes": null,
       "lastModifiedBy": null,
-      "lastModifiedAt": null
+      "lastModifiedAt": null,
+      "orientation": "landscape",
+      "tableFontSize": "9pt",
+      "hasTable": true,
+      "maxTableColumns": 8
     },
     {
       "id": "sec_0898ef92",
@@ -1553,7 +1753,11 @@
       "reviewedAt": null,
       "reviewNotes": null,
       "lastModifiedBy": null,
-      "lastModifiedAt": null
+      "lastModifiedAt": null,
+      "orientation": "landscape",
+      "tableFontSize": "8.5pt",
+      "hasTable": true,
+      "maxTableColumns": 10
     },
     {
       "id": "sec_2f2ab3ea",
@@ -1575,7 +1779,11 @@
       "reviewedAt": null,
       "reviewNotes": null,
       "lastModifiedBy": null,
-      "lastModifiedAt": null
+      "lastModifiedAt": null,
+      "orientation": "landscape",
+      "tableFontSize": "9pt",
+      "hasTable": true,
+      "maxTableColumns": 8
     },
     {
       "id": "sec_9d4ae929",
@@ -1597,7 +1805,11 @@
       "reviewedAt": null,
       "reviewNotes": null,
       "lastModifiedBy": null,
-      "lastModifiedAt": null
+      "lastModifiedAt": null,
+      "orientation": "landscape",
+      "tableFontSize": "9pt",
+      "hasTable": true,
+      "maxTableColumns": 8
     },
     {
       "id": "sec_3840976f",
@@ -1619,7 +1831,11 @@
       "reviewedAt": null,
       "reviewNotes": null,
       "lastModifiedBy": null,
-      "lastModifiedAt": null
+      "lastModifiedAt": null,
+      "orientation": "landscape",
+      "tableFontSize": "9pt",
+      "hasTable": true,
+      "maxTableColumns": 7
     },
     {
       "id": "sec_6cd88593",
@@ -1641,7 +1857,11 @@
       "reviewedAt": null,
       "reviewNotes": null,
       "lastModifiedBy": null,
-      "lastModifiedAt": null
+      "lastModifiedAt": null,
+      "orientation": "landscape",
+      "tableFontSize": "8.5pt",
+      "hasTable": true,
+      "maxTableColumns": 13
     },
     {
       "id": "sec_682708ef",
@@ -1663,7 +1883,11 @@
       "reviewedAt": null,
       "reviewNotes": null,
       "lastModifiedBy": null,
-      "lastModifiedAt": null
+      "lastModifiedAt": null,
+      "orientation": "landscape",
+      "tableFontSize": "9pt",
+      "hasTable": true,
+      "maxTableColumns": 8
     },
     {
       "id": "sec_4e6cc8f7",
@@ -1685,7 +1909,11 @@
       "reviewedAt": null,
       "reviewNotes": null,
       "lastModifiedBy": null,
-      "lastModifiedAt": null
+      "lastModifiedAt": null,
+      "orientation": "landscape",
+      "tableFontSize": "9pt",
+      "hasTable": true,
+      "maxTableColumns": 8
     },
     {
       "id": "sec_7a9b1def",
@@ -1707,7 +1935,11 @@
       "reviewedAt": null,
       "reviewNotes": null,
       "lastModifiedBy": null,
-      "lastModifiedAt": null
+      "lastModifiedAt": null,
+      "orientation": "landscape",
+      "tableFontSize": "9pt",
+      "hasTable": true,
+      "maxTableColumns": 8
     },
     {
       "id": "sec_89d3ca6b",
@@ -1729,7 +1961,11 @@
       "reviewedAt": null,
       "reviewNotes": null,
       "lastModifiedBy": null,
-      "lastModifiedAt": null
+      "lastModifiedAt": null,
+      "orientation": "landscape",
+      "tableFontSize": "9pt",
+      "hasTable": true,
+      "maxTableColumns": 8
     },
     {
       "id": "sec_51528ad3",
@@ -1751,7 +1987,11 @@
       "reviewedAt": null,
       "reviewNotes": null,
       "lastModifiedBy": null,
-      "lastModifiedAt": null
+      "lastModifiedAt": null,
+      "orientation": "landscape",
+      "tableFontSize": "9pt",
+      "hasTable": true,
+      "maxTableColumns": 7
     },
     {
       "id": "sec_a96a07fa",
@@ -1773,7 +2013,11 @@
       "reviewedAt": null,
       "reviewNotes": null,
       "lastModifiedBy": null,
-      "lastModifiedAt": null
+      "lastModifiedAt": null,
+      "orientation": "landscape",
+      "tableFontSize": "9pt",
+      "hasTable": true,
+      "maxTableColumns": 7
     },
     {
       "id": "sec_ca822f2d",
@@ -1795,7 +2039,11 @@
       "reviewedAt": null,
       "reviewNotes": null,
       "lastModifiedBy": null,
-      "lastModifiedAt": null
+      "lastModifiedAt": null,
+      "orientation": "landscape",
+      "tableFontSize": "9pt",
+      "hasTable": true,
+      "maxTableColumns": 8
     },
     {
       "id": "sec_2d697e7e",
@@ -1817,7 +2065,11 @@
       "reviewedAt": null,
       "reviewNotes": null,
       "lastModifiedBy": null,
-      "lastModifiedAt": null
+      "lastModifiedAt": null,
+      "orientation": "landscape",
+      "tableFontSize": "9pt",
+      "hasTable": true,
+      "maxTableColumns": 8
     },
     {
       "id": "sec_e520f40c",
@@ -1839,7 +2091,11 @@
       "reviewedAt": null,
       "reviewNotes": null,
       "lastModifiedBy": null,
-      "lastModifiedAt": null
+      "lastModifiedAt": null,
+      "orientation": "landscape",
+      "tableFontSize": "9pt",
+      "hasTable": true,
+      "maxTableColumns": 8
     },
     {
       "id": "sec_cf5a4cdd",
@@ -1861,7 +2117,11 @@
       "reviewedAt": null,
       "reviewNotes": null,
       "lastModifiedBy": null,
-      "lastModifiedAt": null
+      "lastModifiedAt": null,
+      "orientation": "portrait",
+      "tableFontSize": "10pt",
+      "hasTable": false,
+      "maxTableColumns": 0
     },
     {
       "id": "sec_bef34209",
@@ -1883,7 +2143,11 @@
       "reviewedAt": null,
       "reviewNotes": null,
       "lastModifiedBy": null,
-      "lastModifiedAt": null
+      "lastModifiedAt": null,
+      "orientation": "landscape",
+      "tableFontSize": "9pt",
+      "hasTable": true,
+      "maxTableColumns": 8
     },
     {
       "id": "sec_b6a310a8",
@@ -1905,7 +2169,11 @@
       "reviewedAt": null,
       "reviewNotes": null,
       "lastModifiedBy": null,
-      "lastModifiedAt": null
+      "lastModifiedAt": null,
+      "orientation": "landscape",
+      "tableFontSize": "9pt",
+      "hasTable": true,
+      "maxTableColumns": 8
     },
     {
       "id": "sec_8f4c1b68",
@@ -1927,7 +2195,11 @@
       "reviewedAt": null,
       "reviewNotes": null,
       "lastModifiedBy": null,
-      "lastModifiedAt": null
+      "lastModifiedAt": null,
+      "orientation": "landscape",
+      "tableFontSize": "8.5pt",
+      "hasTable": true,
+      "maxTableColumns": 10
     },
     {
       "id": "sec_fbd7944b",
@@ -1949,7 +2221,11 @@
       "reviewedAt": null,
       "reviewNotes": null,
       "lastModifiedBy": null,
-      "lastModifiedAt": null
+      "lastModifiedAt": null,
+      "orientation": "landscape",
+      "tableFontSize": "9pt",
+      "hasTable": true,
+      "maxTableColumns": 8
     },
     {
       "id": "sec_c002962c",
@@ -1971,7 +2247,11 @@
       "reviewedAt": null,
       "reviewNotes": null,
       "lastModifiedBy": null,
-      "lastModifiedAt": null
+      "lastModifiedAt": null,
+      "orientation": "landscape",
+      "tableFontSize": "9pt",
+      "hasTable": true,
+      "maxTableColumns": 8
     },
     {
       "id": "sec_2249f5a2",
@@ -1993,7 +2273,11 @@
       "reviewedAt": null,
       "reviewNotes": null,
       "lastModifiedBy": null,
-      "lastModifiedAt": null
+      "lastModifiedAt": null,
+      "orientation": "portrait",
+      "tableFontSize": "10pt",
+      "hasTable": false,
+      "maxTableColumns": 0
     },
     {
       "id": "sec_610d6e4b",
@@ -2015,7 +2299,11 @@
       "reviewedAt": null,
       "reviewNotes": null,
       "lastModifiedBy": null,
-      "lastModifiedAt": null
+      "lastModifiedAt": null,
+      "orientation": "landscape",
+      "tableFontSize": "9pt",
+      "hasTable": true,
+      "maxTableColumns": 8
     },
     {
       "id": "sec_3f97e5f8",
@@ -2037,7 +2325,11 @@
       "reviewedAt": null,
       "reviewNotes": null,
       "lastModifiedBy": null,
-      "lastModifiedAt": null
+      "lastModifiedAt": null,
+      "orientation": "landscape",
+      "tableFontSize": "9pt",
+      "hasTable": true,
+      "maxTableColumns": 8
     },
     {
       "id": "sec_d25f2e18",
@@ -2059,7 +2351,11 @@
       "reviewedAt": null,
       "reviewNotes": null,
       "lastModifiedBy": null,
-      "lastModifiedAt": null
+      "lastModifiedAt": null,
+      "orientation": "portrait",
+      "tableFontSize": "10pt",
+      "hasTable": false,
+      "maxTableColumns": 0
     },
     {
       "id": "sec_693b8817",
@@ -2081,7 +2377,11 @@
       "reviewedAt": null,
       "reviewNotes": null,
       "lastModifiedBy": null,
-      "lastModifiedAt": null
+      "lastModifiedAt": null,
+      "orientation": "landscape",
+      "tableFontSize": "9pt",
+      "hasTable": true,
+      "maxTableColumns": 8
     },
     {
       "id": "sec_63f0703a",
@@ -2103,7 +2403,11 @@
       "reviewedAt": null,
       "reviewNotes": null,
       "lastModifiedBy": null,
-      "lastModifiedAt": null
+      "lastModifiedAt": null,
+      "orientation": "portrait",
+      "tableFontSize": "10pt",
+      "hasTable": true,
+      "maxTableColumns": 5
     },
     {
       "id": "sec_150f58ea",
@@ -2125,7 +2429,11 @@
       "reviewedAt": null,
       "reviewNotes": null,
       "lastModifiedBy": null,
-      "lastModifiedAt": null
+      "lastModifiedAt": null,
+      "orientation": "landscape",
+      "tableFontSize": "9pt",
+      "hasTable": true,
+      "maxTableColumns": 6
     },
     {
       "id": "sec_bab814cf",
@@ -2147,7 +2455,11 @@
       "reviewedAt": null,
       "reviewNotes": null,
       "lastModifiedBy": null,
-      "lastModifiedAt": null
+      "lastModifiedAt": null,
+      "orientation": "landscape",
+      "tableFontSize": "9pt",
+      "hasTable": true,
+      "maxTableColumns": 8
     },
     {
       "id": "sec_25f7ff1a",
@@ -2169,7 +2481,11 @@
       "reviewedAt": null,
       "reviewNotes": null,
       "lastModifiedBy": null,
-      "lastModifiedAt": null
+      "lastModifiedAt": null,
+      "orientation": "landscape",
+      "tableFontSize": "9pt",
+      "hasTable": true,
+      "maxTableColumns": 8
     },
     {
       "id": "sec_bd94e946",
@@ -2191,7 +2507,11 @@
       "reviewedAt": null,
       "reviewNotes": null,
       "lastModifiedBy": null,
-      "lastModifiedAt": null
+      "lastModifiedAt": null,
+      "orientation": "portrait",
+      "tableFontSize": "10pt",
+      "hasTable": false,
+      "maxTableColumns": 0
     },
     {
       "id": "sec_e3bc3a6c",
@@ -2213,7 +2533,11 @@
       "reviewedAt": null,
       "reviewNotes": null,
       "lastModifiedBy": null,
-      "lastModifiedAt": null
+      "lastModifiedAt": null,
+      "orientation": "landscape",
+      "tableFontSize": "9pt",
+      "hasTable": true,
+      "maxTableColumns": 8
     },
     {
       "id": "sec_a24bd40d",
@@ -2235,7 +2559,11 @@
       "reviewedAt": null,
       "reviewNotes": null,
       "lastModifiedBy": null,
-      "lastModifiedAt": null
+      "lastModifiedAt": null,
+      "orientation": "portrait",
+      "tableFontSize": "10pt",
+      "hasTable": false,
+      "maxTableColumns": 0
     },
     {
       "id": "sec_f6db6af3",
@@ -2257,7 +2585,11 @@
       "reviewedAt": null,
       "reviewNotes": null,
       "lastModifiedBy": null,
-      "lastModifiedAt": null
+      "lastModifiedAt": null,
+      "orientation": "landscape",
+      "tableFontSize": "9pt",
+      "hasTable": true,
+      "maxTableColumns": 8
     },
     {
       "id": "sec_f1b9797a",
@@ -2279,7 +2611,11 @@
       "reviewedAt": null,
       "reviewNotes": null,
       "lastModifiedBy": null,
-      "lastModifiedAt": null
+      "lastModifiedAt": null,
+      "orientation": "portrait",
+      "tableFontSize": "10pt",
+      "hasTable": false,
+      "maxTableColumns": 0
     },
     {
       "id": "sec_0c69ab84",
@@ -2301,7 +2637,11 @@
       "reviewedAt": null,
       "reviewNotes": null,
       "lastModifiedBy": null,
-      "lastModifiedAt": null
+      "lastModifiedAt": null,
+      "orientation": "landscape",
+      "tableFontSize": "9pt",
+      "hasTable": true,
+      "maxTableColumns": 8
     },
     {
       "id": "sec_57e6fcd0",
@@ -2323,7 +2663,11 @@
       "reviewedAt": null,
       "reviewNotes": null,
       "lastModifiedBy": null,
-      "lastModifiedAt": null
+      "lastModifiedAt": null,
+      "orientation": "portrait",
+      "tableFontSize": "10pt",
+      "hasTable": false,
+      "maxTableColumns": 0
     },
     {
       "id": "sec_7932e6ab",
@@ -2345,7 +2689,11 @@
       "reviewedAt": null,
       "reviewNotes": null,
       "lastModifiedBy": null,
-      "lastModifiedAt": null
+      "lastModifiedAt": null,
+      "orientation": "landscape",
+      "tableFontSize": "9pt",
+      "hasTable": true,
+      "maxTableColumns": 7
     },
     {
       "id": "sec_cf4beaf6",
@@ -2367,7 +2715,11 @@
       "reviewedAt": null,
       "reviewNotes": null,
       "lastModifiedBy": null,
-      "lastModifiedAt": null
+      "lastModifiedAt": null,
+      "orientation": "landscape",
+      "tableFontSize": "9pt",
+      "hasTable": true,
+      "maxTableColumns": 7
     },
     {
       "id": "sec_b7a8890a",
@@ -2389,7 +2741,11 @@
       "reviewedAt": null,
       "reviewNotes": null,
       "lastModifiedBy": null,
-      "lastModifiedAt": null
+      "lastModifiedAt": null,
+      "orientation": "landscape",
+      "tableFontSize": "9pt",
+      "hasTable": true,
+      "maxTableColumns": 7
     },
     {
       "id": "sec_d4556697",
@@ -2411,7 +2767,11 @@
       "reviewedAt": null,
       "reviewNotes": null,
       "lastModifiedBy": null,
-      "lastModifiedAt": null
+      "lastModifiedAt": null,
+      "orientation": "landscape",
+      "tableFontSize": "9pt",
+      "hasTable": true,
+      "maxTableColumns": 7
     },
     {
       "id": "sec_9beaf670",
@@ -2433,7 +2793,11 @@
       "reviewedAt": null,
       "reviewNotes": null,
       "lastModifiedBy": null,
-      "lastModifiedAt": null
+      "lastModifiedAt": null,
+      "orientation": "portrait",
+      "tableFontSize": "10pt",
+      "hasTable": false,
+      "maxTableColumns": 0
     },
     {
       "id": "sec_6cb49d1a",
@@ -2455,7 +2819,11 @@
       "reviewedAt": null,
       "reviewNotes": null,
       "lastModifiedBy": null,
-      "lastModifiedAt": null
+      "lastModifiedAt": null,
+      "orientation": "landscape",
+      "tableFontSize": "9pt",
+      "hasTable": true,
+      "maxTableColumns": 7
     },
     {
       "id": "sec_4e90be07",
@@ -2477,7 +2845,11 @@
       "reviewedAt": null,
       "reviewNotes": null,
       "lastModifiedBy": null,
-      "lastModifiedAt": null
+      "lastModifiedAt": null,
+      "orientation": "portrait",
+      "tableFontSize": "10pt",
+      "hasTable": false,
+      "maxTableColumns": 0
     },
     {
       "id": "sec_b6e65a36",
@@ -2499,7 +2871,11 @@
       "reviewedAt": null,
       "reviewNotes": null,
       "lastModifiedBy": null,
-      "lastModifiedAt": null
+      "lastModifiedAt": null,
+      "orientation": "portrait",
+      "tableFontSize": "10pt",
+      "hasTable": true,
+      "maxTableColumns": 4
     },
     {
       "id": "sec_2f7fa167",
@@ -2521,7 +2897,11 @@
       "reviewedAt": null,
       "reviewNotes": null,
       "lastModifiedBy": null,
-      "lastModifiedAt": null
+      "lastModifiedAt": null,
+      "orientation": "portrait",
+      "tableFontSize": "10pt",
+      "hasTable": true,
+      "maxTableColumns": 3
     },
     {
       "id": "sec_551338b3",
@@ -2543,7 +2923,11 @@
       "reviewedAt": null,
       "reviewNotes": null,
       "lastModifiedBy": null,
-      "lastModifiedAt": null
+      "lastModifiedAt": null,
+      "orientation": "portrait",
+      "tableFontSize": "10pt",
+      "hasTable": true,
+      "maxTableColumns": 3
     },
     {
       "id": "sec_ae1b56a7",
@@ -2565,7 +2949,11 @@
       "reviewedAt": null,
       "reviewNotes": null,
       "lastModifiedBy": null,
-      "lastModifiedAt": null
+      "lastModifiedAt": null,
+      "orientation": "portrait",
+      "tableFontSize": "10pt",
+      "hasTable": true,
+      "maxTableColumns": 3
     },
     {
       "id": "sec_a3bc8e44",
@@ -2587,7 +2975,11 @@
       "reviewedAt": null,
       "reviewNotes": null,
       "lastModifiedBy": null,
-      "lastModifiedAt": null
+      "lastModifiedAt": null,
+      "orientation": "portrait",
+      "tableFontSize": "10pt",
+      "hasTable": false,
+      "maxTableColumns": 0
     },
     {
       "id": "sec_48c6218d",
@@ -2609,7 +3001,11 @@
       "reviewedAt": null,
       "reviewNotes": null,
       "lastModifiedBy": null,
-      "lastModifiedAt": null
+      "lastModifiedAt": null,
+      "orientation": "portrait",
+      "tableFontSize": "10pt",
+      "hasTable": true,
+      "maxTableColumns": 4
     },
     {
       "id": "sec_f60acdfa",
@@ -2631,7 +3027,11 @@
       "reviewedAt": null,
       "reviewNotes": null,
       "lastModifiedBy": null,
-      "lastModifiedAt": null
+      "lastModifiedAt": null,
+      "orientation": "portrait",
+      "tableFontSize": "10pt",
+      "hasTable": true,
+      "maxTableColumns": 3
     },
     {
       "id": "sec_b90f6a70",
@@ -2653,7 +3053,11 @@
       "reviewedAt": null,
       "reviewNotes": null,
       "lastModifiedBy": null,
-      "lastModifiedAt": null
+      "lastModifiedAt": null,
+      "orientation": "portrait",
+      "tableFontSize": "10pt",
+      "hasTable": true,
+      "maxTableColumns": 4
     },
     {
       "id": "sec_d6488eb1",
@@ -2675,7 +3079,11 @@
       "reviewedAt": null,
       "reviewNotes": null,
       "lastModifiedBy": null,
-      "lastModifiedAt": null
+      "lastModifiedAt": null,
+      "orientation": "landscape",
+      "tableFontSize": "8.5pt",
+      "hasTable": true,
+      "maxTableColumns": 10
     },
     {
       "id": "sec_872e9eda",
@@ -2697,7 +3105,11 @@
       "reviewedAt": null,
       "reviewNotes": null,
       "lastModifiedBy": null,
-      "lastModifiedAt": null
+      "lastModifiedAt": null,
+      "orientation": "portrait",
+      "tableFontSize": "10pt",
+      "hasTable": false,
+      "maxTableColumns": 0
     },
     {
       "id": "sec_b9484a6f",
@@ -2719,7 +3131,11 @@
       "reviewedAt": null,
       "reviewNotes": null,
       "lastModifiedBy": null,
-      "lastModifiedAt": null
+      "lastModifiedAt": null,
+      "orientation": "landscape",
+      "tableFontSize": "8.5pt",
+      "hasTable": true,
+      "maxTableColumns": 12
     },
     {
       "id": "sec_879fdd0b",
@@ -2741,7 +3157,11 @@
       "reviewedAt": null,
       "reviewNotes": null,
       "lastModifiedBy": null,
-      "lastModifiedAt": null
+      "lastModifiedAt": null,
+      "orientation": "landscape",
+      "tableFontSize": "8.5pt",
+      "hasTable": true,
+      "maxTableColumns": 12
     },
     {
       "id": "sec_f91f1f3a",
@@ -2763,7 +3183,11 @@
       "reviewedAt": null,
       "reviewNotes": null,
       "lastModifiedBy": null,
-      "lastModifiedAt": null
+      "lastModifiedAt": null,
+      "orientation": "landscape",
+      "tableFontSize": "8.5pt",
+      "hasTable": true,
+      "maxTableColumns": 12
     },
     {
       "id": "sec_04a49c34",
@@ -2785,7 +3209,11 @@
       "reviewedAt": null,
       "reviewNotes": null,
       "lastModifiedBy": null,
-      "lastModifiedAt": null
+      "lastModifiedAt": null,
+      "orientation": "landscape",
+      "tableFontSize": "8.5pt",
+      "hasTable": true,
+      "maxTableColumns": 12
     },
     {
       "id": "sec_13691d07",
@@ -2807,7 +3235,11 @@
       "reviewedAt": null,
       "reviewNotes": null,
       "lastModifiedBy": null,
-      "lastModifiedAt": null
+      "lastModifiedAt": null,
+      "orientation": "landscape",
+      "tableFontSize": "8.5pt",
+      "hasTable": true,
+      "maxTableColumns": 12
     },
     {
       "id": "sec_198d8a34",
@@ -2829,7 +3261,11 @@
       "reviewedAt": null,
       "reviewNotes": null,
       "lastModifiedBy": null,
-      "lastModifiedAt": null
+      "lastModifiedAt": null,
+      "orientation": "landscape",
+      "tableFontSize": "8.5pt",
+      "hasTable": true,
+      "maxTableColumns": 12
     },
     {
       "id": "sec_393c6be6",
@@ -2851,7 +3287,11 @@
       "reviewedAt": null,
       "reviewNotes": null,
       "lastModifiedBy": null,
-      "lastModifiedAt": null
+      "lastModifiedAt": null,
+      "orientation": "landscape",
+      "tableFontSize": "8.5pt",
+      "hasTable": true,
+      "maxTableColumns": 12
     },
     {
       "id": "sec_e282c4b9",
@@ -2873,7 +3313,11 @@
       "reviewedAt": null,
       "reviewNotes": null,
       "lastModifiedBy": null,
-      "lastModifiedAt": null
+      "lastModifiedAt": null,
+      "orientation": "landscape",
+      "tableFontSize": "8.5pt",
+      "hasTable": true,
+      "maxTableColumns": 12
     },
     {
       "id": "sec_21f7a2a3",
@@ -2895,7 +3339,11 @@
       "reviewedAt": null,
       "reviewNotes": null,
       "lastModifiedBy": null,
-      "lastModifiedAt": null
+      "lastModifiedAt": null,
+      "orientation": "landscape",
+      "tableFontSize": "8.5pt",
+      "hasTable": true,
+      "maxTableColumns": 12
     },
     {
       "id": "sec_026ccb80",
@@ -2917,7 +3365,11 @@
       "reviewedAt": null,
       "reviewNotes": null,
       "lastModifiedBy": null,
-      "lastModifiedAt": null
+      "lastModifiedAt": null,
+      "orientation": "landscape",
+      "tableFontSize": "8.5pt",
+      "hasTable": true,
+      "maxTableColumns": 12
     },
     {
       "id": "sec_01fe9825",
@@ -2939,7 +3391,11 @@
       "reviewedAt": null,
       "reviewNotes": null,
       "lastModifiedBy": null,
-      "lastModifiedAt": null
+      "lastModifiedAt": null,
+      "orientation": "landscape",
+      "tableFontSize": "8.5pt",
+      "hasTable": true,
+      "maxTableColumns": 12
     },
     {
       "id": "sec_6b83db87",
@@ -2961,7 +3417,11 @@
       "reviewedAt": null,
       "reviewNotes": null,
       "lastModifiedBy": null,
-      "lastModifiedAt": null
+      "lastModifiedAt": null,
+      "orientation": "landscape",
+      "tableFontSize": "8.5pt",
+      "hasTable": true,
+      "maxTableColumns": 12
     },
     {
       "id": "sec_746f0e24",
@@ -2983,7 +3443,11 @@
       "reviewedAt": null,
       "reviewNotes": null,
       "lastModifiedBy": null,
-      "lastModifiedAt": null
+      "lastModifiedAt": null,
+      "orientation": "landscape",
+      "tableFontSize": "8.5pt",
+      "hasTable": true,
+      "maxTableColumns": 12
     },
     {
       "id": "sec_3ebdf4a9",
@@ -3005,7 +3469,11 @@
       "reviewedAt": null,
       "reviewNotes": null,
       "lastModifiedBy": null,
-      "lastModifiedAt": null
+      "lastModifiedAt": null,
+      "orientation": "landscape",
+      "tableFontSize": "8.5pt",
+      "hasTable": true,
+      "maxTableColumns": 12
     },
     {
       "id": "sec_07c006a0",
@@ -3027,7 +3495,11 @@
       "reviewedAt": null,
       "reviewNotes": null,
       "lastModifiedBy": null,
-      "lastModifiedAt": null
+      "lastModifiedAt": null,
+      "orientation": "landscape",
+      "tableFontSize": "8.5pt",
+      "hasTable": true,
+      "maxTableColumns": 12
     },
     {
       "id": "sec_e3000150",
@@ -3049,7 +3521,11 @@
       "reviewedAt": null,
       "reviewNotes": null,
       "lastModifiedBy": null,
-      "lastModifiedAt": null
+      "lastModifiedAt": null,
+      "orientation": "landscape",
+      "tableFontSize": "8.5pt",
+      "hasTable": true,
+      "maxTableColumns": 12
     },
     {
       "id": "sec_61e7229c",
@@ -3071,7 +3547,11 @@
       "reviewedAt": null,
       "reviewNotes": null,
       "lastModifiedBy": null,
-      "lastModifiedAt": null
+      "lastModifiedAt": null,
+      "orientation": "landscape",
+      "tableFontSize": "8.5pt",
+      "hasTable": true,
+      "maxTableColumns": 12
     },
     {
       "id": "sec_dfd6a259",
@@ -3093,7 +3573,11 @@
       "reviewedAt": null,
       "reviewNotes": null,
       "lastModifiedBy": null,
-      "lastModifiedAt": null
+      "lastModifiedAt": null,
+      "orientation": "landscape",
+      "tableFontSize": "8.5pt",
+      "hasTable": true,
+      "maxTableColumns": 12
     },
     {
       "id": "sec_7b35adcc",
@@ -3115,7 +3599,11 @@
       "reviewedAt": null,
       "reviewNotes": null,
       "lastModifiedBy": null,
-      "lastModifiedAt": null
+      "lastModifiedAt": null,
+      "orientation": "landscape",
+      "tableFontSize": "8.5pt",
+      "hasTable": true,
+      "maxTableColumns": 12
     },
     {
       "id": "sec_3ec3ceb2",
@@ -3137,7 +3625,11 @@
       "reviewedAt": null,
       "reviewNotes": null,
       "lastModifiedBy": null,
-      "lastModifiedAt": null
+      "lastModifiedAt": null,
+      "orientation": "landscape",
+      "tableFontSize": "8.5pt",
+      "hasTable": true,
+      "maxTableColumns": 12
     },
     {
       "id": "sec_2ec28e20",
@@ -3159,7 +3651,11 @@
       "reviewedAt": null,
       "reviewNotes": null,
       "lastModifiedBy": null,
-      "lastModifiedAt": null
+      "lastModifiedAt": null,
+      "orientation": "landscape",
+      "tableFontSize": "8.5pt",
+      "hasTable": true,
+      "maxTableColumns": 12
     },
     {
       "id": "sec_0709f552",
@@ -3181,7 +3677,11 @@
       "reviewedAt": null,
       "reviewNotes": null,
       "lastModifiedBy": null,
-      "lastModifiedAt": null
+      "lastModifiedAt": null,
+      "orientation": "landscape",
+      "tableFontSize": "8.5pt",
+      "hasTable": true,
+      "maxTableColumns": 12
     },
     {
       "id": "sec_ead6e5bd",
@@ -3203,7 +3703,11 @@
       "reviewedAt": null,
       "reviewNotes": null,
       "lastModifiedBy": null,
-      "lastModifiedAt": null
+      "lastModifiedAt": null,
+      "orientation": "landscape",
+      "tableFontSize": "8.5pt",
+      "hasTable": true,
+      "maxTableColumns": 12
     },
     {
       "id": "sec_4bd3d5bc",
@@ -3225,7 +3729,11 @@
       "reviewedAt": null,
       "reviewNotes": null,
       "lastModifiedBy": null,
-      "lastModifiedAt": null
+      "lastModifiedAt": null,
+      "orientation": "landscape",
+      "tableFontSize": "8.5pt",
+      "hasTable": true,
+      "maxTableColumns": 12
     },
     {
       "id": "sec_75386962",
@@ -3247,7 +3755,11 @@
       "reviewedAt": null,
       "reviewNotes": null,
       "lastModifiedBy": null,
-      "lastModifiedAt": null
+      "lastModifiedAt": null,
+      "orientation": "landscape",
+      "tableFontSize": "8.5pt",
+      "hasTable": true,
+      "maxTableColumns": 12
     },
     {
       "id": "sec_49e013f1",
@@ -3269,7 +3781,11 @@
       "reviewedAt": null,
       "reviewNotes": null,
       "lastModifiedBy": null,
-      "lastModifiedAt": null
+      "lastModifiedAt": null,
+      "orientation": "landscape",
+      "tableFontSize": "8.5pt",
+      "hasTable": true,
+      "maxTableColumns": 12
     },
     {
       "id": "sec_74daa3bc",
@@ -3291,7 +3807,11 @@
       "reviewedAt": null,
       "reviewNotes": null,
       "lastModifiedBy": null,
-      "lastModifiedAt": null
+      "lastModifiedAt": null,
+      "orientation": "landscape",
+      "tableFontSize": "8.5pt",
+      "hasTable": true,
+      "maxTableColumns": 12
     },
     {
       "id": "sec_572623dd",
@@ -3313,7 +3833,11 @@
       "reviewedAt": null,
       "reviewNotes": null,
       "lastModifiedBy": null,
-      "lastModifiedAt": null
+      "lastModifiedAt": null,
+      "orientation": "landscape",
+      "tableFontSize": "8.5pt",
+      "hasTable": true,
+      "maxTableColumns": 12
     },
     {
       "id": "sec_8a21452d",
@@ -3335,7 +3859,11 @@
       "reviewedAt": null,
       "reviewNotes": null,
       "lastModifiedBy": null,
-      "lastModifiedAt": null
+      "lastModifiedAt": null,
+      "orientation": "landscape",
+      "tableFontSize": "8.5pt",
+      "hasTable": true,
+      "maxTableColumns": 12
     },
     {
       "id": "sec_994d4557",
@@ -3357,7 +3885,11 @@
       "reviewedAt": null,
       "reviewNotes": null,
       "lastModifiedBy": null,
-      "lastModifiedAt": null
+      "lastModifiedAt": null,
+      "orientation": "landscape",
+      "tableFontSize": "8.5pt",
+      "hasTable": true,
+      "maxTableColumns": 12
     },
     {
       "id": "sec_b3c65dcf",
@@ -3379,7 +3911,11 @@
       "reviewedAt": null,
       "reviewNotes": null,
       "lastModifiedBy": null,
-      "lastModifiedAt": null
+      "lastModifiedAt": null,
+      "orientation": "landscape",
+      "tableFontSize": "8.5pt",
+      "hasTable": true,
+      "maxTableColumns": 12
     },
     {
       "id": "sec_3c582f97",
@@ -3401,7 +3937,11 @@
       "reviewedAt": null,
       "reviewNotes": null,
       "lastModifiedBy": null,
-      "lastModifiedAt": null
+      "lastModifiedAt": null,
+      "orientation": "landscape",
+      "tableFontSize": "8.5pt",
+      "hasTable": true,
+      "maxTableColumns": 12
     },
     {
       "id": "sec_d0b97805",
@@ -3423,7 +3963,11 @@
       "reviewedAt": null,
       "reviewNotes": null,
       "lastModifiedBy": null,
-      "lastModifiedAt": null
+      "lastModifiedAt": null,
+      "orientation": "landscape",
+      "tableFontSize": "8.5pt",
+      "hasTable": true,
+      "maxTableColumns": 12
     },
     {
       "id": "sec_384ded58",
@@ -3445,7 +3989,11 @@
       "reviewedAt": null,
       "reviewNotes": null,
       "lastModifiedBy": null,
-      "lastModifiedAt": null
+      "lastModifiedAt": null,
+      "orientation": "landscape",
+      "tableFontSize": "8.5pt",
+      "hasTable": true,
+      "maxTableColumns": 12
     },
     {
       "id": "sec_2a96ca95",
@@ -3467,7 +4015,11 @@
       "reviewedAt": null,
       "reviewNotes": null,
       "lastModifiedBy": null,
-      "lastModifiedAt": null
+      "lastModifiedAt": null,
+      "orientation": "landscape",
+      "tableFontSize": "8.5pt",
+      "hasTable": true,
+      "maxTableColumns": 12
     },
     {
       "id": "sec_8ce9d3e0",
@@ -3489,7 +4041,11 @@
       "reviewedAt": null,
       "reviewNotes": null,
       "lastModifiedBy": null,
-      "lastModifiedAt": null
+      "lastModifiedAt": null,
+      "orientation": "landscape",
+      "tableFontSize": "8.5pt",
+      "hasTable": true,
+      "maxTableColumns": 12
     },
     {
       "id": "sec_2ed4f22c",
@@ -3511,7 +4067,11 @@
       "reviewedAt": null,
       "reviewNotes": null,
       "lastModifiedBy": null,
-      "lastModifiedAt": null
+      "lastModifiedAt": null,
+      "orientation": "landscape",
+      "tableFontSize": "8.5pt",
+      "hasTable": true,
+      "maxTableColumns": 12
     },
     {
       "id": "sec_849a7359",
@@ -3533,7 +4093,11 @@
       "reviewedAt": null,
       "reviewNotes": null,
       "lastModifiedBy": null,
-      "lastModifiedAt": null
+      "lastModifiedAt": null,
+      "orientation": "landscape",
+      "tableFontSize": "8.5pt",
+      "hasTable": true,
+      "maxTableColumns": 12
     },
     {
       "id": "sec_4055d7df",
@@ -3555,7 +4119,11 @@
       "reviewedAt": null,
       "reviewNotes": null,
       "lastModifiedBy": null,
-      "lastModifiedAt": null
+      "lastModifiedAt": null,
+      "orientation": "landscape",
+      "tableFontSize": "8.5pt",
+      "hasTable": true,
+      "maxTableColumns": 12
     },
     {
       "id": "sec_f875aa5c",
@@ -3577,7 +4145,11 @@
       "reviewedAt": null,
       "reviewNotes": null,
       "lastModifiedBy": null,
-      "lastModifiedAt": null
+      "lastModifiedAt": null,
+      "orientation": "portrait",
+      "tableFontSize": "10pt",
+      "hasTable": false,
+      "maxTableColumns": 0
     },
     {
       "id": "sec_cfa4009b",
@@ -3599,7 +4171,11 @@
       "reviewedAt": null,
       "reviewNotes": null,
       "lastModifiedBy": null,
-      "lastModifiedAt": null
+      "lastModifiedAt": null,
+      "orientation": "portrait",
+      "tableFontSize": "10pt",
+      "hasTable": false,
+      "maxTableColumns": 0
     },
     {
       "id": "sec_a9f311bc",
@@ -3621,7 +4197,11 @@
       "reviewedAt": null,
       "reviewNotes": null,
       "lastModifiedBy": null,
-      "lastModifiedAt": null
+      "lastModifiedAt": null,
+      "orientation": "portrait",
+      "tableFontSize": "10pt",
+      "hasTable": false,
+      "maxTableColumns": 0
     },
     {
       "id": "sec_ebb14b3b",
@@ -3643,7 +4223,11 @@
       "reviewedAt": null,
       "reviewNotes": null,
       "lastModifiedBy": null,
-      "lastModifiedAt": null
+      "lastModifiedAt": null,
+      "orientation": "portrait",
+      "tableFontSize": "10pt",
+      "hasTable": false,
+      "maxTableColumns": 0
     },
     {
       "id": "sec_8c1c5b88",
@@ -3665,7 +4249,11 @@
       "reviewedAt": null,
       "reviewNotes": null,
       "lastModifiedBy": null,
-      "lastModifiedAt": null
+      "lastModifiedAt": null,
+      "orientation": "portrait",
+      "tableFontSize": "10pt",
+      "hasTable": false,
+      "maxTableColumns": 0
     },
     {
       "id": "sec_aca7bc5c",
@@ -3687,7 +4275,11 @@
       "reviewedAt": null,
       "reviewNotes": null,
       "lastModifiedBy": null,
-      "lastModifiedAt": null
+      "lastModifiedAt": null,
+      "orientation": "portrait",
+      "tableFontSize": "10pt",
+      "hasTable": false,
+      "maxTableColumns": 0
     },
     {
       "id": "sec_713069ed",
@@ -3709,7 +4301,11 @@
       "reviewedAt": null,
       "reviewNotes": null,
       "lastModifiedBy": null,
-      "lastModifiedAt": null
+      "lastModifiedAt": null,
+      "orientation": "portrait",
+      "tableFontSize": "10pt",
+      "hasTable": false,
+      "maxTableColumns": 0
     },
     {
       "id": "sec_e680cfa8",
@@ -3731,7 +4327,11 @@
       "reviewedAt": null,
       "reviewNotes": null,
       "lastModifiedBy": null,
-      "lastModifiedAt": null
+      "lastModifiedAt": null,
+      "orientation": "portrait",
+      "tableFontSize": "10pt",
+      "hasTable": false,
+      "maxTableColumns": 0
     },
     {
       "id": "sec_599fd855",
@@ -3753,7 +4353,11 @@
       "reviewedAt": null,
       "reviewNotes": null,
       "lastModifiedBy": null,
-      "lastModifiedAt": null
+      "lastModifiedAt": null,
+      "orientation": "portrait",
+      "tableFontSize": "10pt",
+      "hasTable": false,
+      "maxTableColumns": 0
     },
     {
       "id": "sec_2c4f9259",
@@ -3775,7 +4379,11 @@
       "reviewedAt": null,
       "reviewNotes": null,
       "lastModifiedBy": null,
-      "lastModifiedAt": null
+      "lastModifiedAt": null,
+      "orientation": "portrait",
+      "tableFontSize": "10pt",
+      "hasTable": false,
+      "maxTableColumns": 0
     },
     {
       "id": "sec_cab67710",
@@ -3797,7 +4405,11 @@
       "reviewedAt": null,
       "reviewNotes": null,
       "lastModifiedBy": null,
-      "lastModifiedAt": null
+      "lastModifiedAt": null,
+      "orientation": "portrait",
+      "tableFontSize": "10pt",
+      "hasTable": false,
+      "maxTableColumns": 0
     },
     {
       "id": "sec_196bb8b1",
@@ -3819,7 +4431,11 @@
       "reviewedAt": null,
       "reviewNotes": null,
       "lastModifiedBy": null,
-      "lastModifiedAt": null
+      "lastModifiedAt": null,
+      "orientation": "portrait",
+      "tableFontSize": "10pt",
+      "hasTable": false,
+      "maxTableColumns": 0
     },
     {
       "id": "sec_ee7dad4a",
@@ -3841,7 +4457,11 @@
       "reviewedAt": null,
       "reviewNotes": null,
       "lastModifiedBy": null,
-      "lastModifiedAt": null
+      "lastModifiedAt": null,
+      "orientation": "portrait",
+      "tableFontSize": "10pt",
+      "hasTable": false,
+      "maxTableColumns": 0
     },
     {
       "id": "sec_20eb8b02",
@@ -3863,7 +4483,11 @@
       "reviewedAt": null,
       "reviewNotes": null,
       "lastModifiedBy": null,
-      "lastModifiedAt": null
+      "lastModifiedAt": null,
+      "orientation": "portrait",
+      "tableFontSize": "10pt",
+      "hasTable": false,
+      "maxTableColumns": 0
     },
     {
       "id": "sec_bed55380",
@@ -3885,7 +4509,11 @@
       "reviewedAt": null,
       "reviewNotes": null,
       "lastModifiedBy": null,
-      "lastModifiedAt": null
+      "lastModifiedAt": null,
+      "orientation": "portrait",
+      "tableFontSize": "10pt",
+      "hasTable": false,
+      "maxTableColumns": 0
     },
     {
       "id": "sec_a2763675",
@@ -3907,7 +4535,11 @@
       "reviewedAt": null,
       "reviewNotes": null,
       "lastModifiedBy": null,
-      "lastModifiedAt": null
+      "lastModifiedAt": null,
+      "orientation": "portrait",
+      "tableFontSize": "10pt",
+      "hasTable": false,
+      "maxTableColumns": 0
     },
     {
       "id": "sec_9f50e771",
@@ -3929,7 +4561,11 @@
       "reviewedAt": null,
       "reviewNotes": null,
       "lastModifiedBy": null,
-      "lastModifiedAt": null
+      "lastModifiedAt": null,
+      "orientation": "portrait",
+      "tableFontSize": "10pt",
+      "hasTable": false,
+      "maxTableColumns": 0
     },
     {
       "id": "sec_d035982a",
@@ -3951,7 +4587,11 @@
       "reviewedAt": null,
       "reviewNotes": null,
       "lastModifiedBy": null,
-      "lastModifiedAt": null
+      "lastModifiedAt": null,
+      "orientation": "portrait",
+      "tableFontSize": "10pt",
+      "hasTable": false,
+      "maxTableColumns": 0
     },
     {
       "id": "sec_ef4ab49a",
@@ -3973,7 +4613,11 @@
       "reviewedAt": null,
       "reviewNotes": null,
       "lastModifiedBy": null,
-      "lastModifiedAt": null
+      "lastModifiedAt": null,
+      "orientation": "portrait",
+      "tableFontSize": "10pt",
+      "hasTable": false,
+      "maxTableColumns": 0
     },
     {
       "id": "sec_f4967df3",
@@ -3995,7 +4639,11 @@
       "reviewedAt": null,
       "reviewNotes": null,
       "lastModifiedBy": null,
-      "lastModifiedAt": null
+      "lastModifiedAt": null,
+      "orientation": "portrait",
+      "tableFontSize": "10pt",
+      "hasTable": false,
+      "maxTableColumns": 0
     },
     {
       "id": "sec_0ec52354",
@@ -4017,7 +4665,11 @@
       "reviewedAt": null,
       "reviewNotes": null,
       "lastModifiedBy": null,
-      "lastModifiedAt": null
+      "lastModifiedAt": null,
+      "orientation": "portrait",
+      "tableFontSize": "10pt",
+      "hasTable": false,
+      "maxTableColumns": 0
     },
     {
       "id": "sec_97910f89",
@@ -4039,7 +4691,11 @@
       "reviewedAt": null,
       "reviewNotes": null,
       "lastModifiedBy": null,
-      "lastModifiedAt": null
+      "lastModifiedAt": null,
+      "orientation": "portrait",
+      "tableFontSize": "10pt",
+      "hasTable": false,
+      "maxTableColumns": 0
     },
     {
       "id": "sec_446df81f",
@@ -4061,7 +4717,11 @@
       "reviewedAt": null,
       "reviewNotes": null,
       "lastModifiedBy": null,
-      "lastModifiedAt": null
+      "lastModifiedAt": null,
+      "orientation": "portrait",
+      "tableFontSize": "10pt",
+      "hasTable": false,
+      "maxTableColumns": 0
     },
     {
       "id": "sec_a8da750f",
@@ -4083,7 +4743,11 @@
       "reviewedAt": null,
       "reviewNotes": null,
       "lastModifiedBy": null,
-      "lastModifiedAt": null
+      "lastModifiedAt": null,
+      "orientation": "portrait",
+      "tableFontSize": "10pt",
+      "hasTable": false,
+      "maxTableColumns": 0
     },
     {
       "id": "sec_a8b5cbf9",
@@ -4105,7 +4769,11 @@
       "reviewedAt": null,
       "reviewNotes": null,
       "lastModifiedBy": null,
-      "lastModifiedAt": null
+      "lastModifiedAt": null,
+      "orientation": "portrait",
+      "tableFontSize": "10pt",
+      "hasTable": false,
+      "maxTableColumns": 0
     },
     {
       "id": "sec_edd455f9",
@@ -4127,7 +4795,11 @@
       "reviewedAt": null,
       "reviewNotes": null,
       "lastModifiedBy": null,
-      "lastModifiedAt": null
+      "lastModifiedAt": null,
+      "orientation": "portrait",
+      "tableFontSize": "10pt",
+      "hasTable": false,
+      "maxTableColumns": 0
     },
     {
       "id": "sec_2362f287",
@@ -4149,7 +4821,11 @@
       "reviewedAt": null,
       "reviewNotes": null,
       "lastModifiedBy": null,
-      "lastModifiedAt": null
+      "lastModifiedAt": null,
+      "orientation": "portrait",
+      "tableFontSize": "10pt",
+      "hasTable": false,
+      "maxTableColumns": 0
     },
     {
       "id": "sec_50cb2158",
@@ -4171,7 +4847,11 @@
       "reviewedAt": null,
       "reviewNotes": null,
       "lastModifiedBy": null,
-      "lastModifiedAt": null
+      "lastModifiedAt": null,
+      "orientation": "portrait",
+      "tableFontSize": "10pt",
+      "hasTable": false,
+      "maxTableColumns": 0
     },
     {
       "id": "sec_e07c8942",
@@ -4193,7 +4873,11 @@
       "reviewedAt": null,
       "reviewNotes": null,
       "lastModifiedBy": null,
-      "lastModifiedAt": null
+      "lastModifiedAt": null,
+      "orientation": "portrait",
+      "tableFontSize": "10pt",
+      "hasTable": false,
+      "maxTableColumns": 0
     },
     {
       "id": "sec_eb871a75",
@@ -4215,7 +4899,11 @@
       "reviewedAt": null,
       "reviewNotes": null,
       "lastModifiedBy": null,
-      "lastModifiedAt": null
+      "lastModifiedAt": null,
+      "orientation": "portrait",
+      "tableFontSize": "10pt",
+      "hasTable": false,
+      "maxTableColumns": 0
     },
     {
       "id": "sec_66ed0f21",
@@ -4237,7 +4925,11 @@
       "reviewedAt": null,
       "reviewNotes": null,
       "lastModifiedBy": null,
-      "lastModifiedAt": null
+      "lastModifiedAt": null,
+      "orientation": "portrait",
+      "tableFontSize": "10pt",
+      "hasTable": false,
+      "maxTableColumns": 0
     },
     {
       "id": "sec_54526c56",
@@ -4259,7 +4951,11 @@
       "reviewedAt": null,
       "reviewNotes": null,
       "lastModifiedBy": null,
-      "lastModifiedAt": null
+      "lastModifiedAt": null,
+      "orientation": "portrait",
+      "tableFontSize": "10pt",
+      "hasTable": false,
+      "maxTableColumns": 0
     },
     {
       "id": "sec_996f7348",
@@ -4281,7 +4977,11 @@
       "reviewedAt": null,
       "reviewNotes": null,
       "lastModifiedBy": null,
-      "lastModifiedAt": null
+      "lastModifiedAt": null,
+      "orientation": "portrait",
+      "tableFontSize": "10pt",
+      "hasTable": false,
+      "maxTableColumns": 0
     },
     {
       "id": "sec_91090144",
@@ -4303,7 +5003,11 @@
       "reviewedAt": null,
       "reviewNotes": null,
       "lastModifiedBy": null,
-      "lastModifiedAt": null
+      "lastModifiedAt": null,
+      "orientation": "portrait",
+      "tableFontSize": "10pt",
+      "hasTable": false,
+      "maxTableColumns": 0
     },
     {
       "id": "sec_045bfdc5",
@@ -4325,7 +5029,11 @@
       "reviewedAt": null,
       "reviewNotes": null,
       "lastModifiedBy": null,
-      "lastModifiedAt": null
+      "lastModifiedAt": null,
+      "orientation": "portrait",
+      "tableFontSize": "10pt",
+      "hasTable": false,
+      "maxTableColumns": 0
     },
     {
       "id": "sec_9462df94",
@@ -4347,7 +5055,11 @@
       "reviewedAt": null,
       "reviewNotes": null,
       "lastModifiedBy": null,
-      "lastModifiedAt": null
+      "lastModifiedAt": null,
+      "orientation": "portrait",
+      "tableFontSize": "10pt",
+      "hasTable": false,
+      "maxTableColumns": 0
     },
     {
       "id": "sec_8d49b97b",
@@ -4369,7 +5081,11 @@
       "reviewedAt": null,
       "reviewNotes": null,
       "lastModifiedBy": null,
-      "lastModifiedAt": null
+      "lastModifiedAt": null,
+      "orientation": "portrait",
+      "tableFontSize": "10pt",
+      "hasTable": false,
+      "maxTableColumns": 0
     },
     {
       "id": "sec_90ec43d5",
@@ -4391,7 +5107,11 @@
       "reviewedAt": null,
       "reviewNotes": null,
       "lastModifiedBy": null,
-      "lastModifiedAt": null
+      "lastModifiedAt": null,
+      "orientation": "portrait",
+      "tableFontSize": "10pt",
+      "hasTable": false,
+      "maxTableColumns": 0
     },
     {
       "id": "sec_4c034ce7",
@@ -4413,7 +5133,11 @@
       "reviewedAt": null,
       "reviewNotes": null,
       "lastModifiedBy": null,
-      "lastModifiedAt": null
+      "lastModifiedAt": null,
+      "orientation": "portrait",
+      "tableFontSize": "10pt",
+      "hasTable": false,
+      "maxTableColumns": 0
     },
     {
       "id": "sec_cbbbed0e",
@@ -4435,7 +5159,11 @@
       "reviewedAt": null,
       "reviewNotes": null,
       "lastModifiedBy": null,
-      "lastModifiedAt": null
+      "lastModifiedAt": null,
+      "orientation": "portrait",
+      "tableFontSize": "10pt",
+      "hasTable": false,
+      "maxTableColumns": 0
     },
     {
       "id": "sec_e7b2ae12",
@@ -4457,7 +5185,11 @@
       "reviewedAt": null,
       "reviewNotes": null,
       "lastModifiedBy": null,
-      "lastModifiedAt": null
+      "lastModifiedAt": null,
+      "orientation": "portrait",
+      "tableFontSize": "10pt",
+      "hasTable": false,
+      "maxTableColumns": 0
     },
     {
       "id": "sec_04edbff8",
@@ -4479,7 +5211,11 @@
       "reviewedAt": null,
       "reviewNotes": null,
       "lastModifiedBy": null,
-      "lastModifiedAt": null
+      "lastModifiedAt": null,
+      "orientation": "portrait",
+      "tableFontSize": "10pt",
+      "hasTable": false,
+      "maxTableColumns": 0
     },
     {
       "id": "sec_d56174df",
@@ -4501,7 +5237,11 @@
       "reviewedAt": null,
       "reviewNotes": null,
       "lastModifiedBy": null,
-      "lastModifiedAt": null
+      "lastModifiedAt": null,
+      "orientation": "portrait",
+      "tableFontSize": "10pt",
+      "hasTable": false,
+      "maxTableColumns": 0
     },
     {
       "id": "sec_e0083484",
@@ -4523,7 +5263,11 @@
       "reviewedAt": null,
       "reviewNotes": null,
       "lastModifiedBy": null,
-      "lastModifiedAt": null
+      "lastModifiedAt": null,
+      "orientation": "portrait",
+      "tableFontSize": "10pt",
+      "hasTable": false,
+      "maxTableColumns": 0
     },
     {
       "id": "sec_5095943a",
@@ -4545,7 +5289,11 @@
       "reviewedAt": null,
       "reviewNotes": null,
       "lastModifiedBy": null,
-      "lastModifiedAt": null
+      "lastModifiedAt": null,
+      "orientation": "portrait",
+      "tableFontSize": "10pt",
+      "hasTable": false,
+      "maxTableColumns": 0
     },
     {
       "id": "sec_9c26aa26",
@@ -4567,7 +5315,11 @@
       "reviewedAt": null,
       "reviewNotes": null,
       "lastModifiedBy": null,
-      "lastModifiedAt": null
+      "lastModifiedAt": null,
+      "orientation": "portrait",
+      "tableFontSize": "10pt",
+      "hasTable": false,
+      "maxTableColumns": 0
     },
     {
       "id": "sec_1a129abf",
@@ -4589,7 +5341,11 @@
       "reviewedAt": null,
       "reviewNotes": null,
       "lastModifiedBy": null,
-      "lastModifiedAt": null
+      "lastModifiedAt": null,
+      "orientation": "portrait",
+      "tableFontSize": "10pt",
+      "hasTable": false,
+      "maxTableColumns": 0
     },
     {
       "id": "sec_3ebe5f0a",
@@ -4611,7 +5367,11 @@
       "reviewedAt": null,
       "reviewNotes": null,
       "lastModifiedBy": null,
-      "lastModifiedAt": null
+      "lastModifiedAt": null,
+      "orientation": "portrait",
+      "tableFontSize": "10pt",
+      "hasTable": false,
+      "maxTableColumns": 0
     },
     {
       "id": "sec_38b0f072",
@@ -4633,7 +5393,11 @@
       "reviewedAt": null,
       "reviewNotes": null,
       "lastModifiedBy": null,
-      "lastModifiedAt": null
+      "lastModifiedAt": null,
+      "orientation": "portrait",
+      "tableFontSize": "10pt",
+      "hasTable": false,
+      "maxTableColumns": 0
     },
     {
       "id": "sec_a3f6c002",
@@ -4655,7 +5419,11 @@
       "reviewedAt": null,
       "reviewNotes": null,
       "lastModifiedBy": null,
-      "lastModifiedAt": null
+      "lastModifiedAt": null,
+      "orientation": "portrait",
+      "tableFontSize": "10pt",
+      "hasTable": false,
+      "maxTableColumns": 0
     },
     {
       "id": "sec_ad9fbbbf",
@@ -4677,7 +5445,11 @@
       "reviewedAt": null,
       "reviewNotes": null,
       "lastModifiedBy": null,
-      "lastModifiedAt": null
+      "lastModifiedAt": null,
+      "orientation": "portrait",
+      "tableFontSize": "10pt",
+      "hasTable": false,
+      "maxTableColumns": 0
     },
     {
       "id": "sec_e9be024c",
@@ -4699,7 +5471,11 @@
       "reviewedAt": null,
       "reviewNotes": null,
       "lastModifiedBy": null,
-      "lastModifiedAt": null
+      "lastModifiedAt": null,
+      "orientation": "portrait",
+      "tableFontSize": "10pt",
+      "hasTable": false,
+      "maxTableColumns": 0
     },
     {
       "id": "sec_ba0a27a1",
@@ -4721,7 +5497,11 @@
       "reviewedAt": null,
       "reviewNotes": null,
       "lastModifiedBy": null,
-      "lastModifiedAt": null
+      "lastModifiedAt": null,
+      "orientation": "portrait",
+      "tableFontSize": "10pt",
+      "hasTable": false,
+      "maxTableColumns": 0
     },
     {
       "id": "sec_493e3019",
@@ -4743,7 +5523,11 @@
       "reviewedAt": null,
       "reviewNotes": null,
       "lastModifiedBy": null,
-      "lastModifiedAt": null
+      "lastModifiedAt": null,
+      "orientation": "portrait",
+      "tableFontSize": "10pt",
+      "hasTable": false,
+      "maxTableColumns": 0
     },
     {
       "id": "sec_17e2e5c9",
@@ -4765,7 +5549,11 @@
       "reviewedAt": null,
       "reviewNotes": null,
       "lastModifiedBy": null,
-      "lastModifiedAt": null
+      "lastModifiedAt": null,
+      "orientation": "portrait",
+      "tableFontSize": "10pt",
+      "hasTable": false,
+      "maxTableColumns": 0
     },
     {
       "id": "sec_63a27cde",
@@ -4787,7 +5575,11 @@
       "reviewedAt": null,
       "reviewNotes": null,
       "lastModifiedBy": null,
-      "lastModifiedAt": null
+      "lastModifiedAt": null,
+      "orientation": "portrait",
+      "tableFontSize": "10pt",
+      "hasTable": false,
+      "maxTableColumns": 0
     },
     {
       "id": "sec_1ddc8e6a",
@@ -4809,7 +5601,11 @@
       "reviewedAt": null,
       "reviewNotes": null,
       "lastModifiedBy": null,
-      "lastModifiedAt": null
+      "lastModifiedAt": null,
+      "orientation": "portrait",
+      "tableFontSize": "10pt",
+      "hasTable": false,
+      "maxTableColumns": 0
     },
     {
       "id": "sec_06b42126",
@@ -4831,7 +5627,11 @@
       "reviewedAt": null,
       "reviewNotes": null,
       "lastModifiedBy": null,
-      "lastModifiedAt": null
+      "lastModifiedAt": null,
+      "orientation": "portrait",
+      "tableFontSize": "10pt",
+      "hasTable": false,
+      "maxTableColumns": 0
     },
     {
       "id": "sec_b8dd2ee5",
@@ -4853,7 +5653,11 @@
       "reviewedAt": null,
       "reviewNotes": null,
       "lastModifiedBy": null,
-      "lastModifiedAt": null
+      "lastModifiedAt": null,
+      "orientation": "portrait",
+      "tableFontSize": "10pt",
+      "hasTable": false,
+      "maxTableColumns": 0
     },
     {
       "id": "sec_a81d140b",
@@ -4875,7 +5679,11 @@
       "reviewedAt": null,
       "reviewNotes": null,
       "lastModifiedBy": null,
-      "lastModifiedAt": null
+      "lastModifiedAt": null,
+      "orientation": "portrait",
+      "tableFontSize": "10pt",
+      "hasTable": false,
+      "maxTableColumns": 0
     },
     {
       "id": "sec_5576e6bd",
@@ -4897,7 +5705,11 @@
       "reviewedAt": null,
       "reviewNotes": null,
       "lastModifiedBy": null,
-      "lastModifiedAt": null
+      "lastModifiedAt": null,
+      "orientation": "portrait",
+      "tableFontSize": "10pt",
+      "hasTable": false,
+      "maxTableColumns": 0
     },
     {
       "id": "sec_96784fe7",
@@ -4919,7 +5731,11 @@
       "reviewedAt": null,
       "reviewNotes": null,
       "lastModifiedBy": null,
-      "lastModifiedAt": null
+      "lastModifiedAt": null,
+      "orientation": "portrait",
+      "tableFontSize": "10pt",
+      "hasTable": false,
+      "maxTableColumns": 0
     },
     {
       "id": "sec_015491b1",
@@ -4941,7 +5757,11 @@
       "reviewedAt": null,
       "reviewNotes": null,
       "lastModifiedBy": null,
-      "lastModifiedAt": null
+      "lastModifiedAt": null,
+      "orientation": "portrait",
+      "tableFontSize": "10pt",
+      "hasTable": false,
+      "maxTableColumns": 0
     },
     {
       "id": "sec_482e61eb",
@@ -4963,7 +5783,11 @@
       "reviewedAt": null,
       "reviewNotes": null,
       "lastModifiedBy": null,
-      "lastModifiedAt": null
+      "lastModifiedAt": null,
+      "orientation": "portrait",
+      "tableFontSize": "10pt",
+      "hasTable": false,
+      "maxTableColumns": 0
     },
     {
       "id": "sec_4a638eb3",
@@ -4985,7 +5809,11 @@
       "reviewedAt": null,
       "reviewNotes": null,
       "lastModifiedBy": null,
-      "lastModifiedAt": null
+      "lastModifiedAt": null,
+      "orientation": "portrait",
+      "tableFontSize": "10pt",
+      "hasTable": false,
+      "maxTableColumns": 0
     },
     {
       "id": "sec_dbef3ec3",
@@ -5007,7 +5835,11 @@
       "reviewedAt": null,
       "reviewNotes": null,
       "lastModifiedBy": null,
-      "lastModifiedAt": null
+      "lastModifiedAt": null,
+      "orientation": "portrait",
+      "tableFontSize": "10pt",
+      "hasTable": false,
+      "maxTableColumns": 0
     },
     {
       "id": "sec_e2a48a3a",
@@ -5029,7 +5861,11 @@
       "reviewedAt": null,
       "reviewNotes": null,
       "lastModifiedBy": null,
-      "lastModifiedAt": null
+      "lastModifiedAt": null,
+      "orientation": "portrait",
+      "tableFontSize": "10pt",
+      "hasTable": false,
+      "maxTableColumns": 0
     },
     {
       "id": "sec_ca9e27e3",
@@ -5051,7 +5887,11 @@
       "reviewedAt": null,
       "reviewNotes": null,
       "lastModifiedBy": null,
-      "lastModifiedAt": null
+      "lastModifiedAt": null,
+      "orientation": "portrait",
+      "tableFontSize": "10pt",
+      "hasTable": true,
+      "maxTableColumns": 4
     },
     {
       "id": "sec_ccf9f50e",
@@ -5073,7 +5913,11 @@
       "reviewedAt": null,
       "reviewNotes": null,
       "lastModifiedBy": null,
-      "lastModifiedAt": null
+      "lastModifiedAt": null,
+      "orientation": "portrait",
+      "tableFontSize": "10pt",
+      "hasTable": false,
+      "maxTableColumns": 0
     },
     {
       "id": "sec_a7c06444",
@@ -5095,7 +5939,11 @@
       "reviewedAt": null,
       "reviewNotes": null,
       "lastModifiedBy": null,
-      "lastModifiedAt": null
+      "lastModifiedAt": null,
+      "orientation": "landscape",
+      "tableFontSize": "9pt",
+      "hasTable": true,
+      "maxTableColumns": 7
     },
     {
       "id": "sec_7f33cff6",
@@ -5117,7 +5965,11 @@
       "reviewedAt": null,
       "reviewNotes": null,
       "lastModifiedBy": null,
-      "lastModifiedAt": null
+      "lastModifiedAt": null,
+      "orientation": "landscape",
+      "tableFontSize": "9pt",
+      "hasTable": true,
+      "maxTableColumns": 7
     },
     {
       "id": "sec_5dc3bcbe",
@@ -5139,7 +5991,11 @@
       "reviewedAt": null,
       "reviewNotes": null,
       "lastModifiedBy": null,
-      "lastModifiedAt": null
+      "lastModifiedAt": null,
+      "orientation": "landscape",
+      "tableFontSize": "9pt",
+      "hasTable": true,
+      "maxTableColumns": 7
     },
     {
       "id": "sec_9ce2bb70",
@@ -5161,7 +6017,11 @@
       "reviewedAt": null,
       "reviewNotes": null,
       "lastModifiedBy": null,
-      "lastModifiedAt": null
+      "lastModifiedAt": null,
+      "orientation": "portrait",
+      "tableFontSize": "10pt",
+      "hasTable": true,
+      "maxTableColumns": 5
     },
     {
       "id": "sec_dd04cc81",
@@ -5183,7 +6043,11 @@
       "reviewedAt": null,
       "reviewNotes": null,
       "lastModifiedBy": null,
-      "lastModifiedAt": null
+      "lastModifiedAt": null,
+      "orientation": "portrait",
+      "tableFontSize": "10pt",
+      "hasTable": false,
+      "maxTableColumns": 0
     },
     {
       "id": "sec_92b77c37",
@@ -5205,7 +6069,11 @@
       "reviewedAt": null,
       "reviewNotes": null,
       "lastModifiedBy": null,
-      "lastModifiedAt": null
+      "lastModifiedAt": null,
+      "orientation": "portrait",
+      "tableFontSize": "10pt",
+      "hasTable": true,
+      "maxTableColumns": 5
     },
     {
       "id": "sec_b305f7ac",
@@ -5227,7 +6095,11 @@
       "reviewedAt": null,
       "reviewNotes": null,
       "lastModifiedBy": null,
-      "lastModifiedAt": null
+      "lastModifiedAt": null,
+      "orientation": "portrait",
+      "tableFontSize": "10pt",
+      "hasTable": false,
+      "maxTableColumns": 0
     },
     {
       "id": "sec_c1bd0260",
@@ -5249,7 +6121,11 @@
       "reviewedAt": null,
       "reviewNotes": null,
       "lastModifiedBy": null,
-      "lastModifiedAt": null
+      "lastModifiedAt": null,
+      "orientation": "portrait",
+      "tableFontSize": "10pt",
+      "hasTable": false,
+      "maxTableColumns": 0
     },
     {
       "id": "sec_d08da0df",
@@ -5271,7 +6147,11 @@
       "reviewedAt": null,
       "reviewNotes": null,
       "lastModifiedBy": null,
-      "lastModifiedAt": null
+      "lastModifiedAt": null,
+      "orientation": "portrait",
+      "tableFontSize": "10pt",
+      "hasTable": false,
+      "maxTableColumns": 0
     },
     {
       "id": "sec_959356ac",
@@ -5293,7 +6173,11 @@
       "reviewedAt": null,
       "reviewNotes": null,
       "lastModifiedBy": null,
-      "lastModifiedAt": null
+      "lastModifiedAt": null,
+      "orientation": "portrait",
+      "tableFontSize": "10pt",
+      "hasTable": false,
+      "maxTableColumns": 0
     },
     {
       "id": "sec_4cbb6d8d",
@@ -5315,7 +6199,11 @@
       "reviewedAt": null,
       "reviewNotes": null,
       "lastModifiedBy": null,
-      "lastModifiedAt": null
+      "lastModifiedAt": null,
+      "orientation": "portrait",
+      "tableFontSize": "10pt",
+      "hasTable": false,
+      "maxTableColumns": 0
     },
     {
       "id": "sec_f7c73fb4",
@@ -5337,7 +6225,11 @@
       "reviewedAt": null,
       "reviewNotes": null,
       "lastModifiedBy": null,
-      "lastModifiedAt": null
+      "lastModifiedAt": null,
+      "orientation": "portrait",
+      "tableFontSize": "10pt",
+      "hasTable": false,
+      "maxTableColumns": 0
     },
     {
       "id": "sec_f72f1001",
@@ -5359,7 +6251,11 @@
       "reviewedAt": null,
       "reviewNotes": null,
       "lastModifiedBy": null,
-      "lastModifiedAt": null
+      "lastModifiedAt": null,
+      "orientation": "portrait",
+      "tableFontSize": "10pt",
+      "hasTable": false,
+      "maxTableColumns": 0
     },
     {
       "id": "sec_37df7e57",
@@ -5381,7 +6277,11 @@
       "reviewedAt": null,
       "reviewNotes": null,
       "lastModifiedBy": null,
-      "lastModifiedAt": null
+      "lastModifiedAt": null,
+      "orientation": "portrait",
+      "tableFontSize": "10pt",
+      "hasTable": false,
+      "maxTableColumns": 0
     },
     {
       "id": "sec_2ff218ad",
@@ -5403,7 +6303,11 @@
       "reviewedAt": null,
       "reviewNotes": null,
       "lastModifiedBy": null,
-      "lastModifiedAt": null
+      "lastModifiedAt": null,
+      "orientation": "portrait",
+      "tableFontSize": "10pt",
+      "hasTable": false,
+      "maxTableColumns": 0
     },
     {
       "id": "sec_ff0244af",
@@ -5425,7 +6329,11 @@
       "reviewedAt": null,
       "reviewNotes": null,
       "lastModifiedBy": null,
-      "lastModifiedAt": null
+      "lastModifiedAt": null,
+      "orientation": "portrait",
+      "tableFontSize": "10pt",
+      "hasTable": false,
+      "maxTableColumns": 0
     },
     {
       "id": "sec_f908ad0b",
@@ -5447,7 +6355,11 @@
       "reviewedAt": null,
       "reviewNotes": null,
       "lastModifiedBy": null,
-      "lastModifiedAt": null
+      "lastModifiedAt": null,
+      "orientation": "portrait",
+      "tableFontSize": "10pt",
+      "hasTable": false,
+      "maxTableColumns": 0
     },
     {
       "id": "sec_63140cf2",
@@ -5469,7 +6381,11 @@
       "reviewedAt": null,
       "reviewNotes": null,
       "lastModifiedBy": null,
-      "lastModifiedAt": null
+      "lastModifiedAt": null,
+      "orientation": "portrait",
+      "tableFontSize": "10pt",
+      "hasTable": false,
+      "maxTableColumns": 0
     },
     {
       "id": "sec_7fafc2ff",
@@ -5491,7 +6407,11 @@
       "reviewedAt": null,
       "reviewNotes": null,
       "lastModifiedBy": null,
-      "lastModifiedAt": null
+      "lastModifiedAt": null,
+      "orientation": "portrait",
+      "tableFontSize": "10pt",
+      "hasTable": false,
+      "maxTableColumns": 0
     },
     {
       "id": "sec_cc906f95",
@@ -5513,7 +6433,11 @@
       "reviewedAt": null,
       "reviewNotes": null,
       "lastModifiedBy": null,
-      "lastModifiedAt": null
+      "lastModifiedAt": null,
+      "orientation": "portrait",
+      "tableFontSize": "10pt",
+      "hasTable": false,
+      "maxTableColumns": 0
     },
     {
       "id": "sec_9f4637bd",
@@ -5535,7 +6459,11 @@
       "reviewedAt": null,
       "reviewNotes": null,
       "lastModifiedBy": null,
-      "lastModifiedAt": null
+      "lastModifiedAt": null,
+      "orientation": "landscape",
+      "tableFontSize": "9pt",
+      "hasTable": true,
+      "maxTableColumns": 6
     },
     {
       "id": "sec_6b8a263c",
@@ -5557,7 +6485,11 @@
       "reviewedAt": null,
       "reviewNotes": null,
       "lastModifiedBy": null,
-      "lastModifiedAt": null
+      "lastModifiedAt": null,
+      "orientation": "portrait",
+      "tableFontSize": "10pt",
+      "hasTable": true,
+      "maxTableColumns": 5
     },
     {
       "id": "sec_a7b01b92",
@@ -5579,7 +6511,11 @@
       "reviewedAt": null,
       "reviewNotes": null,
       "lastModifiedBy": null,
-      "lastModifiedAt": null
+      "lastModifiedAt": null,
+      "orientation": "landscape",
+      "tableFontSize": "9pt",
+      "hasTable": true,
+      "maxTableColumns": 6
     },
     {
       "id": "sec_b8d69231",
@@ -5601,7 +6537,11 @@
       "reviewedAt": null,
       "reviewNotes": null,
       "lastModifiedBy": null,
-      "lastModifiedAt": null
+      "lastModifiedAt": null,
+      "orientation": "portrait",
+      "tableFontSize": "10pt",
+      "hasTable": true,
+      "maxTableColumns": 5
     },
     {
       "id": "sec_36043bc6",
@@ -5623,7 +6563,11 @@
       "reviewedAt": null,
       "reviewNotes": null,
       "lastModifiedBy": null,
-      "lastModifiedAt": null
+      "lastModifiedAt": null,
+      "orientation": "portrait",
+      "tableFontSize": "10pt",
+      "hasTable": false,
+      "maxTableColumns": 0
     },
     {
       "id": "sec_5f6770b6",
@@ -5645,7 +6589,11 @@
       "reviewedAt": null,
       "reviewNotes": null,
       "lastModifiedBy": null,
-      "lastModifiedAt": null
+      "lastModifiedAt": null,
+      "orientation": "portrait",
+      "tableFontSize": "10pt",
+      "hasTable": false,
+      "maxTableColumns": 0
     },
     {
       "id": "sec_f1682b9c",
@@ -5667,7 +6615,11 @@
       "reviewedAt": null,
       "reviewNotes": null,
       "lastModifiedBy": null,
-      "lastModifiedAt": null
+      "lastModifiedAt": null,
+      "orientation": "portrait",
+      "tableFontSize": "10pt",
+      "hasTable": false,
+      "maxTableColumns": 0
     },
     {
       "id": "sec_9c17bf78",
@@ -5689,7 +6641,11 @@
       "reviewedAt": null,
       "reviewNotes": null,
       "lastModifiedBy": null,
-      "lastModifiedAt": null
+      "lastModifiedAt": null,
+      "orientation": "portrait",
+      "tableFontSize": "10pt",
+      "hasTable": false,
+      "maxTableColumns": 0
     },
     {
       "id": "sec_de5e4efc",
@@ -5711,7 +6667,11 @@
       "reviewedAt": null,
       "reviewNotes": null,
       "lastModifiedBy": null,
-      "lastModifiedAt": null
+      "lastModifiedAt": null,
+      "orientation": "portrait",
+      "tableFontSize": "10pt",
+      "hasTable": false,
+      "maxTableColumns": 0
     },
     {
       "id": "sec_f958ca5b",
@@ -5733,7 +6693,11 @@
       "reviewedAt": null,
       "reviewNotes": null,
       "lastModifiedBy": null,
-      "lastModifiedAt": null
+      "lastModifiedAt": null,
+      "orientation": "portrait",
+      "tableFontSize": "10pt",
+      "hasTable": false,
+      "maxTableColumns": 0
     },
     {
       "id": "sec_970101ff",
@@ -5755,7 +6719,11 @@
       "reviewedAt": null,
       "reviewNotes": null,
       "lastModifiedBy": null,
-      "lastModifiedAt": null
+      "lastModifiedAt": null,
+      "orientation": "portrait",
+      "tableFontSize": "10pt",
+      "hasTable": false,
+      "maxTableColumns": 0
     },
     {
       "id": "sec_f0f19592",
@@ -5777,7 +6745,11 @@
       "reviewedAt": null,
       "reviewNotes": null,
       "lastModifiedBy": null,
-      "lastModifiedAt": null
+      "lastModifiedAt": null,
+      "orientation": "portrait",
+      "tableFontSize": "10pt",
+      "hasTable": false,
+      "maxTableColumns": 0
     },
     {
       "id": "sec_f812b384",
@@ -5799,7 +6771,11 @@
       "reviewedAt": null,
       "reviewNotes": null,
       "lastModifiedBy": null,
-      "lastModifiedAt": null
+      "lastModifiedAt": null,
+      "orientation": "portrait",
+      "tableFontSize": "10pt",
+      "hasTable": false,
+      "maxTableColumns": 0
     },
     {
       "id": "sec_14278512",
@@ -5821,7 +6797,11 @@
       "reviewedAt": null,
       "reviewNotes": null,
       "lastModifiedBy": null,
-      "lastModifiedAt": null
+      "lastModifiedAt": null,
+      "orientation": "portrait",
+      "tableFontSize": "10pt",
+      "hasTable": false,
+      "maxTableColumns": 0
     },
     {
       "id": "sec_60f4e68f",
@@ -5843,7 +6823,11 @@
       "reviewedAt": null,
       "reviewNotes": null,
       "lastModifiedBy": null,
-      "lastModifiedAt": null
+      "lastModifiedAt": null,
+      "orientation": "portrait",
+      "tableFontSize": "10pt",
+      "hasTable": false,
+      "maxTableColumns": 0
     },
     {
       "id": "sec_7ab2ccdd",
@@ -5865,7 +6849,11 @@
       "reviewedAt": null,
       "reviewNotes": null,
       "lastModifiedBy": null,
-      "lastModifiedAt": null
+      "lastModifiedAt": null,
+      "orientation": "portrait",
+      "tableFontSize": "10pt",
+      "hasTable": false,
+      "maxTableColumns": 0
     },
     {
       "id": "sec_094347b2",
@@ -5887,7 +6875,11 @@
       "reviewedAt": null,
       "reviewNotes": null,
       "lastModifiedBy": null,
-      "lastModifiedAt": null
+      "lastModifiedAt": null,
+      "orientation": "portrait",
+      "tableFontSize": "10pt",
+      "hasTable": false,
+      "maxTableColumns": 0
     },
     {
       "id": "sec_4b31b8ae",
@@ -5909,7 +6901,11 @@
       "reviewedAt": null,
       "reviewNotes": null,
       "lastModifiedBy": null,
-      "lastModifiedAt": null
+      "lastModifiedAt": null,
+      "orientation": "portrait",
+      "tableFontSize": "10pt",
+      "hasTable": false,
+      "maxTableColumns": 0
     },
     {
       "id": "sec_de5f9c2e",
@@ -5931,7 +6927,11 @@
       "reviewedAt": null,
       "reviewNotes": null,
       "lastModifiedBy": null,
-      "lastModifiedAt": null
+      "lastModifiedAt": null,
+      "orientation": "portrait",
+      "tableFontSize": "10pt",
+      "hasTable": false,
+      "maxTableColumns": 0
     },
     {
       "id": "sec_85f8a903",
@@ -5953,7 +6953,11 @@
       "reviewedAt": null,
       "reviewNotes": null,
       "lastModifiedBy": null,
-      "lastModifiedAt": null
+      "lastModifiedAt": null,
+      "orientation": "portrait",
+      "tableFontSize": "10pt",
+      "hasTable": false,
+      "maxTableColumns": 0
     },
     {
       "id": "sec_e7e960c9",
@@ -5975,7 +6979,11 @@
       "reviewedAt": null,
       "reviewNotes": null,
       "lastModifiedBy": null,
-      "lastModifiedAt": null
+      "lastModifiedAt": null,
+      "orientation": "portrait",
+      "tableFontSize": "10pt",
+      "hasTable": false,
+      "maxTableColumns": 0
     },
     {
       "id": "sec_9c26dcc3",
@@ -5997,7 +7005,11 @@
       "reviewedAt": null,
       "reviewNotes": null,
       "lastModifiedBy": null,
-      "lastModifiedAt": null
+      "lastModifiedAt": null,
+      "orientation": "portrait",
+      "tableFontSize": "10pt",
+      "hasTable": false,
+      "maxTableColumns": 0
     },
     {
       "id": "sec_9f6f687f",
@@ -6019,7 +7031,11 @@
       "reviewedAt": null,
       "reviewNotes": null,
       "lastModifiedBy": null,
-      "lastModifiedAt": null
+      "lastModifiedAt": null,
+      "orientation": "portrait",
+      "tableFontSize": "10pt",
+      "hasTable": false,
+      "maxTableColumns": 0
     },
     {
       "id": "sec_de5108f4",
@@ -6041,7 +7057,11 @@
       "reviewedAt": null,
       "reviewNotes": null,
       "lastModifiedBy": null,
-      "lastModifiedAt": null
+      "lastModifiedAt": null,
+      "orientation": "portrait",
+      "tableFontSize": "10pt",
+      "hasTable": false,
+      "maxTableColumns": 0
     },
     {
       "id": "sec_5277e431",
@@ -6063,7 +7083,11 @@
       "reviewedAt": null,
       "reviewNotes": null,
       "lastModifiedBy": null,
-      "lastModifiedAt": null
+      "lastModifiedAt": null,
+      "orientation": "portrait",
+      "tableFontSize": "10pt",
+      "hasTable": false,
+      "maxTableColumns": 0
     },
     {
       "id": "sec_1ac5f584",
@@ -6085,7 +7109,11 @@
       "reviewedAt": null,
       "reviewNotes": null,
       "lastModifiedBy": null,
-      "lastModifiedAt": null
+      "lastModifiedAt": null,
+      "orientation": "portrait",
+      "tableFontSize": "10pt",
+      "hasTable": false,
+      "maxTableColumns": 0
     },
     {
       "id": "sec_ffeacf4f",
@@ -6107,7 +7135,11 @@
       "reviewedAt": null,
       "reviewNotes": null,
       "lastModifiedBy": null,
-      "lastModifiedAt": null
+      "lastModifiedAt": null,
+      "orientation": "portrait",
+      "tableFontSize": "10pt",
+      "hasTable": false,
+      "maxTableColumns": 0
     },
     {
       "id": "sec_91065468",
@@ -6129,7 +7161,11 @@
       "reviewedAt": null,
       "reviewNotes": null,
       "lastModifiedBy": null,
-      "lastModifiedAt": null
+      "lastModifiedAt": null,
+      "orientation": "landscape",
+      "tableFontSize": "9pt",
+      "hasTable": true,
+      "maxTableColumns": 7
     },
     {
       "id": "sec_c84291cb",
@@ -6151,7 +7187,11 @@
       "reviewedAt": null,
       "reviewNotes": null,
       "lastModifiedBy": null,
-      "lastModifiedAt": null
+      "lastModifiedAt": null,
+      "orientation": "portrait",
+      "tableFontSize": "10pt",
+      "hasTable": false,
+      "maxTableColumns": 0
     },
     {
       "id": "sec_60cdcf31",
@@ -6173,7 +7213,11 @@
       "reviewedAt": null,
       "reviewNotes": null,
       "lastModifiedBy": null,
-      "lastModifiedAt": null
+      "lastModifiedAt": null,
+      "orientation": "portrait",
+      "tableFontSize": "10pt",
+      "hasTable": false,
+      "maxTableColumns": 0
     },
     {
       "id": "sec_974671dd",
@@ -6195,7 +7239,11 @@
       "reviewedAt": null,
       "reviewNotes": null,
       "lastModifiedBy": null,
-      "lastModifiedAt": null
+      "lastModifiedAt": null,
+      "orientation": "portrait",
+      "tableFontSize": "10pt",
+      "hasTable": true,
+      "maxTableColumns": 4
     },
     {
       "id": "sec_cf12c9b5",
@@ -6217,7 +7265,11 @@
       "reviewedAt": null,
       "reviewNotes": null,
       "lastModifiedBy": null,
-      "lastModifiedAt": null
+      "lastModifiedAt": null,
+      "orientation": "portrait",
+      "tableFontSize": "10pt",
+      "hasTable": false,
+      "maxTableColumns": 0
     },
     {
       "id": "sec_a8baf909",
@@ -6239,7 +7291,11 @@
       "reviewedAt": null,
       "reviewNotes": null,
       "lastModifiedBy": null,
-      "lastModifiedAt": null
+      "lastModifiedAt": null,
+      "orientation": "landscape",
+      "tableFontSize": "9pt",
+      "hasTable": true,
+      "maxTableColumns": 7
     },
     {
       "id": "sec_4b15f49b",
@@ -6261,7 +7317,11 @@
       "reviewedAt": null,
       "reviewNotes": null,
       "lastModifiedBy": null,
-      "lastModifiedAt": null
+      "lastModifiedAt": null,
+      "orientation": "portrait",
+      "tableFontSize": "10pt",
+      "hasTable": false,
+      "maxTableColumns": 0
     },
     {
       "id": "sec_718529ac",
@@ -6283,7 +7343,11 @@
       "reviewedAt": null,
       "reviewNotes": null,
       "lastModifiedBy": null,
-      "lastModifiedAt": null
+      "lastModifiedAt": null,
+      "orientation": "portrait",
+      "tableFontSize": "10pt",
+      "hasTable": false,
+      "maxTableColumns": 0
     },
     {
       "id": "sec_ab7c28b5",
@@ -6305,7 +7369,11 @@
       "reviewedAt": null,
       "reviewNotes": null,
       "lastModifiedBy": null,
-      "lastModifiedAt": null
+      "lastModifiedAt": null,
+      "orientation": "portrait",
+      "tableFontSize": "10pt",
+      "hasTable": false,
+      "maxTableColumns": 0
     },
     {
       "id": "sec_b978a4ca",
@@ -6327,7 +7395,11 @@
       "reviewedAt": null,
       "reviewNotes": null,
       "lastModifiedBy": null,
-      "lastModifiedAt": null
+      "lastModifiedAt": null,
+      "orientation": "portrait",
+      "tableFontSize": "10pt",
+      "hasTable": false,
+      "maxTableColumns": 0
     },
     {
       "id": "sec_35c6a8a9",
@@ -6349,7 +7421,11 @@
       "reviewedAt": null,
       "reviewNotes": null,
       "lastModifiedBy": null,
-      "lastModifiedAt": null
+      "lastModifiedAt": null,
+      "orientation": "portrait",
+      "tableFontSize": "10pt",
+      "hasTable": false,
+      "maxTableColumns": 0
     },
     {
       "id": "sec_780507f6",
@@ -6371,7 +7447,11 @@
       "reviewedAt": null,
       "reviewNotes": null,
       "lastModifiedBy": null,
-      "lastModifiedAt": null
+      "lastModifiedAt": null,
+      "orientation": "portrait",
+      "tableFontSize": "10pt",
+      "hasTable": false,
+      "maxTableColumns": 0
     },
     {
       "id": "sec_569ecc62",
@@ -6393,7 +7473,11 @@
       "reviewedAt": null,
       "reviewNotes": null,
       "lastModifiedBy": null,
-      "lastModifiedAt": null
+      "lastModifiedAt": null,
+      "orientation": "portrait",
+      "tableFontSize": "10pt",
+      "hasTable": false,
+      "maxTableColumns": 0
     },
     {
       "id": "sec_ab6d046c",
@@ -6415,7 +7499,11 @@
       "reviewedAt": null,
       "reviewNotes": null,
       "lastModifiedBy": null,
-      "lastModifiedAt": null
+      "lastModifiedAt": null,
+      "orientation": "portrait",
+      "tableFontSize": "10pt",
+      "hasTable": false,
+      "maxTableColumns": 0
     },
     {
       "id": "sec_38f7e5f8",
@@ -6437,7 +7525,11 @@
       "reviewedAt": null,
       "reviewNotes": null,
       "lastModifiedBy": null,
-      "lastModifiedAt": null
+      "lastModifiedAt": null,
+      "orientation": "portrait",
+      "tableFontSize": "10pt",
+      "hasTable": false,
+      "maxTableColumns": 0
     },
     {
       "id": "sec_47be6ac0",
@@ -6459,7 +7551,11 @@
       "reviewedAt": null,
       "reviewNotes": null,
       "lastModifiedBy": null,
-      "lastModifiedAt": null
+      "lastModifiedAt": null,
+      "orientation": "portrait",
+      "tableFontSize": "10pt",
+      "hasTable": false,
+      "maxTableColumns": 0
     },
     {
       "id": "sec_376506e8",
@@ -6481,7 +7577,11 @@
       "reviewedAt": null,
       "reviewNotes": null,
       "lastModifiedBy": null,
-      "lastModifiedAt": null
+      "lastModifiedAt": null,
+      "orientation": "portrait",
+      "tableFontSize": "10pt",
+      "hasTable": false,
+      "maxTableColumns": 0
     },
     {
       "id": "sec_7f6e22ce",
@@ -6503,7 +7603,11 @@
       "reviewedAt": null,
       "reviewNotes": null,
       "lastModifiedBy": null,
-      "lastModifiedAt": null
+      "lastModifiedAt": null,
+      "orientation": "portrait",
+      "tableFontSize": "10pt",
+      "hasTable": false,
+      "maxTableColumns": 0
     },
     {
       "id": "sec_a8cae877",
@@ -6525,7 +7629,11 @@
       "reviewedAt": null,
       "reviewNotes": null,
       "lastModifiedBy": null,
-      "lastModifiedAt": null
+      "lastModifiedAt": null,
+      "orientation": "portrait",
+      "tableFontSize": "10pt",
+      "hasTable": false,
+      "maxTableColumns": 0
     },
     {
       "id": "sec_bba50889",
@@ -6547,7 +7655,11 @@
       "reviewedAt": null,
       "reviewNotes": null,
       "lastModifiedBy": null,
-      "lastModifiedAt": null
+      "lastModifiedAt": null,
+      "orientation": "portrait",
+      "tableFontSize": "10pt",
+      "hasTable": true,
+      "maxTableColumns": 3
     },
     {
       "id": "sec_8794e174",
@@ -6569,7 +7681,11 @@
       "reviewedAt": null,
       "reviewNotes": null,
       "lastModifiedBy": null,
-      "lastModifiedAt": null
+      "lastModifiedAt": null,
+      "orientation": "portrait",
+      "tableFontSize": "10pt",
+      "hasTable": false,
+      "maxTableColumns": 0
     },
     {
       "id": "sec_94efd076",
@@ -6591,7 +7707,11 @@
       "reviewedAt": null,
       "reviewNotes": null,
       "lastModifiedBy": null,
-      "lastModifiedAt": null
+      "lastModifiedAt": null,
+      "orientation": "portrait",
+      "tableFontSize": "10pt",
+      "hasTable": false,
+      "maxTableColumns": 0
     },
     {
       "id": "sec_544d35fe",
@@ -6613,7 +7733,11 @@
       "reviewedAt": null,
       "reviewNotes": null,
       "lastModifiedBy": null,
-      "lastModifiedAt": null
+      "lastModifiedAt": null,
+      "orientation": "portrait",
+      "tableFontSize": "10pt",
+      "hasTable": false,
+      "maxTableColumns": 0
     },
     {
       "id": "sec_7129b6ac",
@@ -6635,7 +7759,11 @@
       "reviewedAt": null,
       "reviewNotes": null,
       "lastModifiedBy": null,
-      "lastModifiedAt": null
+      "lastModifiedAt": null,
+      "orientation": "portrait",
+      "tableFontSize": "10pt",
+      "hasTable": false,
+      "maxTableColumns": 0
     },
     {
       "id": "sec_5e8b33b5",
@@ -6657,7 +7785,11 @@
       "reviewedAt": null,
       "reviewNotes": null,
       "lastModifiedBy": null,
-      "lastModifiedAt": null
+      "lastModifiedAt": null,
+      "orientation": "portrait",
+      "tableFontSize": "10pt",
+      "hasTable": false,
+      "maxTableColumns": 0
     },
     {
       "id": "sec_67ec8de6",
@@ -6679,7 +7811,11 @@
       "reviewedAt": null,
       "reviewNotes": null,
       "lastModifiedBy": null,
-      "lastModifiedAt": null
+      "lastModifiedAt": null,
+      "orientation": "portrait",
+      "tableFontSize": "10pt",
+      "hasTable": false,
+      "maxTableColumns": 0
     },
     {
       "id": "sec_4a83ca27",
@@ -6701,7 +7837,11 @@
       "reviewedAt": null,
       "reviewNotes": null,
       "lastModifiedBy": null,
-      "lastModifiedAt": null
+      "lastModifiedAt": null,
+      "orientation": "portrait",
+      "tableFontSize": "10pt",
+      "hasTable": false,
+      "maxTableColumns": 0
     },
     {
       "id": "sec_cf2a2ed2",
@@ -6723,7 +7863,11 @@
       "reviewedAt": null,
       "reviewNotes": null,
       "lastModifiedBy": null,
-      "lastModifiedAt": null
+      "lastModifiedAt": null,
+      "orientation": "portrait",
+      "tableFontSize": "10pt",
+      "hasTable": false,
+      "maxTableColumns": 0
     },
     {
       "id": "sec_d6512e3a",
@@ -6745,7 +7889,11 @@
       "reviewedAt": null,
       "reviewNotes": null,
       "lastModifiedBy": null,
-      "lastModifiedAt": null
+      "lastModifiedAt": null,
+      "orientation": "portrait",
+      "tableFontSize": "10pt",
+      "hasTable": false,
+      "maxTableColumns": 0
     },
     {
       "id": "sec_7486620c",
@@ -6767,7 +7915,11 @@
       "reviewedAt": null,
       "reviewNotes": null,
       "lastModifiedBy": null,
-      "lastModifiedAt": null
+      "lastModifiedAt": null,
+      "orientation": "portrait",
+      "tableFontSize": "10pt",
+      "hasTable": false,
+      "maxTableColumns": 0
     },
     {
       "id": "sec_932386c8",
@@ -6789,7 +7941,11 @@
       "reviewedAt": null,
       "reviewNotes": null,
       "lastModifiedBy": null,
-      "lastModifiedAt": null
+      "lastModifiedAt": null,
+      "orientation": "portrait",
+      "tableFontSize": "10pt",
+      "hasTable": true,
+      "maxTableColumns": 4
     },
     {
       "id": "sec_11a68776",
@@ -6811,7 +7967,11 @@
       "reviewedAt": null,
       "reviewNotes": null,
       "lastModifiedBy": null,
-      "lastModifiedAt": null
+      "lastModifiedAt": null,
+      "orientation": "portrait",
+      "tableFontSize": "10pt",
+      "hasTable": true,
+      "maxTableColumns": 4
     },
     {
       "id": "sec_11e357d3",
@@ -6833,7 +7993,11 @@
       "reviewedAt": null,
       "reviewNotes": null,
       "lastModifiedBy": null,
-      "lastModifiedAt": null
+      "lastModifiedAt": null,
+      "orientation": "portrait",
+      "tableFontSize": "10pt",
+      "hasTable": true,
+      "maxTableColumns": 4
     },
     {
       "id": "sec_83423183",
@@ -6855,7 +8019,11 @@
       "reviewedAt": null,
       "reviewNotes": null,
       "lastModifiedBy": null,
-      "lastModifiedAt": null
+      "lastModifiedAt": null,
+      "orientation": "portrait",
+      "tableFontSize": "10pt",
+      "hasTable": true,
+      "maxTableColumns": 4
     },
     {
       "id": "sec_9ff3e7c8",
@@ -6877,7 +8045,11 @@
       "reviewedAt": null,
       "reviewNotes": null,
       "lastModifiedBy": null,
-      "lastModifiedAt": null
+      "lastModifiedAt": null,
+      "orientation": "portrait",
+      "tableFontSize": "10pt",
+      "hasTable": true,
+      "maxTableColumns": 4
     },
     {
       "id": "sec_05d90f40",
@@ -6899,7 +8071,11 @@
       "reviewedAt": null,
       "reviewNotes": null,
       "lastModifiedBy": null,
-      "lastModifiedAt": null
+      "lastModifiedAt": null,
+      "orientation": "portrait",
+      "tableFontSize": "10pt",
+      "hasTable": true,
+      "maxTableColumns": 2
     }
   ],
   "logs": []

@@ -16,7 +16,11 @@ const {
   TableCell,
   WidthType,
   BorderStyle,
-  AlignmentType
+  AlignmentType,
+  PageOrientation,
+  Header,
+  Footer,
+  PageNumber
 } = docx;
 
 /**
@@ -148,6 +152,25 @@ async function parseDocxToSections(filePath, documentId) {
     if (currentSection) {
       currentSection.content = currentSection.contentElements.join('').trim();
       delete currentSection.contentElements;
+
+      // Auto-detect table columns for orientation and typography
+      let maxCols = 0;
+      let hasTable = false;
+      if (currentSection.content && currentSection.content.includes('<table')) {
+        hasTable = true;
+        const $sec = cheerio.load(currentSection.content);
+        $sec('table').each((_, tbl) => {
+          $sec(tbl).find('tr').each((__, row) => {
+            const cols = $sec(row).find('th, td').length;
+            if (cols > maxCols) maxCols = cols;
+          });
+        });
+      }
+      currentSection.orientation = maxCols >= 6 ? 'landscape' : 'portrait';
+      currentSection.tableFontSize = maxCols >= 10 ? '8.5pt' : (maxCols >= 6 ? '9pt' : '10pt');
+      currentSection.hasTable = hasTable;
+      currentSection.maxTableColumns = maxCols;
+
       sections.push(currentSection);
       currentSection = null;
     }
@@ -412,169 +435,342 @@ function generateRkpdBab2Template(documentId) {
 /**
  * Re-compile sections into a clean Microsoft Word (.docx) file
  */
-async function exportSectionsToDocx(docMetadata, sections) {
-  const children = [];
+/**
+ * Helper to convert HTML elements to DOCX paragraphs / tables with exact typography
+ */
+function convertHtmlToDocxElements(html, isLandscape = false) {
+  const elements = [];
+  if (!html) return elements;
 
-  // Title page / Cover Header
-  children.push(
-    new Paragraph({
-      text: docMetadata.title || 'DOKUMEN PERENCANAAN DAERAH',
-      heading: HeadingLevel.TITLE,
-      alignment: AlignmentType.CENTER,
-      spacing: { after: 200 }
-    }),
-    new Paragraph({
-      text: docMetadata.description || 'Pemerintah Kabupaten Cilacap - Badan Perencanaan Pembangunan Daerah',
-      alignment: AlignmentType.CENTER,
-      spacing: { after: 400 }
-    }),
-    new Paragraph({
-      children: [
-        new TextRun({
-          text: `Tanggal Kompilasi: ${new Date().toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' })}`,
-          italics: true
-        })
-      ],
-      alignment: AlignmentType.CENTER,
-      spacing: { after: 600 }
-    })
-  );
+  const $ = cheerio.load(`<div>${html}</div>`);
 
-  // Iterate over sections in order
-  for (const sec of sections) {
-    let headingLevel = HeadingLevel.HEADING_1;
-    if (sec.level === 2) headingLevel = HeadingLevel.HEADING_2;
-    if (sec.level === 3) headingLevel = HeadingLevel.HEADING_3;
-    if (sec.level >= 4) headingLevel = HeadingLevel.HEADING_4;
+  $('div').children().each((idx, el) => {
+    const tagName = el.tagName ? el.tagName.toLowerCase() : '';
+    const nodeText = $(el).text().trim();
 
-    const fullTitle = sec.code ? `${sec.code} ${sec.title}` : sec.title;
-
-    // Add Section Heading
-    children.push(
-      new Paragraph({
-        text: fullTitle,
-        heading: headingLevel,
-        spacing: { before: 300, after: 150 }
-      })
-    );
-
-    // Convert section HTML content to DOCX elements
-    if (sec.content) {
-      const $ = cheerio.load(`<div>${sec.content}</div>`);
-      
-      // Process elements
-      $('div').children().each((idx, el) => {
-        const tagName = el.tagName ? el.tagName.toLowerCase() : '';
-        const nodeText = $(el).text().trim();
-
-        if (['p', 'div', 'blockquote'].includes(tagName)) {
-          if (nodeText.length > 0) {
-            // Build text runs with bold/italic parsing
-            const runs = [];
-            $(el).contents().each((_, child) => {
-              if (child.type === 'text') {
-                runs.push(new TextRun({ text: $(child).text() }));
-              } else if (child.name === 'strong' || child.name === 'b') {
-                runs.push(new TextRun({ text: $(child).text(), bold: true }));
-              } else if (child.name === 'em' || child.name === 'i') {
-                runs.push(new TextRun({ text: $(child).text(), italics: true }));
-              } else if (child.name === 'u') {
-                runs.push(new TextRun({ text: $(child).text(), underline: {} }));
-              } else {
-                runs.push(new TextRun({ text: $(child).text() }));
-              }
-            });
-
-            children.push(
-              new Paragraph({
-                children: runs.length ? runs : [new TextRun({ text: nodeText })],
-                spacing: { after: 120 }
-              })
-            );
+    if (['p', 'div', 'blockquote'].includes(tagName)) {
+      if (nodeText.length > 0) {
+        const runs = [];
+        $(el).contents().each((_, child) => {
+          const t = $(child).text();
+          if (!t) return;
+          if (child.type === 'text') {
+            runs.push(new TextRun({ text: t, font: 'Bookman Old Style', size: 24 }));
+          } else if (child.name === 'strong' || child.name === 'b') {
+            runs.push(new TextRun({ text: t, bold: true, font: 'Bookman Old Style', size: 24 }));
+          } else if (child.name === 'em' || child.name === 'i') {
+            runs.push(new TextRun({ text: t, italics: true, font: 'Bookman Old Style', size: 24 }));
+          } else if (child.name === 'u') {
+            runs.push(new TextRun({ text: t, underline: {}, font: 'Bookman Old Style', size: 24 }));
+          } else {
+            runs.push(new TextRun({ text: t, font: 'Bookman Old Style', size: 24 }));
           }
-        } else if (tagName === 'ul' || tagName === 'ol') {
-          $(el).find('li').each((liIdx, liEl) => {
-            const liText = $(liEl).text().trim();
-            if (liText) {
-              children.push(
-                new Paragraph({
-                  children: [new TextRun({ text: liText })],
-                  bullet: tagName === 'ul' ? { level: 0 } : undefined,
-                  numbering: tagName === 'ol' ? { reference: 'default-numbering', level: 0 } : undefined,
-                  spacing: { after: 80 }
-                })
-              );
-            }
-          });
-        } else if (tagName === 'table') {
-          const rows = [];
-          $(el).find('tr').each((trIdx, trEl) => {
-            const cells = [];
-            $(trEl).find('th, td').each((tdIdx, cellEl) => {
-              const cellText = $(cellEl).text().trim();
-              const isHeader = cellEl.name === 'th' || trIdx === 0;
+        });
 
-              cells.push(
-                new TableCell({
-                  children: [
-                    new Paragraph({
-                      children: [
-                        new TextRun({
-                          text: cellText,
-                          bold: isHeader
-                        })
-                      ],
-                      alignment: cellText.match(/^\d+/) ? AlignmentType.CENTER : AlignmentType.LEFT
-                    })
-                  ],
-                  shading: isHeader ? { fill: 'E2E8F0' } : undefined,
-                  margins: {
-                    top: 100,
-                    bottom: 100,
-                    left: 150,
-                    right: 150
-                  }
-                })
-              );
-            });
+        // Determine alignment
+        let align = AlignmentType.JUSTIFIED;
+        const style = $(el).attr('style') || '';
+        if (style.includes('text-align: center') || $(el).hasClass('text-center')) {
+          align = AlignmentType.CENTER;
+        } else if (style.includes('text-align: right') || $(el).hasClass('text-right')) {
+          align = AlignmentType.RIGHT;
+        }
 
-            if (cells.length > 0) {
-              rows.push(new TableRow({ children: cells }));
-            }
-          });
-
-          if (rows.length > 0) {
-            children.push(
-              new Table({
-                rows: rows,
-                width: {
-                  size: 100,
-                  type: WidthType.PERCENTAGE
-                }
-              }),
-              new Paragraph({ text: '', spacing: { after: 120 } })
-            );
-          }
-        } else if (['h1', 'h2', 'h3', 'h4', 'h5', 'h6'].includes(tagName)) {
-          children.push(
+        elements.push(
+          new Paragraph({
+            children: runs.length ? runs : [new TextRun({ text: nodeText, font: 'Bookman Old Style', size: 24 })],
+            alignment: align,
+            spacing: { before: 0, after: 120, line: 288 } // 6pt after, 1.2 line spacing
+          })
+        );
+      }
+    } else if (tagName === 'ul' || tagName === 'ol') {
+      $(el).find('li').each((liIdx, liEl) => {
+        const liText = $(liEl).text().trim();
+        if (liText) {
+          elements.push(
             new Paragraph({
-              text: nodeText,
-              heading: HeadingLevel.HEADING_4,
-              spacing: { before: 150, after: 100 }
+              children: [new TextRun({ text: liText, font: 'Bookman Old Style', size: 24 })],
+              bullet: tagName === 'ul' ? { level: 0 } : undefined,
+              numbering: tagName === 'ol' ? { reference: 'default-numbering', level: 0 } : undefined,
+              alignment: AlignmentType.JUSTIFIED,
+              spacing: { after: 80, line: 288 }
             })
           );
         }
       });
+    } else if (tagName === 'table') {
+      const rows = [];
+      let maxCols = 0;
+
+      // First pass to determine max columns
+      $(el).find('tr').each((_, trEl) => {
+        const cols = $(trEl).find('th, td').length;
+        if (cols > maxCols) maxCols = cols;
+      });
+
+      // Font size based on column density matching official Perbup
+      const cellFontSize = maxCols >= 10 ? 17 : (maxCols >= 6 ? 18 : 20); // 8.5pt, 9pt, or 10pt
+
+      $(el).find('tr').each((trIdx, trEl) => {
+        const cells = [];
+        const isHeaderRow = trIdx === 0 || $(trEl).find('th').length > 0;
+
+        $(trEl).find('th, td').each((tdIdx, cellEl) => {
+          const cellText = $(cellEl).text().trim();
+          const isHeaderCell = cellEl.name === 'th' || isHeaderRow;
+          const isNumeric = /^[0-9\.,\-\/%]+$/.test(cellText);
+
+          cells.push(
+            new TableCell({
+              children: [
+                new Paragraph({
+                  children: [
+                    new TextRun({
+                      text: cellText,
+                      bold: isHeaderCell,
+                      font: 'Bookman Old Style',
+                      size: cellFontSize
+                    })
+                  ],
+                  alignment: isHeaderCell || isNumeric ? AlignmentType.CENTER : AlignmentType.LEFT,
+                  spacing: { before: 20, after: 20 }
+                })
+              ],
+              shading: isHeaderCell ? { fill: 'F1F5F9' } : undefined,
+              margins: {
+                top: 80,
+                bottom: 80,
+                left: 100,
+                right: 100
+              }
+            })
+          );
+        });
+
+        if (cells.length > 0) {
+          rows.push(
+            new TableRow({
+              children: cells,
+              tableHeader: isHeaderRow, // Repeat header row across pages ala Word
+              cantSplit: true // Prevent row from splitting across page breaks
+            })
+          );
+        }
+      });
+
+      if (rows.length > 0) {
+        elements.push(
+          new Table({
+            rows: rows,
+            width: {
+              size: 100,
+              type: WidthType.PERCENTAGE
+            }
+          }),
+          new Paragraph({ text: '', spacing: { after: 120 } })
+        );
+      }
+    } else if (['h1', 'h2', 'h3', 'h4', 'h5', 'h6'].includes(tagName)) {
+      elements.push(
+        new Paragraph({
+          children: [
+            new TextRun({
+              text: nodeText,
+              bold: true,
+              font: 'Bookman Old Style',
+              size: tagName === 'h1' ? 28 : (tagName === 'h2' ? 24 : 22)
+            })
+          ],
+          alignment: tagName === 'h1' ? AlignmentType.CENTER : AlignmentType.LEFT,
+          spacing: { before: 180, after: 100 }
+        })
+      );
     }
+  });
+
+  return elements;
+}
+
+/**
+ * Re-compile sections into a clean Microsoft Word (.docx) file
+ * Identical F4/Folio page setup, multi-section landscape/portrait, Bookman Old Style typography
+ */
+async function exportSectionsToDocx(docMetadata, sections) {
+  const isBab2 = (docMetadata.title || '').includes('BAB II');
+
+  // Running Header ala official Perbup
+  const runningHeader = new Header({
+    children: [
+      new Paragraph({
+        children: [
+          new TextRun({
+            text: 'RKPD Kabupaten Cilacap Tahun 2027',
+            font: 'Bookman Old Style',
+            size: 18,
+            color: '666666'
+          })
+        ],
+        alignment: AlignmentType.RIGHT,
+        spacing: { after: 100 }
+      })
+    ]
+  });
+
+  // Running Footer ala official Perbup (RKPD Kabupaten Cilacap Tahun 2027  [Bab]-[Hal])
+  const runningFooter = new Footer({
+    children: [
+      new Paragraph({
+        children: [
+          new TextRun({
+            text: 'RKPD Kabupaten Cilacap Tahun 2027',
+            font: 'Bookman Old Style',
+            size: 18
+          }),
+          new TextRun({
+            text: '\t\tHal. ',
+            font: 'Bookman Old Style',
+            size: 18
+          }),
+          new TextRun({
+            children: [PageNumber.CURRENT],
+            font: 'Bookman Old Style',
+            size: 18
+          })
+        ],
+        alignment: AlignmentType.BOTH,
+        spacing: { before: 100 }
+      })
+    ]
+  });
+
+  // Group consecutive sections by orientation
+  const groupedSections = [];
+  let currentGroup = null;
+
+  for (const sec of sections) {
+    const isLandscape = sec.orientation === 'landscape';
+    if (!currentGroup || currentGroup.isLandscape !== isLandscape) {
+      currentGroup = {
+        isLandscape,
+        sections: []
+      };
+      groupedSections.push(currentGroup);
+    }
+    currentGroup.sections.push(sec);
+  }
+
+  // If no sections, create a default portrait group
+  if (groupedSections.length === 0) {
+    groupedSections.push({ isLandscape: false, sections: [] });
+  }
+
+  const docSections = [];
+
+  for (let gIdx = 0; gIdx < groupedSections.length; gIdx++) {
+    const group = groupedSections[gIdx];
+    const isLandscape = group.isLandscape;
+    const children = [];
+
+    // Title on very first section if compiling full document
+    if (gIdx === 0) {
+      children.push(
+        new Paragraph({
+          children: [
+            new TextRun({
+              text: docMetadata.title || 'DOKUMEN PERENCANAAN DAERAH',
+              bold: true,
+              font: 'Bookman Old Style',
+              size: 32 // 16pt
+            })
+          ],
+          alignment: AlignmentType.CENTER,
+          spacing: { after: 150 }
+        }),
+        new Paragraph({
+          children: [
+            new TextRun({
+              text: docMetadata.description || 'Pemerintah Kabupaten Cilacap - Badan Perencanaan Pembangunan Daerah',
+              font: 'Bookman Old Style',
+              size: 24 // 12pt
+            })
+          ],
+          alignment: AlignmentType.CENTER,
+          spacing: { after: 300 }
+        })
+      );
+    }
+
+    // Add content for all sections in this orientation group
+    for (const sec of group.sections) {
+      let headingSize = 24; // 12pt
+      let isBabHeader = sec.level === 1 || /^BAB\s+[IVXLCDM\d]+/i.test(sec.code || '');
+
+      if (isBabHeader) headingSize = 28; // 14pt
+      else if (sec.level >= 3) headingSize = 22; // 11pt
+
+      const fullTitle = sec.code ? `${sec.code} ${sec.title}` : sec.title;
+
+      children.push(
+        new Paragraph({
+          children: [
+            new TextRun({
+              text: fullTitle,
+              bold: true,
+              font: 'Bookman Old Style',
+              size: headingSize
+            })
+          ],
+          alignment: isBabHeader ? AlignmentType.CENTER : AlignmentType.LEFT,
+          spacing: { before: 240, after: 120 }
+        })
+      );
+
+      if (sec.content) {
+        const bodyChildren = convertHtmlToDocxElements(sec.content, isLandscape);
+        children.push(...bodyChildren);
+      }
+    }
+
+    // Official F4 / Folio Dimensions & Margins
+    // Folio Portrait: 216mm x 330mm (12240 x 18720 dxa)
+    // Folio Landscape: 330mm x 216mm (18720 x 12240 dxa)
+    const pageWidth = isLandscape ? 18720 : 12240;
+    const pageHeight = isLandscape ? 12240 : 18720;
+
+    const leftMarginDxa = isLandscape ? 1418 : (isBab2 ? 1985 : 2268); // 2.5cm landscape, 3.5cm Bab II, 4.0cm other
+    const rightMarginDxa = isLandscape ? 1418 : (isBab2 ? 1191 : 1418); // 2.5cm landscape, 2.1cm Bab II, 2.5cm other
+    const topMarginDxa = 1418; // 2.5cm
+    const bottomMarginDxa = 1418; // 2.5cm
+
+    docSections.push({
+      properties: {
+        page: {
+          size: {
+            width: pageWidth,
+            height: pageHeight,
+            orientation: isLandscape ? PageOrientation.LANDSCAPE : PageOrientation.PORTRAIT
+          },
+          margin: {
+            top: topMarginDxa,
+            bottom: bottomMarginDxa,
+            left: leftMarginDxa,
+            right: rightMarginDxa
+          }
+        }
+      },
+      headers: {
+        default: runningHeader
+      },
+      footers: {
+        default: runningFooter
+      },
+      children: children
+    });
   }
 
   const doc = new Document({
-    sections: [
-      {
-        properties: {},
-        children: children
-      }
-    ]
+    sections: docSections
   });
 
   return await Packer.toBuffer(doc);

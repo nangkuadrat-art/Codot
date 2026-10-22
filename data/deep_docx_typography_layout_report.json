@@ -1,0 +1,3758 @@
+{
+  "RKPD 2027 PERBUP - BAB I (08.07).docx": {
+    "fileName": "RKPD 2027 PERBUP - BAB I (08.07).docx",
+    "styles": {
+      "defaultFont": "Calibri",
+      "defaultSizePt": 12
+    },
+    "sections": [
+      {
+        "sectionIndex": 1,
+        "orientation": "portrait",
+        "widthDxa": 12242,
+        "heightDxa": 18722,
+        "widthMm": 216,
+        "heightMm": 330,
+        "margins": {
+          "topDxa": 1418,
+          "bottomDxa": 1418,
+          "leftDxa": 2268,
+          "rightDxa": 1418,
+          "topCm": "2.50",
+          "bottomCm": "2.50",
+          "leftCm": "4.00",
+          "rightCm": "2.50"
+        }
+      }
+    ],
+    "fontUsage": {
+      "Bookman Old Style": 536
+    },
+    "fontSizeUsage": {
+      "12pt": 403
+    },
+    "headers": [],
+    "footers": [
+      {
+        "file": "word/footer1.xml",
+        "text": "RKPD   Kab upaten   Cilacap   Tahun   20 2 7                                                                                              I-1",
+        "hasPageNumber": true,
+        "alignment": "both",
+        "fontSizesPt": [
+          "9pt"
+        ],
+        "fonts": [
+          "Bookman Old Style"
+        ]
+      },
+      {
+        "file": "word/footer2.xml",
+        "text": "Draft Rancangan Awal RKPD Kabupaten Cilacap Tahun 2018 I-  1",
+        "hasPageNumber": true,
+        "alignment": "both",
+        "fontSizesPt": [
+          "10pt"
+        ],
+        "fonts": [
+          "Arial"
+        ]
+      }
+    ],
+    "tables": [
+      {
+        "tableIndex": 1,
+        "rowCount": 7,
+        "columnCount": 3,
+        "tblW": "w:w=\"8883\" w:type=\"dxa\"",
+        "fontSizes": [
+          "12pt"
+        ],
+        "hasRepeatHeader": false,
+        "headerSample": "B | AB I | PENDAHULUAN | Memuat latar belakang; dasar hukum penyusunan; hubungan"
+      }
+    ]
+  },
+  "RKPD 2027 PERBUP - BAB II (17.07) .docx": {
+    "fileName": "RKPD 2027 PERBUP - BAB II (17.07) .docx",
+    "styles": {
+      "defaultFont": "Calibri",
+      "defaultSizePt": 12
+    },
+    "sections": [
+      {
+        "sectionIndex": 1,
+        "orientation": "portrait",
+        "widthDxa": 12242,
+        "heightDxa": 18722,
+        "widthMm": 216,
+        "heightMm": 330,
+        "margins": {
+          "topDxa": 1418,
+          "bottomDxa": 1418,
+          "leftDxa": 1985,
+          "rightDxa": 1191,
+          "topCm": "2.50",
+          "bottomCm": "2.50",
+          "leftCm": "3.50",
+          "rightCm": "2.10"
+        }
+      },
+      {
+        "sectionIndex": 2,
+        "orientation": "landscape",
+        "widthDxa": 18722,
+        "heightDxa": 12242,
+        "widthMm": 330,
+        "heightMm": 216,
+        "margins": {
+          "topDxa": 1418,
+          "bottomDxa": 1418,
+          "leftDxa": 1985,
+          "rightDxa": 1191,
+          "topCm": "2.50",
+          "bottomCm": "2.50",
+          "leftCm": "3.50",
+          "rightCm": "2.10"
+        }
+      },
+      {
+        "sectionIndex": 3,
+        "orientation": "portrait",
+        "widthDxa": 12242,
+        "heightDxa": 18722,
+        "widthMm": 216,
+        "heightMm": 330,
+        "margins": {
+          "topDxa": 1418,
+          "bottomDxa": 1418,
+          "leftDxa": 1985,
+          "rightDxa": 1191,
+          "topCm": "2.50",
+          "bottomCm": "2.50",
+          "leftCm": "3.50",
+          "rightCm": "2.10"
+        }
+      },
+      {
+        "sectionIndex": 4,
+        "orientation": "landscape",
+        "widthDxa": 18722,
+        "heightDxa": 12242,
+        "widthMm": 330,
+        "heightMm": 216,
+        "margins": {
+          "topDxa": 1418,
+          "bottomDxa": 1418,
+          "leftDxa": 1985,
+          "rightDxa": 1191,
+          "topCm": "2.50",
+          "bottomCm": "2.50",
+          "leftCm": "3.50",
+          "rightCm": "2.10"
+        }
+      },
+      {
+        "sectionIndex": 5,
+        "orientation": "portrait",
+        "widthDxa": 12242,
+        "heightDxa": 18722,
+        "widthMm": 216,
+        "heightMm": 330,
+        "margins": {
+          "topDxa": 1418,
+          "bottomDxa": 1418,
+          "leftDxa": 1985,
+          "rightDxa": 1191,
+          "topCm": "2.50",
+          "bottomCm": "2.50",
+          "leftCm": "3.50",
+          "rightCm": "2.10"
+        }
+      }
+    ],
+    "fontUsage": {
+      "Bookman Old Style": 37524,
+      "Times New Roman": 18,
+      "Arial": 2
+    },
+    "fontSizeUsage": {
+      "14pt": 4,
+      "16pt": 5,
+      "12pt": 6420,
+      "10pt": 11285,
+      "9pt": 11195,
+      "8pt": 1041,
+      "7pt": 1244,
+      "7.5pt": 8,
+      "11pt": 40,
+      "6.5pt": 13,
+      "8.5pt": 4639
+    },
+    "headers": [],
+    "footers": [
+      {
+        "file": "word/footer5.xml",
+        "text": "RKPD Kabupaten Cilacap Tahun 202 7  II- 262",
+        "hasPageNumber": true,
+        "alignment": "right",
+        "fontSizesPt": [
+          "9pt",
+          "11pt"
+        ],
+        "fonts": [
+          "Bookman Old Style"
+        ]
+      },
+      {
+        "file": "word/footer4.xml",
+        "text": "RKPD Kabupaten Cilacap Tahun 202 7   II- 237",
+        "hasPageNumber": true,
+        "alignment": "right",
+        "fontSizesPt": [
+          "9pt"
+        ],
+        "fonts": [
+          "Bookman Old Style"
+        ]
+      },
+      {
+        "file": "word/footer3.xml",
+        "text": "RKPD Kabupaten Cilacap Tahun 202 7  II- 191",
+        "hasPageNumber": true,
+        "alignment": "right",
+        "fontSizesPt": [
+          "9pt"
+        ],
+        "fonts": [
+          "Bookman Old Style"
+        ]
+      },
+      {
+        "file": "word/footer1.xml",
+        "text": "RKPD Kabupaten Cilacap Tahun 202 7  II- 1",
+        "hasPageNumber": true,
+        "alignment": "right",
+        "fontSizesPt": [
+          "9pt"
+        ],
+        "fonts": [
+          "Bookman Old Style"
+        ]
+      },
+      {
+        "file": "word/footer2.xml",
+        "text": "RKPD Kabupaten Cilacap Tahun 202 7   II- 2",
+        "hasPageNumber": true,
+        "alignment": "right",
+        "fontSizesPt": [
+          "9pt"
+        ],
+        "fonts": [
+          "Bookman Old Style"
+        ]
+      }
+    ],
+    "tables": [
+      {
+        "tableIndex": 1,
+        "rowCount": 26,
+        "columnCount": 7,
+        "tblW": "w:w=\"9215\" w:type=\"dxa\"",
+        "fontSizes": [
+          "10pt",
+          "9pt"
+        ],
+        "hasRepeatHeader": false,
+        "headerSample": "No. | Kecamatan | Desa | Kelurahan | RW | RT | Luas Wilayah (Km | 2 | )"
+      },
+      {
+        "tableIndex": 2,
+        "rowCount": 25,
+        "columnCount": 4,
+        "tblW": "w:w=\"7831\" w:type=\"dxa\"",
+        "fontSizes": [
+          "10pt"
+        ],
+        "hasRepeatHeader": true,
+        "headerSample": "No | Kecamatan | Ketinggian Dari Permukaan Laut (m) | Di tempat tertentu"
+      },
+      {
+        "tableIndex": 3,
+        "rowCount": 18,
+        "columnCount": 5,
+        "tblW": "w:w=\"9214\" w:type=\"dxa\"",
+        "fontSizes": [
+          "10pt"
+        ],
+        "hasRepeatHeader": true,
+        "headerSample": "No | Bulan | Banyaknya Curah Hujan (mm) | Curah Hujan Terbesar (mm) | Jumlah Har"
+      },
+      {
+        "tableIndex": 4,
+        "rowCount": 19,
+        "columnCount": 3,
+        "tblW": "w:w=\"9214\" w:type=\"dxa\"",
+        "fontSizes": [
+          "10pt"
+        ],
+        "hasRepeatHeader": true,
+        "headerSample": "No | Penggunaan Lahan  | Luas (Ha)"
+      },
+      {
+        "tableIndex": 5,
+        "rowCount": 3,
+        "columnCount": 3,
+        "tblW": "w:w=\"0\" w:type=\"auto\"",
+        "fontSizes": [],
+        "hasRepeatHeader": false,
+        "headerSample": "Kawasan Andalan | Sektor unggulan | Keterangan"
+      },
+      {
+        "tableIndex": 6,
+        "rowCount": 3,
+        "columnCount": 9,
+        "tblW": "w:w=\"9639\" w:type=\"dxa\"",
+        "fontSizes": [
+          "9pt",
+          "10pt"
+        ],
+        "hasRepeatHeader": false,
+        "headerSample": "Potensi Angin | Potensi Surya | Potensi Hidro | Potensi Biomassa Existing Produk"
+      },
+      {
+        "tableIndex": 7,
+        "rowCount": 5,
+        "columnCount": 7,
+        "tblW": "w:w=\"9072\" w:type=\"dxa\"",
+        "fontSizes": [
+          "10pt"
+        ],
+        "hasRepeatHeader": false,
+        "headerSample": "No | Variabel | 2021 | 2022 | 2023 | 2024 | 2025"
+      },
+      {
+        "tableIndex": 8,
+        "rowCount": 27,
+        "columnCount": 7,
+        "tblW": "w:w=\"5000\" w:type=\"pct\"",
+        "fontSizes": [
+          "10pt"
+        ],
+        "hasRepeatHeader": true,
+        "headerSample": "No | Kecamatan | Tahun"
+      },
+      {
+        "tableIndex": 9,
+        "rowCount": 6,
+        "columnCount": 6,
+        "tblW": "w:w=\"9067\" w:type=\"dxa\"",
+        "fontSizes": [
+          "10pt"
+        ],
+        "hasRepeatHeader": true,
+        "headerSample": "Kelompok Umur | Tahun"
+      },
+      {
+        "tableIndex": 10,
+        "rowCount": 27,
+        "columnCount": 6,
+        "tblW": "w:w=\"9166\" w:type=\"dxa\"",
+        "fontSizes": [
+          "10pt"
+        ],
+        "hasRepeatHeader": true,
+        "headerSample": "No | Kecamatan | Luas Wilayah (km | 2 | ) | Jumlah Penduduk | Kepadatan | Penyeb"
+      },
+      {
+        "tableIndex": 11,
+        "rowCount": 78,
+        "columnCount": 7,
+        "tblW": "w:w=\"8974\" w:type=\"dxa\"",
+        "fontSizes": [
+          "9pt"
+        ],
+        "hasRepeatHeader": true,
+        "headerSample": "No | Jenis Pekerjaan | 2021 | 2022 | 2023 | 2024 | 2025"
+      },
+      {
+        "tableIndex": 12,
+        "rowCount": 12,
+        "columnCount": 7,
+        "tblW": "w:w=\"9201\" w:type=\"dxa\"",
+        "fontSizes": [
+          "9pt"
+        ],
+        "hasRepeatHeader": true,
+        "headerSample": "No | Jenjang Pendidikan | 2021 | 2022 | 2023 | 2024 | 2025"
+      },
+      {
+        "tableIndex": 13,
+        "rowCount": 7,
+        "columnCount": 5,
+        "tblW": "w:w=\"5000\" w:type=\"pct\"",
+        "fontSizes": [],
+        "hasRepeatHeader": false,
+        "headerSample": "Tahun | PDRB ADHB | PDRB ADHK"
+      },
+      {
+        "tableIndex": 14,
+        "rowCount": 6,
+        "columnCount": 2,
+        "tblW": "w:w=\"4942\" w:type=\"pct\"",
+        "fontSizes": [],
+        "hasRepeatHeader": false,
+        "headerSample": "T a h u n |  (%)"
+      },
+      {
+        "tableIndex": 15,
+        "rowCount": 19,
+        "columnCount": 8,
+        "tblW": "w:w=\"9356\" w:type=\"dxa\"",
+        "fontSizes": [
+          "10pt"
+        ],
+        "hasRepeatHeader": true,
+        "headerSample": "Kategori/Lapangan Usaha | 2021 | 2022 | 2023 | 2024 | 2025"
+      },
+      {
+        "tableIndex": 16,
+        "rowCount": 9,
+        "columnCount": 6,
+        "tblW": "w:w=\"9097\" w:type=\"dxa\"",
+        "fontSizes": [
+          "9pt"
+        ],
+        "hasRepeatHeader": false,
+        "headerSample": "Jenis Pengeluaran | Tahun"
+      },
+      {
+        "tableIndex": 17,
+        "rowCount": 9,
+        "columnCount": 6,
+        "tblW": "w:w=\"9183\" w:type=\"dxa\"",
+        "fontSizes": [
+          "10pt",
+          "9pt"
+        ],
+        "hasRepeatHeader": true,
+        "headerSample": "Jenis Pengeluaran | Tahun"
+      },
+      {
+        "tableIndex": 18,
+        "rowCount": 9,
+        "columnCount": 6,
+        "tblW": "w:w=\"5000\" w:type=\"pct\"",
+        "fontSizes": [
+          "10pt",
+          "9pt"
+        ],
+        "hasRepeatHeader": false,
+        "headerSample": "Jenis Pengeluaran | Tahun"
+      },
+      {
+        "tableIndex": 19,
+        "rowCount": 7,
+        "columnCount": 5,
+        "tblW": "w:w=\"5000\" w:type=\"pct\"",
+        "fontSizes": [
+          "10pt"
+        ],
+        "hasRepeatHeader": false,
+        "headerSample": "Tahun | PDRB per Kapita (Ribu Rp) | Pertumbuhan (persen)"
+      },
+      {
+        "tableIndex": 20,
+        "rowCount": 3,
+        "columnCount": 6,
+        "tblW": "w:w=\"9045\" w:type=\"dxa\"",
+        "fontSizes": [
+          "10pt"
+        ],
+        "hasRepeatHeader": true,
+        "headerSample": "Bulan | 2021 | 2022 | 2023 | 2024 | 2025"
+      },
+      {
+        "tableIndex": 21,
+        "rowCount": 3,
+        "columnCount": 4,
+        "tblW": "w:w=\"0\" w:type=\"auto\"",
+        "fontSizes": [
+          "10pt"
+        ],
+        "hasRepeatHeader": false,
+        "headerSample": "Bulan | Cilacap | Jawa Tengah | Nasional"
+      },
+      {
+        "tableIndex": 22,
+        "rowCount": 6,
+        "columnCount": 3,
+        "tblW": "w:w=\"7229\" w:type=\"dxa\"",
+        "fontSizes": [],
+        "hasRepeatHeader": false,
+        "headerSample": "Tahun | Jumlah Penduduk Miskin (orang) | Persentase Penduduk Miskin"
+      },
+      {
+        "tableIndex": 23,
+        "rowCount": 6,
+        "columnCount": 11,
+        "tblW": "w:w=\"5000\" w:type=\"pct\"",
+        "fontSizes": [
+          "9pt"
+        ],
+        "hasRepeatHeader": false,
+        "headerSample": "Nas/ Prov/ Kab | Angka Kemiskinan Ekstrem  | Penduduk Miskin Ekstrem"
+      },
+      {
+        "tableIndex": 24,
+        "rowCount": 8,
+        "columnCount": 11,
+        "tblW": "w:w=\"9180\" w:type=\"dxa\"",
+        "fontSizes": [
+          "10pt"
+        ],
+        "hasRepeatHeader": false,
+        "headerSample": "No | Tahun | UHH | HLS | RRLS | Pengeluaran Per Kapita"
+      },
+      {
+        "tableIndex": 25,
+        "rowCount": 6,
+        "columnCount": 8,
+        "tblW": "w:w=\"9098\" w:type=\"dxa\"",
+        "fontSizes": [
+          "10pt"
+        ],
+        "hasRepeatHeader": true,
+        "headerSample": "No | Indikator | Satuan | Capaian Tahun"
+      },
+      {
+        "tableIndex": 26,
+        "rowCount": 31,
+        "columnCount": 8,
+        "tblW": "w:w=\"9353\" w:type=\"dxa\"",
+        "fontSizes": [
+          "9pt"
+        ],
+        "hasRepeatHeader": true,
+        "headerSample": "No | Indikator | Satuan | Capaian Kinerja"
+      },
+      {
+        "tableIndex": 27,
+        "rowCount": 8,
+        "columnCount": 8,
+        "tblW": "w:w=\"9214\" w:type=\"dxa\"",
+        "fontSizes": [
+          "10pt"
+        ],
+        "hasRepeatHeader": true,
+        "headerSample": "No | Indikator | Satuan | Tahun"
+      },
+      {
+        "tableIndex": 28,
+        "rowCount": 11,
+        "columnCount": 8,
+        "tblW": "w:w=\"9727\" w:type=\"dxa\"",
+        "fontSizes": [
+          "10pt",
+          "9pt"
+        ],
+        "hasRepeatHeader": true,
+        "headerSample": "No | Indikator | Satuan | Tahun"
+      },
+      {
+        "tableIndex": 29,
+        "rowCount": 6,
+        "columnCount": 3,
+        "tblW": "w:w=\"0\" w:type=\"auto\"",
+        "fontSizes": [],
+        "hasRepeatHeader": false,
+        "headerSample": "No | Tahun | Rasio Per 30.000 penduduk"
+      },
+      {
+        "tableIndex": 30,
+        "rowCount": 7,
+        "columnCount": 7,
+        "tblW": "w:w=\"8078\" w:type=\"dxa\"",
+        "fontSizes": [],
+        "hasRepeatHeader": true,
+        "headerSample": "Tahun | Dokter Umum | Dokter Spesialis | Dokter Gigi"
+      },
+      {
+        "tableIndex": 31,
+        "rowCount": 7,
+        "columnCount": 9,
+        "tblW": "w:w=\"9258\" w:type=\"dxa\"",
+        "fontSizes": [
+          "10pt"
+        ],
+        "hasRepeatHeader": true,
+        "headerSample": "Tahun | Perawat | Bidan | Tenaga Farmasi | Tenaga Gizi"
+      },
+      {
+        "tableIndex": 32,
+        "rowCount": 6,
+        "columnCount": 4,
+        "tblW": "w:w=\"0\" w:type=\"auto\"",
+        "fontSizes": [
+          "10pt"
+        ],
+        "hasRepeatHeader": true,
+        "headerSample": "Tahun | Jumlah Rumah Sakit | Jumlah yang dibina untuk akreditasi | Persentase"
+      },
+      {
+        "tableIndex": 33,
+        "rowCount": 6,
+        "columnCount": 6,
+        "tblW": "w:w=\"9080\" w:type=\"dxa\"",
+        "fontSizes": [
+          "10pt"
+        ],
+        "hasRepeatHeader": true,
+        "headerSample": "Tahun | Jumlah Penduduk Miskin | Penerima JKN | % | Penerima Jamkesda | %"
+      },
+      {
+        "tableIndex": 34,
+        "rowCount": 7,
+        "columnCount": 5,
+        "tblW": "w:w=\"5000\" w:type=\"pct\"",
+        "fontSizes": [
+          "10pt"
+        ],
+        "hasRepeatHeader": false,
+        "headerSample": "No. | Kewenangan Jalan  | Panjang (km) | % | Legalitas Penetapan Kewenangan"
+      },
+      {
+        "tableIndex": 35,
+        "rowCount": 12,
+        "columnCount": 8,
+        "tblW": "w:w=\"5000\" w:type=\"pct\"",
+        "fontSizes": [],
+        "hasRepeatHeader": true,
+        "headerSample": "No | Tahun | Satuan | Kondisi | Total"
+      },
+      {
+        "tableIndex": 36,
+        "rowCount": 12,
+        "columnCount": 8,
+        "tblW": "w:w=\"9214\" w:type=\"dxa\"",
+        "fontSizes": [],
+        "hasRepeatHeader": true,
+        "headerSample": "No | Tahun | Satuan | Tipe Konstruksi | Total"
+      },
+      {
+        "tableIndex": 37,
+        "rowCount": 27,
+        "columnCount": 7,
+        "tblW": "w:w=\"9209\" w:type=\"dxa\"",
+        "fontSizes": [
+          "10pt"
+        ],
+        "hasRepeatHeader": true,
+        "headerSample": "No | Kecamatan | Kondisi | Total (KM)"
+      },
+      {
+        "tableIndex": 38,
+        "rowCount": 12,
+        "columnCount": 8,
+        "tblW": "w:w=\"9103\" w:type=\"dxa\"",
+        "fontSizes": [
+          "10pt"
+        ],
+        "hasRepeatHeader": true,
+        "headerSample": "No | Tahun | Satuan | Kondisi | Total"
+      },
+      {
+        "tableIndex": 39,
+        "rowCount": 6,
+        "columnCount": 8,
+        "tblW": "w:w=\"0\" w:type=\"auto\"",
+        "fontSizes": [
+          "9pt"
+        ],
+        "hasRepeatHeader": true,
+        "headerSample": "No | Indikator | Satuan | Capaian Kinerja"
+      },
+      {
+        "tableIndex": 40,
+        "rowCount": 6,
+        "columnCount": 9,
+        "tblW": "w:w=\"9402\" w:type=\"dxa\"",
+        "fontSizes": [
+          "8pt"
+        ],
+        "hasRepeatHeader": true,
+        "headerSample": "No | Indikator | Satuan | Capaian Kinerja"
+      },
+      {
+        "tableIndex": 41,
+        "rowCount": 9,
+        "columnCount": 8,
+        "tblW": "w:w=\"9396\" w:type=\"dxa\"",
+        "fontSizes": [
+          "10pt"
+        ],
+        "hasRepeatHeader": true,
+        "headerSample": "No | Indikator | Satuan | Capaian Kinerja"
+      },
+      {
+        "tableIndex": 42,
+        "rowCount": 6,
+        "columnCount": 2,
+        "tblW": "w:w=\"3808\" w:type=\"pct\"",
+        "fontSizes": [
+          "10pt"
+        ],
+        "hasRepeatHeader": false,
+        "headerSample": "Tahun | Jumlah Rumah (unit)"
+      },
+      {
+        "tableIndex": 43,
+        "rowCount": 7,
+        "columnCount": 7,
+        "tblW": "w:w=\"9165\" w:type=\"dxa\"",
+        "fontSizes": [
+          "10pt"
+        ],
+        "hasRepeatHeader": true,
+        "headerSample": "Tahun | Sumber Pembiayaan | Jumlah (Unit)"
+      },
+      {
+        "tableIndex": 44,
+        "rowCount": 6,
+        "columnCount": 8,
+        "tblW": "w:w=\"9209\" w:type=\"dxa\"",
+        "fontSizes": [
+          "10pt",
+          "9pt"
+        ],
+        "hasRepeatHeader": true,
+        "headerSample": "No |  Indikator | Satuan | Capaian Kinerja"
+      },
+      {
+        "tableIndex": 45,
+        "rowCount": 5,
+        "columnCount": 5,
+        "tblW": "w:w=\"9062\" w:type=\"dxa\"",
+        "fontSizes": [
+          "10pt"
+        ],
+        "hasRepeatHeader": true,
+        "headerSample": "No. | Kawasaan Kumuh | Jumlah Kawasan | Luas Kawasan (ha) | Persentase Luas Kawa"
+      },
+      {
+        "tableIndex": 46,
+        "rowCount": 6,
+        "columnCount": 2,
+        "tblW": "w:w=\"2194\" w:type=\"pct\"",
+        "fontSizes": [],
+        "hasRepeatHeader": true,
+        "headerSample": "Tahun | Luas (Ha)"
+      },
+      {
+        "tableIndex": 47,
+        "rowCount": 6,
+        "columnCount": 4,
+        "tblW": "w:w=\"0\" w:type=\"auto\"",
+        "fontSizes": [
+          "10pt"
+        ],
+        "hasRepeatHeader": true,
+        "headerSample": "Tahun | Jumlah Linmas | Jumlah Penduduk | Rasio"
+      },
+      {
+        "tableIndex": 48,
+        "rowCount": 8,
+        "columnCount": 8,
+        "tblW": "w:w=\"9236\" w:type=\"dxa\"",
+        "fontSizes": [
+          "10pt",
+          "9pt"
+        ],
+        "hasRepeatHeader": true,
+        "headerSample": "No | Indikator | Satuan | Capaian Kinerja"
+      },
+      {
+        "tableIndex": 49,
+        "rowCount": 6,
+        "columnCount": 4,
+        "tblW": "w:w=\"0\" w:type=\"auto\"",
+        "fontSizes": [
+          "10pt"
+        ],
+        "hasRepeatHeader": true,
+        "headerSample": "Tahun | Jumlah Polisi PP | Jumlah Penduduk | Rasio"
+      },
+      {
+        "tableIndex": 50,
+        "rowCount": 6,
+        "columnCount": 4,
+        "tblW": "w:w=\"0\" w:type=\"auto\"",
+        "fontSizes": [
+          "10pt"
+        ],
+        "hasRepeatHeader": true,
+        "headerSample": "Tahun | Jumlah Pelanggar Perda | Jumlah Penyelesaian Pelanggaran Perda | Persent"
+      },
+      {
+        "tableIndex": 51,
+        "rowCount": 6,
+        "columnCount": 8,
+        "tblW": "w:w=\"9274\" w:type=\"dxa\"",
+        "fontSizes": [
+          "10pt",
+          "9pt"
+        ],
+        "hasRepeatHeader": true,
+        "headerSample": "No | Indikator Kinerja | Satuan | Capaian Kinerja Tahun"
+      },
+      {
+        "tableIndex": 52,
+        "rowCount": 5,
+        "columnCount": 8,
+        "tblW": "w:w=\"9172\" w:type=\"dxa\"",
+        "fontSizes": [
+          "10pt"
+        ],
+        "hasRepeatHeader": true,
+        "headerSample": "No | Indikator | Satuan | Capaian Kinerja"
+      },
+      {
+        "tableIndex": 53,
+        "rowCount": 11,
+        "columnCount": 8,
+        "tblW": "w:w=\"8800\" w:type=\"dxa\"",
+        "fontSizes": [
+          "8pt"
+        ],
+        "hasRepeatHeader": false,
+        "headerSample": "No | Indikator | Satuan | Capaian Kinerja"
+      },
+      {
+        "tableIndex": 54,
+        "rowCount": 6,
+        "columnCount": 4,
+        "tblW": "w:w=\"7081\" w:type=\"dxa\"",
+        "fontSizes": [
+          "10pt"
+        ],
+        "hasRepeatHeader": true,
+        "headerSample": "Tahun | Jumlah Panti Sosial / UPT | Jumlah Panti Sosial Yang diberi bantuan | Pe"
+      },
+      {
+        "tableIndex": 55,
+        "rowCount": 8,
+        "columnCount": 8,
+        "tblW": "w:w=\"9350\" w:type=\"dxa\"",
+        "fontSizes": [
+          "10pt",
+          "9pt"
+        ],
+        "hasRepeatHeader": true,
+        "headerSample": "No | Indikator | Satuan | Capaian Kinerja"
+      },
+      {
+        "tableIndex": 56,
+        "rowCount": 6,
+        "columnCount": 5,
+        "tblW": "w:w=\"0\" w:type=\"auto\"",
+        "fontSizes": [
+          "10pt"
+        ],
+        "hasRepeatHeader": true,
+        "headerSample": "No | Tahun | Populasi PPKS | Jumlah Penanganan (bansos, KUBE, rehab) | %"
+      },
+      {
+        "tableIndex": 57,
+        "rowCount": 6,
+        "columnCount": 5,
+        "tblW": "w:w=\"9214\" w:type=\"dxa\"",
+        "fontSizes": [
+          "10pt"
+        ],
+        "hasRepeatHeader": true,
+        "headerSample": "No | Tahun | Populasi  | PPKS | Jumlah Penguatan Kapasitas | Persentase"
+      },
+      {
+        "tableIndex": 58,
+        "rowCount": 4,
+        "columnCount": 8,
+        "tblW": "w:w=\"9209\" w:type=\"dxa\"",
+        "fontSizes": [
+          "9pt"
+        ],
+        "hasRepeatHeader": true,
+        "headerSample": "No | Indikator | Satuan | Tahun"
+      },
+      {
+        "tableIndex": 59,
+        "rowCount": 6,
+        "columnCount": 3,
+        "tblW": "w:w=\"0\" w:type=\"auto\"",
+        "fontSizes": [
+          "10pt"
+        ],
+        "hasRepeatHeader": true,
+        "headerSample": "Tahun | Jumlah Kasus | Status"
+      },
+      {
+        "tableIndex": 60,
+        "rowCount": 6,
+        "columnCount": 4,
+        "tblW": "w:w=\"7710\" w:type=\"dxa\"",
+        "fontSizes": [
+          "10pt"
+        ],
+        "hasRepeatHeader": false,
+        "headerSample": "Tahun | Pencari Kerja yang Terdaftar | Pencari Kerja yang Ditempatkan | Persenta"
+      },
+      {
+        "tableIndex": 61,
+        "rowCount": 3,
+        "columnCount": 7,
+        "tblW": "w:w=\"0\" w:type=\"auto\"",
+        "fontSizes": [
+          "10pt"
+        ],
+        "hasRepeatHeader": true,
+        "headerSample": "Indikator | Satuan | Capaian Kinerja"
+      },
+      {
+        "tableIndex": 62,
+        "rowCount": 6,
+        "columnCount": 5,
+        "tblW": "w:w=\"5000\" w:type=\"pct\"",
+        "fontSizes": [
+          "10pt"
+        ],
+        "hasRepeatHeader": true,
+        "headerSample": "Tahun | JML Tenaga Kerja ( potensi BPJS TK ) | BPJS Ketenagakerjaan | JML Tenaga"
+      },
+      {
+        "tableIndex": 63,
+        "rowCount": 3,
+        "columnCount": 7,
+        "tblW": "w:w=\"9160\" w:type=\"dxa\"",
+        "fontSizes": [
+          "10pt"
+        ],
+        "hasRepeatHeader": true,
+        "headerSample": "Indikator | Satuan | Tahun"
+      },
+      {
+        "tableIndex": 64,
+        "rowCount": 3,
+        "columnCount": 7,
+        "tblW": "w:w=\"9160\" w:type=\"dxa\"",
+        "fontSizes": [
+          "10pt"
+        ],
+        "hasRepeatHeader": true,
+        "headerSample": "Indikator | Satuan | Tahun"
+      },
+      {
+        "tableIndex": 65,
+        "rowCount": 3,
+        "columnCount": 7,
+        "tblW": "w:w=\"9160\" w:type=\"dxa\"",
+        "fontSizes": [
+          "10pt"
+        ],
+        "hasRepeatHeader": true,
+        "headerSample": "Indikator | Satuan | Tahun"
+      },
+      {
+        "tableIndex": 66,
+        "rowCount": 4,
+        "columnCount": 7,
+        "tblW": "w:w=\"0\" w:type=\"auto\"",
+        "fontSizes": [
+          "10pt"
+        ],
+        "hasRepeatHeader": true,
+        "headerSample": "Indikator | Satuan | Tahun"
+      },
+      {
+        "tableIndex": 67,
+        "rowCount": 7,
+        "columnCount": 8,
+        "tblW": "w:w=\"9468\" w:type=\"dxa\"",
+        "fontSizes": [
+          "10pt",
+          "9pt"
+        ],
+        "hasRepeatHeader": true,
+        "headerSample": "No | Indikator | Satuan | Tahun"
+      },
+      {
+        "tableIndex": 68,
+        "rowCount": 3,
+        "columnCount": 7,
+        "tblW": "w:w=\"5000\" w:type=\"pct\"",
+        "fontSizes": [
+          "10pt",
+          "12pt"
+        ],
+        "hasRepeatHeader": true,
+        "headerSample": "Uraian | Satuan | Tahun"
+      },
+      {
+        "tableIndex": 69,
+        "rowCount": 3,
+        "columnCount": 7,
+        "tblW": "w:w=\"9075\" w:type=\"dxa\"",
+        "fontSizes": [
+          "10pt"
+        ],
+        "hasRepeatHeader": true,
+        "headerSample": "Uraian | Satuan | Tahun"
+      },
+      {
+        "tableIndex": 70,
+        "rowCount": 3,
+        "columnCount": 7,
+        "tblW": "w:w=\"8365\" w:type=\"dxa\"",
+        "fontSizes": [
+          "10pt"
+        ],
+        "hasRepeatHeader": true,
+        "headerSample": "Uraian | Satuan | Tahun"
+      },
+      {
+        "tableIndex": 71,
+        "rowCount": 4,
+        "columnCount": 7,
+        "tblW": "w:w=\"9209\" w:type=\"dxa\"",
+        "fontSizes": [
+          "10pt"
+        ],
+        "hasRepeatHeader": true,
+        "headerSample": "Indikator | Satuan | Tahun"
+      },
+      {
+        "tableIndex": 72,
+        "rowCount": 3,
+        "columnCount": 7,
+        "tblW": "w:w=\"9210\" w:type=\"dxa\"",
+        "fontSizes": [
+          "10pt"
+        ],
+        "hasRepeatHeader": false,
+        "headerSample": "Indikator | Satuan | Tahun"
+      },
+      {
+        "tableIndex": 73,
+        "rowCount": 3,
+        "columnCount": 7,
+        "tblW": "w:w=\"9077\" w:type=\"dxa\"",
+        "fontSizes": [
+          "10pt"
+        ],
+        "hasRepeatHeader": false,
+        "headerSample": "Indikator | Satuan | Tahun"
+      },
+      {
+        "tableIndex": 74,
+        "rowCount": 3,
+        "columnCount": 7,
+        "tblW": "w:w=\"9074\" w:type=\"dxa\"",
+        "fontSizes": [
+          "10pt"
+        ],
+        "hasRepeatHeader": false,
+        "headerSample": "Indikator | Satuan | Tahun"
+      },
+      {
+        "tableIndex": 75,
+        "rowCount": 3,
+        "columnCount": 7,
+        "tblW": "w:w=\"9074\" w:type=\"dxa\"",
+        "fontSizes": [
+          "10pt"
+        ],
+        "hasRepeatHeader": false,
+        "headerSample": "Indikator | Satuan | Tahun"
+      },
+      {
+        "tableIndex": 76,
+        "rowCount": 3,
+        "columnCount": 7,
+        "tblW": "w:w=\"9074\" w:type=\"dxa\"",
+        "fontSizes": [
+          "10pt"
+        ],
+        "hasRepeatHeader": false,
+        "headerSample": "Indikator | Satuan | Tahun"
+      },
+      {
+        "tableIndex": 77,
+        "rowCount": 3,
+        "columnCount": 7,
+        "tblW": "w:w=\"9075\" w:type=\"dxa\"",
+        "fontSizes": [
+          "10pt"
+        ],
+        "hasRepeatHeader": false,
+        "headerSample": "Indikator | Satuan | Tahun"
+      },
+      {
+        "tableIndex": 78,
+        "rowCount": 4,
+        "columnCount": 8,
+        "tblW": "w:w=\"9103\" w:type=\"dxa\"",
+        "fontSizes": [
+          "10pt"
+        ],
+        "hasRepeatHeader": true,
+        "headerSample": "No | Indikator Kinerja | Satuan | Tahun "
+      },
+      {
+        "tableIndex": 79,
+        "rowCount": 3,
+        "columnCount": 7,
+        "tblW": "w:w=\"0\" w:type=\"auto\"",
+        "fontSizes": [
+          "10pt"
+        ],
+        "hasRepeatHeader": true,
+        "headerSample": "Indikator | Satuan | Tahun"
+      },
+      {
+        "tableIndex": 80,
+        "rowCount": 5,
+        "columnCount": 7,
+        "tblW": "w:w=\"9182\" w:type=\"dxa\"",
+        "fontSizes": [
+          "10pt"
+        ],
+        "hasRepeatHeader": true,
+        "headerSample": "Indikator | Satuan | Tahun"
+      },
+      {
+        "tableIndex": 81,
+        "rowCount": 54,
+        "columnCount": 10,
+        "tblW": "w:w=\"5000\" w:type=\"pct\"",
+        "fontSizes": [
+          "7pt"
+        ],
+        "hasRepeatHeader": true,
+        "headerSample": "TAHUN | KRITERIA IKL | DATA (ha) | RUMUS PEROLEHAN NILAI IKL"
+      },
+      {
+        "tableIndex": 82,
+        "rowCount": 8,
+        "columnCount": 8,
+        "tblW": "w:w=\"9356\" w:type=\"dxa\"",
+        "fontSizes": [
+          "10pt",
+          "9pt"
+        ],
+        "hasRepeatHeader": true,
+        "headerSample": "No | Indikator Kinerja | Satuan | Tahun"
+      },
+      {
+        "tableIndex": 83,
+        "rowCount": 4,
+        "columnCount": 8,
+        "tblW": "w:w=\"0\" w:type=\"auto\"",
+        "fontSizes": [
+          "10pt",
+          "9pt"
+        ],
+        "hasRepeatHeader": true,
+        "headerSample": "No | Indikator | Satuan | Tahun"
+      },
+      {
+        "tableIndex": 84,
+        "rowCount": 3,
+        "columnCount": 7,
+        "tblW": "w:w=\"0\" w:type=\"auto\"",
+        "fontSizes": [
+          "10pt"
+        ],
+        "hasRepeatHeader": true,
+        "headerSample": "Indikator | Satuan | Capaian Kinerja"
+      },
+      {
+        "tableIndex": 85,
+        "rowCount": 7,
+        "columnCount": 4,
+        "tblW": "w:w=\"5000\" w:type=\"pct\"",
+        "fontSizes": [
+          "10pt"
+        ],
+        "hasRepeatHeader": false,
+        "headerSample": "TAHUN | JUMLAH (TON)"
+      },
+      {
+        "tableIndex": 86,
+        "rowCount": 3,
+        "columnCount": 7,
+        "tblW": "w:w=\"0\" w:type=\"auto\"",
+        "fontSizes": [
+          "10pt"
+        ],
+        "hasRepeatHeader": true,
+        "headerSample": "Indikator | Satuan | Tahun"
+      },
+      {
+        "tableIndex": 87,
+        "rowCount": 5,
+        "columnCount": 8,
+        "tblW": "w:w=\"9180\" w:type=\"dxa\"",
+        "fontSizes": [
+          "10pt",
+          "8pt",
+          "9pt"
+        ],
+        "hasRepeatHeader": true,
+        "headerSample": "No | Indikator | Satuan | Tahun"
+      },
+      {
+        "tableIndex": 88,
+        "rowCount": 10,
+        "columnCount": 6,
+        "tblW": "w:w=\"5000\" w:type=\"pct\"",
+        "fontSizes": [
+          "9pt",
+          "8pt"
+        ],
+        "hasRepeatHeader": false,
+        "headerSample": "Sektor | 2020 | 2021 | 2022 | 2023 | 2024"
+      },
+      {
+        "tableIndex": 89,
+        "rowCount": 4,
+        "columnCount": 9,
+        "tblW": "w:w=\"9521\" w:type=\"dxa\"",
+        "fontSizes": [
+          "10pt",
+          "7.5pt",
+          "8pt"
+        ],
+        "hasRepeatHeader": true,
+        "headerSample": "No | Indikator | Satuan | Tahun"
+      },
+      {
+        "tableIndex": 90,
+        "rowCount": 6,
+        "columnCount": 8,
+        "tblW": "w:w=\"9801\" w:type=\"dxa\"",
+        "fontSizes": [
+          "10pt",
+          "9pt",
+          "8pt"
+        ],
+        "hasRepeatHeader": true,
+        "headerSample": "No | Indikator | Satuan | Tahun"
+      },
+      {
+        "tableIndex": 91,
+        "rowCount": 3,
+        "columnCount": 7,
+        "tblW": "w:w=\"0\" w:type=\"auto\"",
+        "fontSizes": [
+          "10pt"
+        ],
+        "hasRepeatHeader": true,
+        "headerSample": "Indikator | Satuan | Capaian Kinerja"
+      },
+      {
+        "tableIndex": 92,
+        "rowCount": 12,
+        "columnCount": 8,
+        "tblW": "w:w=\"5000\" w:type=\"pct\"",
+        "fontSizes": [
+          "9pt"
+        ],
+        "hasRepeatHeader": true,
+        "headerSample": "No | Indikator | Satuan | Tahun"
+      },
+      {
+        "tableIndex": 93,
+        "rowCount": 14,
+        "columnCount": 8,
+        "tblW": "w:w=\"5000\" w:type=\"pct\"",
+        "fontSizes": [
+          "9pt"
+        ],
+        "hasRepeatHeader": true,
+        "headerSample": "No | Indikator | Satuan | Tahun"
+      },
+      {
+        "tableIndex": 94,
+        "rowCount": 3,
+        "columnCount": 8,
+        "tblW": "w:w=\"9236\" w:type=\"dxa\"",
+        "fontSizes": [
+          "10pt",
+          "9pt"
+        ],
+        "hasRepeatHeader": true,
+        "headerSample": "No | Indikator | Satuan | Tahun"
+      },
+      {
+        "tableIndex": 95,
+        "rowCount": 6,
+        "columnCount": 9,
+        "tblW": "w:w=\"9204\" w:type=\"dxa\"",
+        "fontSizes": [
+          "10pt",
+          "9pt"
+        ],
+        "hasRepeatHeader": true,
+        "headerSample": "No | Indikator | Satuan | Tahun"
+      },
+      {
+        "tableIndex": 96,
+        "rowCount": 3,
+        "columnCount": 7,
+        "tblW": "w:w=\"9045\" w:type=\"dxa\"",
+        "fontSizes": [
+          "10pt"
+        ],
+        "hasRepeatHeader": true,
+        "headerSample": "Indikator | Satuan | Tahun"
+      },
+      {
+        "tableIndex": 97,
+        "rowCount": 6,
+        "columnCount": 5,
+        "tblW": "w:w=\"7938\" w:type=\"dxa\"",
+        "fontSizes": [
+          "10pt"
+        ],
+        "hasRepeatHeader": true,
+        "headerSample": "No | Tahun | Jumlah PUS | Peserta KB Aktif | Persentase"
+      },
+      {
+        "tableIndex": 98,
+        "rowCount": 3,
+        "columnCount": 7,
+        "tblW": "w:w=\"9045\" w:type=\"dxa\"",
+        "fontSizes": [
+          "10pt",
+          "9pt"
+        ],
+        "hasRepeatHeader": true,
+        "headerSample": "Indikator | Satuan | Tahun"
+      },
+      {
+        "tableIndex": 99,
+        "rowCount": 6,
+        "columnCount": 5,
+        "tblW": "w:w=\"7902\" w:type=\"dxa\"",
+        "fontSizes": [
+          "10pt"
+        ],
+        "hasRepeatHeader": true,
+        "headerSample": "No. | Tahun | Jumlah PUS | Jumlah (orang) | Unmet Need KB (%)"
+      },
+      {
+        "tableIndex": 100,
+        "rowCount": 3,
+        "columnCount": 7,
+        "tblW": "w:w=\"0\" w:type=\"auto\"",
+        "fontSizes": [
+          "10pt",
+          "9pt"
+        ],
+        "hasRepeatHeader": true,
+        "headerSample": "Indikator | Satuan | Tahun"
+      },
+      {
+        "tableIndex": 101,
+        "rowCount": 4,
+        "columnCount": 7,
+        "tblW": "w:w=\"0\" w:type=\"auto\"",
+        "fontSizes": [
+          "10pt",
+          "9pt"
+        ],
+        "hasRepeatHeader": true,
+        "headerSample": "Indikator | Satuan | Tahun"
+      },
+      {
+        "tableIndex": 102,
+        "rowCount": 5,
+        "columnCount": 7,
+        "tblW": "w:w=\"9335\" w:type=\"dxa\"",
+        "fontSizes": [
+          "10pt",
+          "9pt"
+        ],
+        "hasRepeatHeader": true,
+        "headerSample": "Indikator | Satuan | Tahun"
+      },
+      {
+        "tableIndex": 103,
+        "rowCount": 8,
+        "columnCount": 7,
+        "tblW": "w:w=\"5000\" w:type=\"pct\"",
+        "fontSizes": [
+          "9pt"
+        ],
+        "hasRepeatHeader": false,
+        "headerSample": "TAHUN | Kecelakaan Lalu Lintas | Kerugian"
+      },
+      {
+        "tableIndex": 104,
+        "rowCount": 11,
+        "columnCount": 6,
+        "tblW": "w:w=\"5000\" w:type=\"pct\"",
+        "fontSizes": [
+          "8pt"
+        ],
+        "hasRepeatHeader": true,
+        "headerSample": "No. | Ruas / Lokasi Rawan Kecelakaan | Status Jalan | Koordinat / Lokasi | Jml K"
+      },
+      {
+        "tableIndex": 105,
+        "rowCount": 11,
+        "columnCount": 7,
+        "tblW": "w:w=\"5060\" w:type=\"pct\"",
+        "fontSizes": [
+          "8pt"
+        ],
+        "hasRepeatHeader": true,
+        "headerSample": "No. | Kecamatan | Nama Terminal"
+      },
+      {
+        "tableIndex": 106,
+        "rowCount": 6,
+        "columnCount": 7,
+        "tblW": "w:w=\"9209\" w:type=\"dxa\"",
+        "fontSizes": [
+          "10pt",
+          "9pt"
+        ],
+        "hasRepeatHeader": true,
+        "headerSample": "Indikator | Satuan | Tahun"
+      },
+      {
+        "tableIndex": 107,
+        "rowCount": 9,
+        "columnCount": 7,
+        "tblW": "w:w=\"9272\" w:type=\"dxa\"",
+        "fontSizes": [
+          "10pt",
+          "9pt"
+        ],
+        "hasRepeatHeader": true,
+        "headerSample": "Indikator | Satuan | Tahun"
+      },
+      {
+        "tableIndex": 108,
+        "rowCount": 8,
+        "columnCount": 7,
+        "tblW": "w:w=\"5000\" w:type=\"pct\"",
+        "fontSizes": [],
+        "hasRepeatHeader": true,
+        "headerSample": "No | Uraian | Tahun"
+      },
+      {
+        "tableIndex": 109,
+        "rowCount": 5,
+        "columnCount": 7,
+        "tblW": "w:w=\"5021\" w:type=\"pct\"",
+        "fontSizes": [],
+        "hasRepeatHeader": false,
+        "headerSample": "No | Uraian | Tahun"
+      },
+      {
+        "tableIndex": 110,
+        "rowCount": 6,
+        "columnCount": 7,
+        "tblW": "w:w=\"9943\" w:type=\"dxa\"",
+        "fontSizes": [
+          "9pt"
+        ],
+        "hasRepeatHeader": true,
+        "headerSample": "Jarak Antar Stasiun (Km) | Stasiun Cipari | Stasiun Kesugihan | Stasiun Maos | S"
+      },
+      {
+        "tableIndex": 111,
+        "rowCount": 15,
+        "columnCount": 6,
+        "tblW": "w:w=\"9493\" w:type=\"dxa\"",
+        "fontSizes": [
+          "10pt",
+          "9pt"
+        ],
+        "hasRepeatHeader": true,
+        "headerSample": "No. | Stasiun | Kelas | Ketinggian | Layanan | Status"
+      },
+      {
+        "tableIndex": 112,
+        "rowCount": 20,
+        "columnCount": 13,
+        "tblW": "w:w=\"10624\" w:type=\"dxa\"",
+        "fontSizes": [
+          "9pt",
+          "8pt"
+        ],
+        "hasRepeatHeader": true,
+        "headerSample": "No | Stasiun | Jml Lintas | Fasilitas Keselamatan"
+      },
+      {
+        "tableIndex": 113,
+        "rowCount": 3,
+        "columnCount": 7,
+        "tblW": "w:w=\"9014\" w:type=\"dxa\"",
+        "fontSizes": [
+          "10pt"
+        ],
+        "hasRepeatHeader": true,
+        "headerSample": "Indikator | Satuan | Tahun"
+      },
+      {
+        "tableIndex": 114,
+        "rowCount": 4,
+        "columnCount": 6,
+        "tblW": "w:w=\"9349\" w:type=\"dxa\"",
+        "fontSizes": [
+          "9pt",
+          "10pt"
+        ],
+        "hasRepeatHeader": false,
+        "headerSample": "Uraian | Tahun"
+      },
+      {
+        "tableIndex": 115,
+        "rowCount": 6,
+        "columnCount": 6,
+        "tblW": "w:w=\"9068\" w:type=\"dxa\"",
+        "fontSizes": [
+          "10pt"
+        ],
+        "hasRepeatHeader": true,
+        "headerSample": "Tahun | Jumlah Total OPD | Jumlah OPD yang memiliki  | Website | % OPD yang memi"
+      },
+      {
+        "tableIndex": 116,
+        "rowCount": 11,
+        "columnCount": 8,
+        "tblW": "w:w=\"9202\" w:type=\"dxa\"",
+        "fontSizes": [
+          "9pt"
+        ],
+        "hasRepeatHeader": true,
+        "headerSample": "No | Indikator | Satuan | Tahun"
+      },
+      {
+        "tableIndex": 117,
+        "rowCount": 10,
+        "columnCount": 9,
+        "tblW": "w:w=\"9220\" w:type=\"dxa\"",
+        "fontSizes": [
+          "10pt",
+          "9pt"
+        ],
+        "hasRepeatHeader": true,
+        "headerSample": "No | Indikator | Satuan | Capaian Kinerja"
+      },
+      {
+        "tableIndex": 118,
+        "rowCount": 3,
+        "columnCount": 7,
+        "tblW": "w:w=\"5000\" w:type=\"pct\"",
+        "fontSizes": [
+          "10pt"
+        ],
+        "hasRepeatHeader": false,
+        "headerSample": "Indikator | Satuan | 2021 | 2022 | 2023 | 2024 | 2025"
+      },
+      {
+        "tableIndex": 119,
+        "rowCount": 7,
+        "columnCount": 5,
+        "tblW": "w:w=\"0\" w:type=\"auto\"",
+        "fontSizes": [
+          "10pt"
+        ],
+        "hasRepeatHeader": true,
+        "headerSample": "Berdasarkan Ta | hun | Jumlah Proyek | Pertumbuhan Proyek PMA dan PMDN (%)"
+      },
+      {
+        "tableIndex": 120,
+        "rowCount": 7,
+        "columnCount": 7,
+        "tblW": "w:w=\"5000\" w:type=\"pct\"",
+        "fontSizes": [
+          "9pt"
+        ],
+        "hasRepeatHeader": false,
+        "headerSample": "Tahun | PMA | PMDN | Total"
+      },
+      {
+        "tableIndex": 121,
+        "rowCount": 32,
+        "columnCount": 8,
+        "tblW": "w:w=\"5000\" w:type=\"pct\"",
+        "fontSizes": [
+          "8pt"
+        ],
+        "hasRepeatHeader": true,
+        "headerSample": "No. | Sektor | PMA | PMDN | Total"
+      },
+      {
+        "tableIndex": 122,
+        "rowCount": 6,
+        "columnCount": 3,
+        "tblW": "w:w=\"5000\" w:type=\"pct\"",
+        "fontSizes": [
+          "9pt"
+        ],
+        "hasRepeatHeader": false,
+        "headerSample": "Luas Lahan Pertanian Sawah | : | 66.211 Hektar"
+      },
+      {
+        "tableIndex": 123,
+        "rowCount": 7,
+        "columnCount": 8,
+        "tblW": "w:w=\"5000\" w:type=\"pct\"",
+        "fontSizes": [
+          "10pt",
+          "9pt"
+        ],
+        "hasRepeatHeader": true,
+        "headerSample": "No | Indikator | Satuan | Tahun"
+      },
+      {
+        "tableIndex": 124,
+        "rowCount": 6,
+        "columnCount": 8,
+        "tblW": "w:w=\"9148\" w:type=\"dxa\"",
+        "fontSizes": [
+          "10pt"
+        ],
+        "hasRepeatHeader": true,
+        "headerSample": "No | Indikator | Satuan | Capaian Tahun"
+      },
+      {
+        "tableIndex": 125,
+        "rowCount": 3,
+        "columnCount": 7,
+        "tblW": "w:w=\"9084\" w:type=\"dxa\"",
+        "fontSizes": [
+          "12pt",
+          "10pt"
+        ],
+        "hasRepeatHeader": false,
+        "headerSample": "Uraian | Satuan | Tahun"
+      },
+      {
+        "tableIndex": 126,
+        "rowCount": 4,
+        "columnCount": 7,
+        "tblW": "w:w=\"5000\" w:type=\"pct\"",
+        "fontSizes": [
+          "10pt"
+        ],
+        "hasRepeatHeader": false,
+        "headerSample": "Uraian | Satuan | Tahun"
+      },
+      {
+        "tableIndex": 127,
+        "rowCount": 3,
+        "columnCount": 7,
+        "tblW": "w:w=\"0\" w:type=\"auto\"",
+        "fontSizes": [
+          "10pt"
+        ],
+        "hasRepeatHeader": false,
+        "headerSample": "Uraian | Satuan | Tahun"
+      },
+      {
+        "tableIndex": 128,
+        "rowCount": 4,
+        "columnCount": 8,
+        "tblW": "w:w=\"0\" w:type=\"auto\"",
+        "fontSizes": [
+          "10pt"
+        ],
+        "hasRepeatHeader": false,
+        "headerSample": "No | Indikator | Satuan | Capaian Kinerja"
+      },
+      {
+        "tableIndex": 129,
+        "rowCount": 8,
+        "columnCount": 8,
+        "tblW": "w:w=\"5000\" w:type=\"pct\"",
+        "fontSizes": [
+          "9pt"
+        ],
+        "hasRepeatHeader": false,
+        "headerSample": "No | Indikator | Satuan | Tahun"
+      },
+      {
+        "tableIndex": 130,
+        "rowCount": 6,
+        "columnCount": 8,
+        "tblW": "w:w=\"9134\" w:type=\"dxa\"",
+        "fontSizes": [
+          "10pt"
+        ],
+        "hasRepeatHeader": true,
+        "headerSample": "No | Indikator | Satuan | Tahun"
+      },
+      {
+        "tableIndex": 131,
+        "rowCount": 4,
+        "columnCount": 8,
+        "tblW": "w:w=\"9776\" w:type=\"dxa\"",
+        "fontSizes": [
+          "10pt",
+          "9pt"
+        ],
+        "hasRepeatHeader": true,
+        "headerSample": "No | Indikator | Satuan | Tahun"
+      },
+      {
+        "tableIndex": 132,
+        "rowCount": 3,
+        "columnCount": 7,
+        "tblW": "w:w=\"5000\" w:type=\"pct\"",
+        "fontSizes": [
+          "10pt",
+          "12pt"
+        ],
+        "hasRepeatHeader": true,
+        "headerSample": "Uraian | Satuan | Tahun"
+      },
+      {
+        "tableIndex": 133,
+        "rowCount": 6,
+        "columnCount": 8,
+        "tblW": "w:w=\"9068\" w:type=\"dxa\"",
+        "fontSizes": [
+          "9pt"
+        ],
+        "hasRepeatHeader": true,
+        "headerSample": "No | Indikator | Satuan | Tahun"
+      },
+      {
+        "tableIndex": 134,
+        "rowCount": 4,
+        "columnCount": 7,
+        "tblW": "w:w=\"5000\" w:type=\"pct\"",
+        "fontSizes": [
+          "10pt",
+          "12pt"
+        ],
+        "hasRepeatHeader": true,
+        "headerSample": "Uraian | Satuan | Tahun"
+      },
+      {
+        "tableIndex": 135,
+        "rowCount": 3,
+        "columnCount": 8,
+        "tblW": "w:w=\"9068\" w:type=\"dxa\"",
+        "fontSizes": [
+          "10pt"
+        ],
+        "hasRepeatHeader": true,
+        "headerSample": "No | Indikator | Satuan | Tahun"
+      },
+      {
+        "tableIndex": 136,
+        "rowCount": 7,
+        "columnCount": 8,
+        "tblW": "w:w=\"5000\" w:type=\"pct\"",
+        "fontSizes": [
+          "9pt"
+        ],
+        "hasRepeatHeader": true,
+        "headerSample": "No | Indikator | Satua  | n | Capaian |   | Kinerja"
+      },
+      {
+        "tableIndex": 137,
+        "rowCount": 28,
+        "columnCount": 10,
+        "tblW": "w:w=\"10237\" w:type=\"dxa\"",
+        "fontSizes": [
+          "9pt"
+        ],
+        "hasRepeatHeader": true,
+        "headerSample": "NO | Kecamatan | Luas Areal (Ha) | Panjang  | (meter) | Konstruksi (meter) | Kon"
+      },
+      {
+        "tableIndex": 138,
+        "rowCount": 10,
+        "columnCount": 8,
+        "tblW": "w:w=\"9209\" w:type=\"dxa\"",
+        "fontSizes": [
+          "10pt"
+        ],
+        "hasRepeatHeader": true,
+        "headerSample": "No | Jenis Komoditas | Satuan | Tahun"
+      },
+      {
+        "tableIndex": 139,
+        "rowCount": 10,
+        "columnCount": 8,
+        "tblW": "w:w=\"9209\" w:type=\"dxa\"",
+        "fontSizes": [
+          "10pt"
+        ],
+        "hasRepeatHeader": true,
+        "headerSample": "No | Jenis Komoditas | Satuan | Tahun"
+      },
+      {
+        "tableIndex": 140,
+        "rowCount": 12,
+        "columnCount": 8,
+        "tblW": "w:w=\"9776\" w:type=\"dxa\"",
+        "fontSizes": [
+          "9pt"
+        ],
+        "hasRepeatHeader": true,
+        "headerSample": "No | Jenis Komoditas | Satuan | Tahun"
+      },
+      {
+        "tableIndex": 141,
+        "rowCount": 12,
+        "columnCount": 8,
+        "tblW": "w:w=\"9776\" w:type=\"dxa\"",
+        "fontSizes": [
+          "9pt"
+        ],
+        "hasRepeatHeader": true,
+        "headerSample": "No | Jenis | Satuan | Tahun"
+      },
+      {
+        "tableIndex": 142,
+        "rowCount": 11,
+        "columnCount": 8,
+        "tblW": "w:w=\"9067\" w:type=\"dxa\"",
+        "fontSizes": [
+          "9pt"
+        ],
+        "hasRepeatHeader": true,
+        "headerSample": "No | Produktivitas | Satuan | Tahun"
+      },
+      {
+        "tableIndex": 143,
+        "rowCount": 11,
+        "columnCount": 8,
+        "tblW": "w:w=\"9038\" w:type=\"dxa\"",
+        "fontSizes": [
+          "9pt"
+        ],
+        "hasRepeatHeader": true,
+        "headerSample": "No | Produktivitas | Satuan | Tahun"
+      },
+      {
+        "tableIndex": 144,
+        "rowCount": 17,
+        "columnCount": 8,
+        "tblW": "w:w=\"9209\" w:type=\"dxa\"",
+        "fontSizes": [
+          "10pt",
+          "9pt"
+        ],
+        "hasRepeatHeader": true,
+        "headerSample": "No | Jenis Ternak | Satuan | Tahun"
+      },
+      {
+        "tableIndex": 145,
+        "rowCount": 7,
+        "columnCount": 8,
+        "tblW": "w:w=\"9351\" w:type=\"dxa\"",
+        "fontSizes": [
+          "10pt",
+          "9pt"
+        ],
+        "hasRepeatHeader": true,
+        "headerSample": "No | Komoditi | Satuan | Tahun"
+      },
+      {
+        "tableIndex": 146,
+        "rowCount": 3,
+        "columnCount": 8,
+        "tblW": "w:w=\"9073\" w:type=\"dxa\"",
+        "fontSizes": [
+          "10pt"
+        ],
+        "hasRepeatHeader": true,
+        "headerSample": "No | Komoditi | Satuan | Tahun"
+      },
+      {
+        "tableIndex": 147,
+        "rowCount": 9,
+        "columnCount": 8,
+        "tblW": "w:w=\"9351\" w:type=\"dxa\"",
+        "fontSizes": [
+          "10pt",
+          "9pt"
+        ],
+        "hasRepeatHeader": true,
+        "headerSample": "No | Indikator | Satuan | Tahun"
+      },
+      {
+        "tableIndex": 148,
+        "rowCount": 15,
+        "columnCount": 7,
+        "tblW": "w:w=\"5000\" w:type=\"pct\"",
+        "fontSizes": [
+          "7pt",
+          "6.5pt"
+        ],
+        "hasRepeatHeader": false,
+        "headerSample": "Komoditas | Commodities | 2021 | 2022 | 2023 | 2024 | 2025"
+      },
+      {
+        "tableIndex": 149,
+        "rowCount": 6,
+        "columnCount": 8,
+        "tblW": "w:w=\"9209\" w:type=\"dxa\"",
+        "fontSizes": [
+          "10pt",
+          "9pt"
+        ],
+        "hasRepeatHeader": true,
+        "headerSample": "No | Indikator | Satuan | Tahun"
+      },
+      {
+        "tableIndex": 150,
+        "rowCount": 5,
+        "columnCount": 5,
+        "tblW": "w:w=\"5000\" w:type=\"pct\"",
+        "fontSizes": [
+          "10pt"
+        ],
+        "hasRepeatHeader": false,
+        "headerSample": "Nomor | Penilaian | Bobot | 2024 | 2025"
+      },
+      {
+        "tableIndex": 151,
+        "rowCount": 5,
+        "columnCount": 7,
+        "tblW": "w:w=\"5000\" w:type=\"pct\"",
+        "fontSizes": [
+          "10pt"
+        ],
+        "hasRepeatHeader": false,
+        "headerSample": "      | Tahun | 2025 | 2026 | 2027 | 2028 | 2029 | 2030"
+      },
+      {
+        "tableIndex": 152,
+        "rowCount": 5,
+        "columnCount": 7,
+        "tblW": "w:w=\"5000\" w:type=\"pct\"",
+        "fontSizes": [
+          "12pt"
+        ],
+        "hasRepeatHeader": false,
+        "headerSample": "      | Tahun | 2025 | 2026 | 2027 | 2028 | 2029 | 2030"
+      },
+      {
+        "tableIndex": 153,
+        "rowCount": 11,
+        "columnCount": 8,
+        "tblW": "w:w=\"9634\" w:type=\"dxa\"",
+        "fontSizes": [
+          "10pt",
+          "8pt",
+          "9pt"
+        ],
+        "hasRepeatHeader": true,
+        "headerSample": "No | Indikator | Satuan | Tahun"
+      },
+      {
+        "tableIndex": 154,
+        "rowCount": 4,
+        "columnCount": 8,
+        "tblW": "w:w=\"9213\" w:type=\"dxa\"",
+        "fontSizes": [
+          "10pt"
+        ],
+        "hasRepeatHeader": true,
+        "headerSample": "No | Indikator | Satuan | Tahun"
+      },
+      {
+        "tableIndex": 155,
+        "rowCount": 9,
+        "columnCount": 8,
+        "tblW": "w:w=\"9492\" w:type=\"dxa\"",
+        "fontSizes": [
+          "10pt",
+          "9pt"
+        ],
+        "hasRepeatHeader": true,
+        "headerSample": "No | Indikator | Satuan | Tahun"
+      },
+      {
+        "tableIndex": 156,
+        "rowCount": 5,
+        "columnCount": 5,
+        "tblW": "w:w=\"5000\" w:type=\"pct\"",
+        "fontSizes": [
+          "10pt",
+          "9pt"
+        ],
+        "hasRepeatHeader": false,
+        "headerSample": "No | Uraian | Target | Realiasi | Selisih"
+      },
+      {
+        "tableIndex": 157,
+        "rowCount": 7,
+        "columnCount": 5,
+        "tblW": "w:w=\"8931\" w:type=\"dxa\"",
+        "fontSizes": [
+          "10pt"
+        ],
+        "hasRepeatHeader": false,
+        "headerSample": "Tahun | Pendidikan | Kesehatan"
+      },
+      {
+        "tableIndex": 158,
+        "rowCount": 7,
+        "columnCount": 5,
+        "tblW": "w:w=\"0\" w:type=\"auto\"",
+        "fontSizes": [
+          "10pt"
+        ],
+        "hasRepeatHeader": true,
+        "headerSample": "No. | Tahun | Pengadaan ASN"
+      },
+      {
+        "tableIndex": 159,
+        "rowCount": 7,
+        "columnCount": 6,
+        "tblW": "w:w=\"0\" w:type=\"auto\"",
+        "fontSizes": [
+          "10pt"
+        ],
+        "hasRepeatHeader": true,
+        "headerSample": "No. | Tahun | Jumlah Talent Pool | Promosi"
+      },
+      {
+        "tableIndex": 160,
+        "rowCount": 6,
+        "columnCount": 3,
+        "tblW": "w:w=\"0\" w:type=\"auto\"",
+        "fontSizes": [
+          "10pt"
+        ],
+        "hasRepeatHeader": true,
+        "headerSample": "No. | Tahun | Kenaikan Pangkat"
+      },
+      {
+        "tableIndex": 161,
+        "rowCount": 7,
+        "columnCount": 8,
+        "tblW": "w:w=\"9125\" w:type=\"dxa\"",
+        "fontSizes": [
+          "10pt"
+        ],
+        "hasRepeatHeader": true,
+        "headerSample": "No. | Jenis Diklat | Tahun"
+      },
+      {
+        "tableIndex": 162,
+        "rowCount": 6,
+        "columnCount": 8,
+        "tblW": "w:w=\"9259\" w:type=\"dxa\"",
+        "fontSizes": [
+          "9pt"
+        ],
+        "hasRepeatHeader": true,
+        "headerSample": "No | Indikator | Satuan | Tahun"
+      },
+      {
+        "tableIndex": 163,
+        "rowCount": 8,
+        "columnCount": 8,
+        "tblW": "w:w=\"9350\" w:type=\"dxa\"",
+        "fontSizes": [
+          "10pt",
+          "9pt"
+        ],
+        "hasRepeatHeader": true,
+        "headerSample": "No | Indikator | Satuan | Tahun"
+      },
+      {
+        "tableIndex": 164,
+        "rowCount": 4,
+        "columnCount": 8,
+        "tblW": "w:w=\"9320\" w:type=\"dxa\"",
+        "fontSizes": [
+          "10pt"
+        ],
+        "hasRepeatHeader": false,
+        "headerSample": "No | Indikator | Satuan | Tahun"
+      },
+      {
+        "tableIndex": 165,
+        "rowCount": 8,
+        "columnCount": 8,
+        "tblW": "w:w=\"9145\" w:type=\"dxa\"",
+        "fontSizes": [
+          "10pt"
+        ],
+        "hasRepeatHeader": true,
+        "headerSample": "No | Indikator Kinerja | Satuan | Tahun"
+      },
+      {
+        "tableIndex": 166,
+        "rowCount": 3,
+        "columnCount": 6,
+        "tblW": "w:w=\"9016\" w:type=\"dxa\"",
+        "fontSizes": [
+          "10pt"
+        ],
+        "hasRepeatHeader": false,
+        "headerSample": "Indikator | Tahun"
+      },
+      {
+        "tableIndex": 167,
+        "rowCount": 13,
+        "columnCount": 7,
+        "tblW": "w:w=\"8772\" w:type=\"dxa\"",
+        "fontSizes": [
+          "10pt"
+        ],
+        "hasRepeatHeader": true,
+        "headerSample": "No | Jenis Kriminalitas | Tahun"
+      },
+      {
+        "tableIndex": 168,
+        "rowCount": 16,
+        "columnCount": 3,
+        "tblW": "w:w=\"8931\" w:type=\"dxa\"",
+        "fontSizes": [
+          "10pt"
+        ],
+        "hasRepeatHeader": true,
+        "headerSample": "No | Jenis ijin |   | L | ama (hari)"
+      },
+      {
+        "tableIndex": 169,
+        "rowCount": 21,
+        "columnCount": 7,
+        "tblW": "w:w=\"9273\" w:type=\"dxa\"",
+        "fontSizes": [
+          "10pt"
+        ],
+        "hasRepeatHeader": true,
+        "headerSample": "No | Jumlah Penerbitan Perijinan | Tahun"
+      },
+      {
+        "tableIndex": 170,
+        "rowCount": 14,
+        "columnCount": 6,
+        "tblW": "w:w=\"9400\" w:type=\"dxa\"",
+        "fontSizes": [
+          "9pt"
+        ],
+        "hasRepeatHeader": true,
+        "headerSample": "Indikator | Tahun"
+      },
+      {
+        "tableIndex": 171,
+        "rowCount": 3,
+        "columnCount": 8,
+        "tblW": "w:w=\"5000\" w:type=\"pct\"",
+        "fontSizes": [
+          "10pt"
+        ],
+        "hasRepeatHeader": false,
+        "headerSample": "Indikator | Satuan | Tahun"
+      },
+      {
+        "tableIndex": 172,
+        "rowCount": 3,
+        "columnCount": 7,
+        "tblW": "w:w=\"8487\" w:type=\"dxa\"",
+        "fontSizes": [
+          "10pt"
+        ],
+        "hasRepeatHeader": false,
+        "headerSample": "Indikator | Satuan  | Tahun"
+      },
+      {
+        "tableIndex": 173,
+        "rowCount": 3,
+        "columnCount": 7,
+        "tblW": "w:w=\"8307\" w:type=\"dxa\"",
+        "fontSizes": [
+          "10pt"
+        ],
+        "hasRepeatHeader": false,
+        "headerSample": "Indikator | Satuan | Tahun"
+      },
+      {
+        "tableIndex": 174,
+        "rowCount": 66,
+        "columnCount": 4,
+        "tblW": "w:w=\"9496\" w:type=\"dxa\"",
+        "fontSizes": [
+          "12pt"
+        ],
+        "hasRepeatHeader": true,
+        "headerSample": "No | Tahun | Judul Kajian | Instansi"
+      },
+      {
+        "tableIndex": 175,
+        "rowCount": 19,
+        "columnCount": 3,
+        "tblW": "w:w=\"9071\" w:type=\"dxa\"",
+        "fontSizes": [
+          "12pt"
+        ],
+        "hasRepeatHeader": true,
+        "headerSample": "No. | Nama Inovasi Tata Kelola Pemerintahan | Asal Instansi / Perguruan Tinggi /"
+      },
+      {
+        "tableIndex": 176,
+        "rowCount": 210,
+        "columnCount": 3,
+        "tblW": "w:w=\"5000\" w:type=\"pct\"",
+        "fontSizes": [
+          "10pt"
+        ],
+        "hasRepeatHeader": true,
+        "headerSample": "No | Judul Inovasi | Instansi/Asal"
+      },
+      {
+        "tableIndex": 177,
+        "rowCount": 9,
+        "columnCount": 3,
+        "tblW": "w:w=\"9094\" w:type=\"dxa\"",
+        "fontSizes": [],
+        "hasRepeatHeader": true,
+        "headerSample": "No | Judul Inovasi | Instansi/Asal"
+      },
+      {
+        "tableIndex": 178,
+        "rowCount": 5,
+        "columnCount": 4,
+        "tblW": "w:w=\"9282\" w:type=\"dxa\"",
+        "fontSizes": [],
+        "hasRepeatHeader": false,
+        "headerSample": "Kabupaten | Tahun"
+      },
+      {
+        "tableIndex": 179,
+        "rowCount": 15,
+        "columnCount": 3,
+        "tblW": "w:w=\"8302\" w:type=\"dxa\"",
+        "fontSizes": [],
+        "hasRepeatHeader": true,
+        "headerSample": "No | Perguruan Tinggi | Jumlah Dosen"
+      },
+      {
+        "tableIndex": 180,
+        "rowCount": 2,
+        "columnCount": 3,
+        "tblW": "w:w=\"9128\" w:type=\"dxa\"",
+        "fontSizes": [
+          "11pt"
+        ],
+        "hasRepeatHeader": false,
+        "headerSample": "Fasilitasi Riset  | dan |  Pengkajian | Fasilitasi Inovasi  | dan |  Pengembanga"
+      },
+      {
+        "tableIndex": 181,
+        "rowCount": 6,
+        "columnCount": 4,
+        "tblW": "w:w=\"9067\" w:type=\"dxa\"",
+        "fontSizes": [
+          "10pt",
+          "9pt"
+        ],
+        "hasRepeatHeader": false,
+        "headerSample": "INTERVAL NILAI REALISASI KINERJA | KRITERIA PENILAIAN REALISASI KINERJA | KETERA"
+      },
+      {
+        "tableIndex": 182,
+        "rowCount": 8,
+        "columnCount": 3,
+        "tblW": "w:w=\"9067\" w:type=\"dxa\"",
+        "fontSizes": [
+          "12pt"
+        ],
+        "hasRepeatHeader": true,
+        "headerSample": "Status Pencapaian Indikator | 2025"
+      },
+      {
+        "tableIndex": 183,
+        "rowCount": 22,
+        "columnCount": 10,
+        "tblW": "w:w=\"16638\" w:type=\"dxa\"",
+        "fontSizes": [
+          "10pt"
+        ],
+        "hasRepeatHeader": true,
+        "headerSample": "No | Indikator Sasaran | Satuan | Target Akhir RPD | Target 2025 | Realisasi 202"
+      },
+      {
+        "tableIndex": 184,
+        "rowCount": 12,
+        "columnCount": 12,
+        "tblW": "w:w=\"5464\" w:type=\"pct\"",
+        "fontSizes": [
+          "9pt"
+        ],
+        "hasRepeatHeader": true,
+        "headerSample": "URUSAN / PROGRAM | INDIKATOR KINERJA PROGRAM | SATUAN | TARGET AKHIR RPD (TH. 20"
+      },
+      {
+        "tableIndex": 185,
+        "rowCount": 29,
+        "columnCount": 12,
+        "tblW": "w:w=\"5382\" w:type=\"pct\"",
+        "fontSizes": [
+          "9pt"
+        ],
+        "hasRepeatHeader": true,
+        "headerSample": "URUSAN / PROGRAM | INDIKATOR KINERJA PROGRAM | SATUAN | TARGET AKHIR RPD (TH. 20"
+      },
+      {
+        "tableIndex": 186,
+        "rowCount": 18,
+        "columnCount": 12,
+        "tblW": "w:w=\"5382\" w:type=\"pct\"",
+        "fontSizes": [
+          "9pt"
+        ],
+        "hasRepeatHeader": true,
+        "headerSample": "URUSAN / PROGRAM | INDIKATOR KINERJA PROGRAM | SATUAN | TARGET AKHIR RPD (TH. 20"
+      },
+      {
+        "tableIndex": 187,
+        "rowCount": 7,
+        "columnCount": 12,
+        "tblW": "w:w=\"5445\" w:type=\"pct\"",
+        "fontSizes": [
+          "9pt"
+        ],
+        "hasRepeatHeader": true,
+        "headerSample": "URUSAN / PROGRAM | INDIKATOR KINERJA PROGRAM | SATUAN | TARGET AKHIR RPD (TH. 20"
+      },
+      {
+        "tableIndex": 188,
+        "rowCount": 14,
+        "columnCount": 12,
+        "tblW": "w:w=\"5445\" w:type=\"pct\"",
+        "fontSizes": [
+          "9pt"
+        ],
+        "hasRepeatHeader": true,
+        "headerSample": "URUSAN / PROGRAM | INDIKATOR KINERJA PROGRAM | SATUAN | TARGET AKHIR RPD (TH. 20"
+      },
+      {
+        "tableIndex": 189,
+        "rowCount": 11,
+        "columnCount": 12,
+        "tblW": "w:w=\"5382\" w:type=\"pct\"",
+        "fontSizes": [
+          "9pt"
+        ],
+        "hasRepeatHeader": true,
+        "headerSample": "URUSAN / PROGRAM | INDIKATOR KINERJA PROGRAM | SATUAN | TARGET AKHIR RPD (TH. 20"
+      },
+      {
+        "tableIndex": 190,
+        "rowCount": 7,
+        "columnCount": 12,
+        "tblW": "w:w=\"5382\" w:type=\"pct\"",
+        "fontSizes": [
+          "9pt"
+        ],
+        "hasRepeatHeader": true,
+        "headerSample": "URUSAN / PROGRAM | INDIKATOR KINERJA PROGRAM | SATUAN | TARGET AKHIR RPD (TH. 20"
+      },
+      {
+        "tableIndex": 191,
+        "rowCount": 11,
+        "columnCount": 12,
+        "tblW": "w:w=\"5382\" w:type=\"pct\"",
+        "fontSizes": [
+          "9pt"
+        ],
+        "hasRepeatHeader": false,
+        "headerSample": "URUSAN / PROGRAM | INDIKATOR KINERJA PROGRAM | SATUAN | TARGET AKHIR RPD (TH. 20"
+      },
+      {
+        "tableIndex": 192,
+        "rowCount": 11,
+        "columnCount": 12,
+        "tblW": "w:w=\"5393\" w:type=\"pct\"",
+        "fontSizes": [
+          "8.5pt",
+          "9pt"
+        ],
+        "hasRepeatHeader": true,
+        "headerSample": "URUSAN / PROGRAM | INDIKATOR KINERJA PROGRAM | SATUAN | TARGET AKHIR RPD (TH. 20"
+      },
+      {
+        "tableIndex": 193,
+        "rowCount": 5,
+        "columnCount": 12,
+        "tblW": "w:w=\"5382\" w:type=\"pct\"",
+        "fontSizes": [
+          "8.5pt"
+        ],
+        "hasRepeatHeader": true,
+        "headerSample": "URUSAN / PROGRAM | INDIKATOR KINERJA PROGRAM | SATUAN | TARGET AKHIR RPD (TH. 20"
+      },
+      {
+        "tableIndex": 194,
+        "rowCount": 13,
+        "columnCount": 12,
+        "tblW": "w:w=\"5382\" w:type=\"pct\"",
+        "fontSizes": [
+          "8.5pt",
+          "9pt"
+        ],
+        "hasRepeatHeader": true,
+        "headerSample": "URUSAN / PROGRAM | INDIKATOR KINERJA PROGRAM | SATUAN | TARGET AKHIR RPD (TH. 20"
+      },
+      {
+        "tableIndex": 195,
+        "rowCount": 13,
+        "columnCount": 12,
+        "tblW": "w:w=\"5382\" w:type=\"pct\"",
+        "fontSizes": [
+          "8.5pt",
+          "9pt"
+        ],
+        "hasRepeatHeader": true,
+        "headerSample": "URUSAN / PROGRAM | INDIKATOR KINERJA PROGRAM | SATUAN | TARGET AKHIR RPD (TH. 20"
+      },
+      {
+        "tableIndex": 196,
+        "rowCount": 9,
+        "columnCount": 12,
+        "tblW": "w:w=\"5382\" w:type=\"pct\"",
+        "fontSizes": [
+          "8.5pt",
+          "9pt"
+        ],
+        "hasRepeatHeader": true,
+        "headerSample": "URUSAN / PROGRAM | INDIKATOR KINERJA PROGRAM | SATUAN | TARGET AKHIR RPD (TH. 20"
+      },
+      {
+        "tableIndex": 197,
+        "rowCount": 8,
+        "columnCount": 12,
+        "tblW": "w:w=\"5378\" w:type=\"pct\"",
+        "fontSizes": [
+          "8.5pt",
+          "9pt"
+        ],
+        "hasRepeatHeader": true,
+        "headerSample": "URUSAN / PROGRAM | INDIKATOR KINERJA PROGRAM | SATUAN | TARGET AKHIR RPD (TH. 20"
+      },
+      {
+        "tableIndex": 198,
+        "rowCount": 9,
+        "columnCount": 12,
+        "tblW": "w:w=\"5385\" w:type=\"pct\"",
+        "fontSizes": [
+          "8.5pt",
+          "9pt"
+        ],
+        "hasRepeatHeader": true,
+        "headerSample": "URUSAN / PROGRAM | INDIKATOR KINERJA PROGRAM | SATUAN | TARGET AKHIR RPD (TH. 20"
+      },
+      {
+        "tableIndex": 199,
+        "rowCount": 7,
+        "columnCount": 12,
+        "tblW": "w:w=\"5382\" w:type=\"pct\"",
+        "fontSizes": [
+          "8.5pt",
+          "9pt"
+        ],
+        "hasRepeatHeader": true,
+        "headerSample": "URUSAN / PROGRAM | INDIKATOR KINERJA PROGRAM | SATUAN | TARGET AKHIR RPD (TH. 20"
+      },
+      {
+        "tableIndex": 200,
+        "rowCount": 10,
+        "columnCount": 12,
+        "tblW": "w:w=\"5382\" w:type=\"pct\"",
+        "fontSizes": [
+          "8.5pt",
+          "9pt"
+        ],
+        "hasRepeatHeader": true,
+        "headerSample": "URUSAN / PROGRAM | INDIKATOR KINERJA PROGRAM | SATUAN | TARGET AKHIR RPD (TH. 20"
+      },
+      {
+        "tableIndex": 201,
+        "rowCount": 10,
+        "columnCount": 12,
+        "tblW": "w:w=\"5382\" w:type=\"pct\"",
+        "fontSizes": [
+          "8.5pt",
+          "9pt"
+        ],
+        "hasRepeatHeader": true,
+        "headerSample": "URUSAN / PROGRAM | INDIKATOR KINERJA PROGRAM | SATUAN | TARGET AKHIR RPD (TH. 20"
+      },
+      {
+        "tableIndex": 202,
+        "rowCount": 7,
+        "columnCount": 12,
+        "tblW": "w:w=\"5382\" w:type=\"pct\"",
+        "fontSizes": [
+          "8.5pt"
+        ],
+        "hasRepeatHeader": true,
+        "headerSample": "URUSAN / PROGRAM | INDIKATOR KINERJA PROGRAM | SATUAN | TARGET AKHIR RPD (TH. 20"
+      },
+      {
+        "tableIndex": 203,
+        "rowCount": 4,
+        "columnCount": 12,
+        "tblW": "w:w=\"5382\" w:type=\"pct\"",
+        "fontSizes": [
+          "8.5pt"
+        ],
+        "hasRepeatHeader": true,
+        "headerSample": "URUSAN / PROGRAM | INDIKATOR KINERJA PROGRAM | SATUAN | TARGET AKHIR RPD (TH. 20"
+      },
+      {
+        "tableIndex": 204,
+        "rowCount": 4,
+        "columnCount": 12,
+        "tblW": "w:w=\"5397\" w:type=\"pct\"",
+        "fontSizes": [
+          "8.5pt",
+          "9pt"
+        ],
+        "hasRepeatHeader": true,
+        "headerSample": "URUSAN / PROGRAM | INDIKATOR KINERJA PROGRAM | SATUAN | TARGET AKHIR RPD (TH. 20"
+      },
+      {
+        "tableIndex": 205,
+        "rowCount": 7,
+        "columnCount": 12,
+        "tblW": "w:w=\"5382\" w:type=\"pct\"",
+        "fontSizes": [
+          "8.5pt",
+          "9pt"
+        ],
+        "hasRepeatHeader": true,
+        "headerSample": "URUSAN / PROGRAM | INDIKATOR KINERJA PROGRAM | SATUAN | TARGET AKHIR RPD (TH. 20"
+      },
+      {
+        "tableIndex": 206,
+        "rowCount": 7,
+        "columnCount": 12,
+        "tblW": "w:w=\"5382\" w:type=\"pct\"",
+        "fontSizes": [
+          "8.5pt",
+          "9pt"
+        ],
+        "hasRepeatHeader": true,
+        "headerSample": "URUSAN / PROGRAM | INDIKATOR KINERJA PROGRAM | SATUAN | TARGET AKHIR RPD (TH. 20"
+      },
+      {
+        "tableIndex": 207,
+        "rowCount": 5,
+        "columnCount": 12,
+        "tblW": "w:w=\"5382\" w:type=\"pct\"",
+        "fontSizes": [
+          "8.5pt",
+          "9pt"
+        ],
+        "hasRepeatHeader": true,
+        "headerSample": "URUSAN / PROGRAM | INDIKATOR KINERJA PROGRAM | SATUAN | TARGET AKHIR RPD (TH. 20"
+      },
+      {
+        "tableIndex": 208,
+        "rowCount": 9,
+        "columnCount": 12,
+        "tblW": "w:w=\"5382\" w:type=\"pct\"",
+        "fontSizes": [
+          "8.5pt",
+          "9pt"
+        ],
+        "hasRepeatHeader": true,
+        "headerSample": "URUSAN / PROGRAM | INDIKATOR KINERJA PROGRAM | SATUAN | TARGET AKHIR RPD (TH. 20"
+      },
+      {
+        "tableIndex": 209,
+        "rowCount": 9,
+        "columnCount": 12,
+        "tblW": "w:w=\"5382\" w:type=\"pct\"",
+        "fontSizes": [
+          "8.5pt",
+          "9pt"
+        ],
+        "hasRepeatHeader": true,
+        "headerSample": "URUSAN / PROGRAM | INDIKATOR KINERJA PROGRAM | SATUAN | TARGET AKHIR RPD (TH. 20"
+      },
+      {
+        "tableIndex": 210,
+        "rowCount": 12,
+        "columnCount": 12,
+        "tblW": "w:w=\"5387\" w:type=\"pct\"",
+        "fontSizes": [
+          "8.5pt",
+          "9pt"
+        ],
+        "hasRepeatHeader": true,
+        "headerSample": "URUSAN / PROGRAM | INDIKATOR KINERJA PROGRAM | SATUAN | TARGET AKHIR RPD (TH. 20"
+      },
+      {
+        "tableIndex": 211,
+        "rowCount": 10,
+        "columnCount": 12,
+        "tblW": "w:w=\"5382\" w:type=\"pct\"",
+        "fontSizes": [
+          "8.5pt",
+          "9pt"
+        ],
+        "hasRepeatHeader": true,
+        "headerSample": "URUSAN / PROGRAM | INDIKATOR KINERJA PROGRAM | SATUAN | TARGET AKHIR RPD (TH. 20"
+      },
+      {
+        "tableIndex": 212,
+        "rowCount": 8,
+        "columnCount": 12,
+        "tblW": "w:w=\"5382\" w:type=\"pct\"",
+        "fontSizes": [
+          "8.5pt",
+          "9pt"
+        ],
+        "hasRepeatHeader": true,
+        "headerSample": "URUSAN / PROGRAM | INDIKATOR KINERJA PROGRAM | SATUAN | TARGET AKHIR RPD (TH. 20"
+      },
+      {
+        "tableIndex": 213,
+        "rowCount": 15,
+        "columnCount": 12,
+        "tblW": "w:w=\"5382\" w:type=\"pct\"",
+        "fontSizes": [
+          "8.5pt",
+          "9pt"
+        ],
+        "hasRepeatHeader": false,
+        "headerSample": "URUSAN / PROGRAM | INDIKATOR KINERJA PROGRAM | SATUAN | TARGET AKHIR RPD (TH. 20"
+      },
+      {
+        "tableIndex": 214,
+        "rowCount": 7,
+        "columnCount": 12,
+        "tblW": "w:w=\"5382\" w:type=\"pct\"",
+        "fontSizes": [
+          "8.5pt",
+          "9pt"
+        ],
+        "hasRepeatHeader": true,
+        "headerSample": "URUSAN / PROGRAM | INDIKATOR KINERJA PROGRAM | SATUAN | TARGET AKHIR RPD (TH. 20"
+      },
+      {
+        "tableIndex": 215,
+        "rowCount": 9,
+        "columnCount": 12,
+        "tblW": "w:w=\"5382\" w:type=\"pct\"",
+        "fontSizes": [
+          "8.5pt",
+          "9pt"
+        ],
+        "hasRepeatHeader": true,
+        "headerSample": "URUSAN / PROGRAM | INDIKATOR KINERJA PROGRAM | SATUAN | TARGET AKHIR RPD (TH. 20"
+      },
+      {
+        "tableIndex": 216,
+        "rowCount": 12,
+        "columnCount": 12,
+        "tblW": "w:w=\"5382\" w:type=\"pct\"",
+        "fontSizes": [
+          "8.5pt",
+          "9pt"
+        ],
+        "hasRepeatHeader": true,
+        "headerSample": "URUSAN / PROGRAM | INDIKATOR KINERJA PROGRAM | SATUAN | TARGET AKHIR RPD (TH. 20"
+      },
+      {
+        "tableIndex": 217,
+        "rowCount": 9,
+        "columnCount": 12,
+        "tblW": "w:w=\"5382\" w:type=\"pct\"",
+        "fontSizes": [
+          "8.5pt",
+          "9pt"
+        ],
+        "hasRepeatHeader": true,
+        "headerSample": "URUSAN / PROGRAM | INDIKATOR KINERJA PROGRAM | SATUAN | TARGET AKHIR RPD (TH. 20"
+      },
+      {
+        "tableIndex": 218,
+        "rowCount": 4,
+        "columnCount": 12,
+        "tblW": "w:w=\"5382\" w:type=\"pct\"",
+        "fontSizes": [
+          "8.5pt",
+          "9pt"
+        ],
+        "hasRepeatHeader": true,
+        "headerSample": "URUSAN / PROGRAM | INDIKATOR KINERJA PROGRAM | SATUAN | TARGET AKHIR RPD (TH. 20"
+      },
+      {
+        "tableIndex": 219,
+        "rowCount": 5,
+        "columnCount": 12,
+        "tblW": "w:w=\"5382\" w:type=\"pct\"",
+        "fontSizes": [
+          "8.5pt",
+          "9pt"
+        ],
+        "hasRepeatHeader": false,
+        "headerSample": "URUSAN / PROGRAM | INDIKATOR KINERJA PROGRAM | SATUAN | TARGET AKHIR RPD (TH. 20"
+      },
+      {
+        "tableIndex": 220,
+        "rowCount": 9,
+        "columnCount": 12,
+        "tblW": "w:w=\"5382\" w:type=\"pct\"",
+        "fontSizes": [
+          "8.5pt",
+          "9pt"
+        ],
+        "hasRepeatHeader": false,
+        "headerSample": "URUSAN / PROGRAM | INDIKATOR KINERJA PROGRAM | SATUAN | TARGET AKHIR RPD (TH. 20"
+      },
+      {
+        "tableIndex": 221,
+        "rowCount": 10,
+        "columnCount": 12,
+        "tblW": "w:w=\"5382\" w:type=\"pct\"",
+        "fontSizes": [
+          "8.5pt"
+        ],
+        "hasRepeatHeader": true,
+        "headerSample": "URUSAN / PROGRAM | INDIKATOR KINERJA PROGRAM | SATUAN | TARGET AKHIR RPD (TH. 20"
+      },
+      {
+        "tableIndex": 222,
+        "rowCount": 10,
+        "columnCount": 12,
+        "tblW": "w:w=\"5217\" w:type=\"pct\"",
+        "fontSizes": [
+          "8.5pt",
+          "9pt"
+        ],
+        "hasRepeatHeader": true,
+        "headerSample": "URUSAN / PROGRAM | INDIKATOR KINERJA PROGRAM | SATUAN | TARGET AKHIR RPD (TH. 20"
+      }
+    ]
+  },
+  "RKPD 2027 PERBUP - BAB III (10.07).docx": {
+    "fileName": "RKPD 2027 PERBUP - BAB III (10.07).docx",
+    "styles": {
+      "defaultFont": "Times New Roman",
+      "defaultSizePt": 12
+    },
+    "sections": [
+      {
+        "sectionIndex": 1,
+        "orientation": "portrait",
+        "widthDxa": 12242,
+        "heightDxa": 18722,
+        "widthMm": 216,
+        "heightMm": 330,
+        "margins": {
+          "topDxa": 1418,
+          "bottomDxa": 1418,
+          "leftDxa": 2268,
+          "rightDxa": 1418,
+          "topCm": "2.50",
+          "bottomCm": "2.50",
+          "leftCm": "4.00",
+          "rightCm": "2.50"
+        }
+      },
+      {
+        "sectionIndex": 2,
+        "orientation": "landscape",
+        "widthDxa": 18722,
+        "heightDxa": 12242,
+        "widthMm": 330,
+        "heightMm": 216,
+        "margins": {
+          "topDxa": 1418,
+          "bottomDxa": 2268,
+          "leftDxa": 1418,
+          "rightDxa": 1418,
+          "topCm": "2.50",
+          "bottomCm": "4.00",
+          "leftCm": "2.50",
+          "rightCm": "2.50"
+        }
+      },
+      {
+        "sectionIndex": 3,
+        "orientation": "portrait",
+        "widthDxa": 12242,
+        "heightDxa": 18722,
+        "widthMm": 216,
+        "heightMm": 330,
+        "margins": {
+          "topDxa": 1418,
+          "bottomDxa": 1418,
+          "leftDxa": 2268,
+          "rightDxa": 1418,
+          "topCm": "2.50",
+          "bottomCm": "2.50",
+          "leftCm": "4.00",
+          "rightCm": "2.50"
+        }
+      },
+      {
+        "sectionIndex": 4,
+        "orientation": "landscape",
+        "widthDxa": 18722,
+        "heightDxa": 12242,
+        "widthMm": 330,
+        "heightMm": 216,
+        "margins": {
+          "topDxa": 1418,
+          "bottomDxa": 2268,
+          "leftDxa": 1418,
+          "rightDxa": 1418,
+          "topCm": "2.50",
+          "bottomCm": "4.00",
+          "leftCm": "2.50",
+          "rightCm": "2.50"
+        }
+      },
+      {
+        "sectionIndex": 5,
+        "orientation": "portrait",
+        "widthDxa": 12242,
+        "heightDxa": 18722,
+        "widthMm": 216,
+        "heightMm": 330,
+        "margins": {
+          "topDxa": 1418,
+          "bottomDxa": 1418,
+          "leftDxa": 2268,
+          "rightDxa": 1418,
+          "topCm": "2.50",
+          "bottomCm": "2.50",
+          "leftCm": "4.00",
+          "rightCm": "2.50"
+        }
+      },
+      {
+        "sectionIndex": 6,
+        "orientation": "landscape",
+        "widthDxa": 18722,
+        "heightDxa": 12242,
+        "widthMm": 330,
+        "heightMm": 216,
+        "margins": {
+          "topDxa": 1418,
+          "bottomDxa": 2268,
+          "leftDxa": 1418,
+          "rightDxa": 1418,
+          "topCm": "2.50",
+          "bottomCm": "4.00",
+          "leftCm": "2.50",
+          "rightCm": "2.50"
+        }
+      },
+      {
+        "sectionIndex": 7,
+        "orientation": "portrait",
+        "widthDxa": 12242,
+        "heightDxa": 18722,
+        "widthMm": 216,
+        "heightMm": 330,
+        "margins": {
+          "topDxa": 1418,
+          "bottomDxa": 1418,
+          "leftDxa": 2268,
+          "rightDxa": 1418,
+          "topCm": "2.50",
+          "bottomCm": "2.50",
+          "leftCm": "4.00",
+          "rightCm": "2.50"
+        }
+      },
+      {
+        "sectionIndex": 8,
+        "orientation": "portrait",
+        "widthDxa": 12242,
+        "heightDxa": 18722,
+        "widthMm": 216,
+        "heightMm": 330,
+        "margins": {
+          "topDxa": 1418,
+          "bottomDxa": 1418,
+          "leftDxa": 2268,
+          "rightDxa": 1418,
+          "topCm": "2.50",
+          "bottomCm": "2.50",
+          "leftCm": "4.00",
+          "rightCm": "2.50"
+        }
+      }
+    ],
+    "fontUsage": {
+      "Bookman Old Style": 2841
+    },
+    "fontSizeUsage": {
+      "12pt": 69,
+      "10pt": 1423,
+      "9pt": 61,
+      "11pt": 186
+    },
+    "headers": [],
+    "footers": [
+      {
+        "file": "word/footer1.xml",
+        "text": "RKPD Kabupaten Cilacap Tahun 202 7                                                III-1",
+        "hasPageNumber": true,
+        "alignment": "right",
+        "fontSizesPt": [
+          "9pt"
+        ],
+        "fonts": [
+          "Bookman Old Style"
+        ]
+      },
+      {
+        "file": "word/footer2.xml",
+        "text": "RKPD Kabupaten Cilacap Tahun 202 7                                                                                                            III-1",
+        "hasPageNumber": true,
+        "alignment": "right",
+        "fontSizesPt": [
+          "9pt"
+        ],
+        "fonts": [
+          "Bookman Old Style"
+        ]
+      },
+      {
+        "file": "word/footer3.xml",
+        "text": "RKPD Kabupaten Cilacap Tahun 202 7                                      III-1",
+        "hasPageNumber": true,
+        "alignment": "right",
+        "fontSizesPt": [
+          "9pt"
+        ],
+        "fonts": [
+          "Bookman Old Style"
+        ]
+      },
+      {
+        "file": "word/footer4.xml",
+        "text": "RKPD Kabupaten Cilacap Tahun 202 7                                                                                                           III-1",
+        "hasPageNumber": true,
+        "alignment": "right",
+        "fontSizesPt": [
+          "9pt"
+        ],
+        "fonts": [
+          "Bookman Old Style"
+        ]
+      },
+      {
+        "file": "word/footer5.xml",
+        "text": "RKPD Kabupaten Cilacap Tahun 202 7                                             III-1",
+        "hasPageNumber": true,
+        "alignment": "right",
+        "fontSizesPt": [
+          "9pt"
+        ],
+        "fonts": [
+          "Bookman Old Style"
+        ]
+      },
+      {
+        "file": "word/footer6.xml",
+        "text": "RKPD Kabupaten Cilacap Tahun 202 7                                                                                                            III-1",
+        "hasPageNumber": true,
+        "alignment": "right",
+        "fontSizesPt": [
+          "9pt"
+        ],
+        "fonts": [
+          "Bookman Old Style"
+        ]
+      },
+      {
+        "file": "word/footer7.xml",
+        "text": "RKPD Kabupaten Cilacap Tahun  20 2 7       III-23",
+        "hasPageNumber": true,
+        "alignment": "right",
+        "fontSizesPt": [
+          "9pt"
+        ],
+        "fonts": [
+          "Bookman Old Style"
+        ]
+      }
+    ],
+    "tables": [
+      {
+        "tableIndex": 1,
+        "rowCount": 6,
+        "columnCount": 4,
+        "tblW": "w:w=\"7933\" w:type=\"dxa\"",
+        "fontSizes": [
+          "10pt"
+        ],
+        "hasRepeatHeader": true,
+        "headerSample": "No | Indikator | Target | /Proyeksi"
+      },
+      {
+        "tableIndex": 2,
+        "rowCount": 3,
+        "columnCount": 6,
+        "tblW": "w:w=\"9493\" w:type=\"dxa\"",
+        "fontSizes": [
+          "10pt",
+          "9pt"
+        ],
+        "hasRepeatHeader": false,
+        "headerSample": "Pendapatan Daerah |  Rp. (000) | Rata-rata (%) | Pertum | b | uhan | T | a | h |"
+      },
+      {
+        "tableIndex": 3,
+        "rowCount": 13,
+        "columnCount": 7,
+        "tblW": "w:w=\"14737\" w:type=\"dxa\"",
+        "fontSizes": [
+          "10pt",
+          "9pt"
+        ],
+        "hasRepeatHeader": true,
+        "headerSample": "  | No | URAIAN | Realisasi  | Tahun 202 | 3 | Realisasi | Tahun 202 | 4 | Reali"
+      },
+      {
+        "tableIndex": 4,
+        "rowCount": 3,
+        "columnCount": 6,
+        "tblW": "w:w=\"9493\" w:type=\"dxa\"",
+        "fontSizes": [
+          "10pt",
+          "9pt"
+        ],
+        "hasRepeatHeader": false,
+        "headerSample": "Belanja Daerah |  Rp. (000) | Rata-rata (%) | Pertum | b | uhan | T | a | h | un"
+      },
+      {
+        "tableIndex": 5,
+        "rowCount": 14,
+        "columnCount": 7,
+        "tblW": "w:w=\"15309\" w:type=\"dxa\"",
+        "fontSizes": [
+          "10pt"
+        ],
+        "hasRepeatHeader": true,
+        "headerSample": "No | Uraian | Realisasi | Tahun 20 | 2 | 3 | Realisasi | Tahun 20 | 2 | 4 | Real"
+      },
+      {
+        "tableIndex": 6,
+        "rowCount": 17,
+        "columnCount": 7,
+        "tblW": "w:w=\"14737\" w:type=\"dxa\"",
+        "fontSizes": [
+          "10pt"
+        ],
+        "hasRepeatHeader": true,
+        "headerSample": "No. | Uraian | Realisasi | Tahun 20 | 2 | 3 | Realisasi | Tahun 20 | 2 | 4 | Rea"
+      },
+      {
+        "tableIndex": 7,
+        "rowCount": 13,
+        "columnCount": 5,
+        "tblW": "w:w=\"9351\" w:type=\"dxa\"",
+        "fontSizes": [
+          "11pt"
+        ],
+        "hasRepeatHeader": true,
+        "headerSample": "No | Kegiatan | Pagu | K/L | Sumber"
+      },
+      {
+        "tableIndex": 8,
+        "rowCount": 45,
+        "columnCount": 5,
+        "tblW": "w:w=\"9725\" w:type=\"dxa\"",
+        "fontSizes": [
+          "10pt"
+        ],
+        "hasRepeatHeader": true,
+        "headerSample": "No | NAMA PERUSAHAAN | TAHUN (Rp)"
+      },
+      {
+        "tableIndex": 9,
+        "rowCount": 12,
+        "columnCount": 3,
+        "tblW": "w:w=\"8904\" w:type=\"dxa\"",
+        "fontSizes": [
+          "10pt"
+        ],
+        "hasRepeatHeader": false,
+        "headerSample": "No. | BIDANG | ANGGARAN (Rp.)"
+      }
+    ]
+  },
+  "RKPD 2027 PERBUP - BAB IV (17.07).docx": {
+    "fileName": "RKPD 2027 PERBUP - BAB IV (17.07).docx",
+    "styles": {
+      "defaultFont": "Times New Roman",
+      "defaultSizePt": 12
+    },
+    "sections": [
+      {
+        "sectionIndex": 1,
+        "orientation": "portrait",
+        "widthDxa": 12240,
+        "heightDxa": 18720,
+        "widthMm": 216,
+        "heightMm": 330,
+        "margins": {
+          "topDxa": 1418,
+          "bottomDxa": 1418,
+          "leftDxa": 2268,
+          "rightDxa": 1418,
+          "topCm": "2.50",
+          "bottomCm": "2.50",
+          "leftCm": "4.00",
+          "rightCm": "2.50"
+        }
+      },
+      {
+        "sectionIndex": 2,
+        "orientation": "landscape",
+        "widthDxa": 18720,
+        "heightDxa": 12240,
+        "widthMm": 330,
+        "heightMm": 216,
+        "margins": {
+          "topDxa": 1134,
+          "bottomDxa": 1418,
+          "leftDxa": 1418,
+          "rightDxa": 1418,
+          "topCm": "2.00",
+          "bottomCm": "2.50",
+          "leftCm": "2.50",
+          "rightCm": "2.50"
+        }
+      },
+      {
+        "sectionIndex": 3,
+        "orientation": "landscape",
+        "widthDxa": 18720,
+        "heightDxa": 12240,
+        "widthMm": 330,
+        "heightMm": 216,
+        "margins": {
+          "topDxa": 851,
+          "bottomDxa": 1418,
+          "leftDxa": 1418,
+          "rightDxa": 1418,
+          "topCm": "1.50",
+          "bottomCm": "2.50",
+          "leftCm": "2.50",
+          "rightCm": "2.50"
+        }
+      },
+      {
+        "sectionIndex": 4,
+        "orientation": "portrait",
+        "widthDxa": 12240,
+        "heightDxa": 18720,
+        "widthMm": 216,
+        "heightMm": 330,
+        "margins": {
+          "topDxa": 1418,
+          "bottomDxa": 1418,
+          "leftDxa": 2268,
+          "rightDxa": 1418,
+          "topCm": "2.50",
+          "bottomCm": "2.50",
+          "leftCm": "4.00",
+          "rightCm": "2.50"
+        }
+      },
+      {
+        "sectionIndex": 5,
+        "orientation": "landscape",
+        "widthDxa": 18720,
+        "heightDxa": 12240,
+        "widthMm": 330,
+        "heightMm": 216,
+        "margins": {
+          "topDxa": 1418,
+          "bottomDxa": 2268,
+          "leftDxa": 1418,
+          "rightDxa": 1418,
+          "topCm": "2.50",
+          "bottomCm": "4.00",
+          "leftCm": "2.50",
+          "rightCm": "2.50"
+        }
+      },
+      {
+        "sectionIndex": 6,
+        "orientation": "portrait",
+        "widthDxa": 12240,
+        "heightDxa": 18720,
+        "widthMm": 216,
+        "heightMm": 330,
+        "margins": {
+          "topDxa": 1418,
+          "bottomDxa": 1418,
+          "leftDxa": 2268,
+          "rightDxa": 1418,
+          "topCm": "2.50",
+          "bottomCm": "2.50",
+          "leftCm": "4.00",
+          "rightCm": "2.50"
+        }
+      },
+      {
+        "sectionIndex": 7,
+        "orientation": "landscape",
+        "widthDxa": 18720,
+        "heightDxa": 12240,
+        "widthMm": 330,
+        "heightMm": 216,
+        "margins": {
+          "topDxa": 1469,
+          "bottomDxa": 1701,
+          "leftDxa": 1418,
+          "rightDxa": 1418,
+          "topCm": "2.59",
+          "bottomCm": "3.00",
+          "leftCm": "2.50",
+          "rightCm": "2.50"
+        }
+      }
+    ],
+    "fontUsage": {
+      "Bookman Old Style": 15165,
+      "Calibri": 1
+    },
+    "fontSizeUsage": {
+      "12pt": 764,
+      "9pt": 8468,
+      "11pt": 107,
+      "7pt": 10,
+      "10pt": 3698,
+      "8pt": 40,
+      "16pt": 12
+    },
+    "headers": [],
+    "footers": [
+      {
+        "file": "word/footer1.xml",
+        "text": "RKPD Kabupaten Cilacap Tahun 202 7 IV-46",
+        "hasPageNumber": true,
+        "alignment": "right",
+        "fontSizesPt": [
+          "9pt"
+        ],
+        "fonts": [
+          "Bookman Old Style"
+        ]
+      },
+      {
+        "file": "word/footer2.xml",
+        "text": "Rancangan Awal RKPD  Kabupaten Cilacap Tahun 20 21 IV-2",
+        "hasPageNumber": true,
+        "alignment": "right",
+        "fontSizesPt": [
+          "10pt"
+        ],
+        "fonts": [
+          "Bookman Old Style"
+        ]
+      },
+      {
+        "file": "word/footer3.xml",
+        "text": "RKPD Kabupaten Cilacap Tahun 202 7                                                                                                                                            IV-46",
+        "hasPageNumber": true,
+        "alignment": "right",
+        "fontSizesPt": [
+          "9pt"
+        ],
+        "fonts": [
+          "Bookman Old Style"
+        ]
+      },
+      {
+        "file": "word/footer4.xml",
+        "text": "RKPD Kabupaten Cilacap Tahun 202 7 IV-46",
+        "hasPageNumber": true,
+        "alignment": "right",
+        "fontSizesPt": [
+          "9pt"
+        ],
+        "fonts": [
+          "Bookman Old Style"
+        ]
+      },
+      {
+        "file": "word/footer5.xml",
+        "text": "RKPD Kabupaten Cilacap Tahun 202 7                                                                                                                                         IV-46",
+        "hasPageNumber": true,
+        "alignment": "right",
+        "fontSizesPt": [
+          "9pt"
+        ],
+        "fonts": [
+          "Bookman Old Style"
+        ]
+      },
+      {
+        "file": "word/footer6.xml",
+        "text": "RKPD Kabupaten Cilacap Tahun 202 7 IV-46",
+        "hasPageNumber": true,
+        "alignment": "right",
+        "fontSizesPt": [
+          "9pt"
+        ],
+        "fonts": [
+          "Bookman Old Style"
+        ]
+      },
+      {
+        "file": "word/footer7.xml",
+        "text": "RKPD Kabupaten Cilacap Tahun 202 7                                                                                                                            IV-140",
+        "hasPageNumber": true,
+        "alignment": "right",
+        "fontSizesPt": [
+          "9pt",
+          "10pt"
+        ],
+        "fonts": [
+          "Bookman Old Style",
+          "Times New Roman"
+        ]
+      },
+      {
+        "file": "word/footer8.xml",
+        "text": "Rancangan Awal RKPD  Kabupaten Cilacap Tahun 20 21 IV-2",
+        "hasPageNumber": true,
+        "alignment": "right",
+        "fontSizesPt": [
+          "10pt"
+        ],
+        "fonts": [
+          "Bookman Old Style"
+        ]
+      }
+    ],
+    "tables": [
+      {
+        "tableIndex": 1,
+        "rowCount": 10,
+        "columnCount": 5,
+        "tblW": "w:w=\"9351\" w:type=\"dxa\"",
+        "fontSizes": [],
+        "hasRepeatHeader": true,
+        "headerSample": "Tujuan | Sasaran | Indikator Tujuan/ Sasaran  | RPJMD | Satuan | Target | 2027"
+      },
+      {
+        "tableIndex": 2,
+        "rowCount": 257,
+        "columnCount": 6,
+        "tblW": "w:w=\"17470\" w:type=\"dxa\"",
+        "fontSizes": [
+          "9pt"
+        ],
+        "hasRepeatHeader": true,
+        "headerSample": "No | Pro | - | SN | Proyek | /  | Kegiatan | Program | Kegiatan | Subkegiatan"
+      },
+      {
+        "tableIndex": 3,
+        "rowCount": 39,
+        "columnCount": 4,
+        "tblW": "w:w=\"16410\" w:type=\"dxa\"",
+        "fontSizes": [
+          "12pt"
+        ],
+        "hasRepeatHeader": true,
+        "headerSample": "Prioritas Nasional | No | Kegiatan Prioritas Utama | Program RKPD"
+      },
+      {
+        "tableIndex": 4,
+        "rowCount": 88,
+        "columnCount": 5,
+        "tblW": "w:w=\"10205\" w:type=\"dxa\"",
+        "fontSizes": [
+          "9pt",
+          "7pt"
+        ],
+        "hasRepeatHeader": true,
+        "headerSample": "NO | PROGRAM DELEGASI | DUKUNGAN KABUPATEN/KOTA | BIDANG URUSAN"
+      },
+      {
+        "tableIndex": 5,
+        "rowCount": 6,
+        "columnCount": 5,
+        "tblW": "w:w=\"9419\" w:type=\"dxa\"",
+        "fontSizes": [
+          "9pt",
+          "10pt"
+        ],
+        "hasRepeatHeader": true,
+        "headerSample": "No | Indikator Makro Pembangunan | Penyelarasan Target Daerah Tahun 2027 | Keter"
+      },
+      {
+        "tableIndex": 6,
+        "rowCount": 14,
+        "columnCount": 6,
+        "tblW": "w:w=\"9356\" w:type=\"dxa\"",
+        "fontSizes": [
+          "9pt",
+          "10pt"
+        ],
+        "hasRepeatHeader": true,
+        "headerSample": "No | Indikator Makro Pembangunan | Penyelarasan Target Daerah Tahun 2027 | Progr"
+      },
+      {
+        "tableIndex": 7,
+        "rowCount": 76,
+        "columnCount": 5,
+        "tblW": "w:w=\"9706\" w:type=\"dxa\"",
+        "fontSizes": [],
+        "hasRepeatHeader": true,
+        "headerSample": "No | Pokok-Pokok Pikiran | Urusan | Telaah | OPD Pengampu"
+      },
+      {
+        "tableIndex": 8,
+        "rowCount": 5,
+        "columnCount": 2,
+        "tblW": "w:w=\"9425\" w:type=\"dxa\"",
+        "fontSizes": [
+          "11pt"
+        ],
+        "hasRepeatHeader": true,
+        "headerSample": "Prioritas | Pembangunan Tahun 20 | 2 | 7 | Tujuan/Sasaran |  RP | JM | D |   | T"
+      },
+      {
+        "tableIndex": 9,
+        "rowCount": 19,
+        "columnCount": 4,
+        "tblW": "w:w=\"5291\" w:type=\"pct\"",
+        "fontSizes": [],
+        "hasRepeatHeader": true,
+        "headerSample": "No | Permasalahan Pembangunan | Isu Strategis | Prioritas Pembangunan Daerah  | "
+      },
+      {
+        "tableIndex": 10,
+        "rowCount": 218,
+        "columnCount": 7,
+        "tblW": "w:w=\"16484\" w:type=\"dxa\"",
+        "fontSizes": [
+          "10pt",
+          "9pt"
+        ],
+        "hasRepeatHeader": true,
+        "headerSample": "NO | PRIORITAS PEMBANGUNAN | PROGRAM | INDIKATOR PROGRAM | TARGET |  PAGU  | OPD"
+      },
+      {
+        "tableIndex": 11,
+        "rowCount": 44,
+        "columnCount": 4,
+        "tblW": "w:w=\"16302\" w:type=\"dxa\"",
+        "fontSizes": [
+          "10pt"
+        ],
+        "hasRepeatHeader": true,
+        "headerSample": "Visi / Misi | Prioritas Kerja Bupati | Program Nomenklatur | Indikator Program"
+      },
+      {
+        "tableIndex": 12,
+        "rowCount": 9,
+        "columnCount": 5,
+        "tblW": "w:w=\"9464\" w:type=\"dxa\"",
+        "fontSizes": [
+          "11pt"
+        ],
+        "hasRepeatHeader": false,
+        "headerSample": "No | Indikator Pembangunan | Target |  Tahun 2027"
+      },
+      {
+        "tableIndex": 13,
+        "rowCount": 3,
+        "columnCount": 4,
+        "tblW": "w:w=\"9044\" w:type=\"dxa\"",
+        "fontSizes": [
+          "10pt"
+        ],
+        "hasRepeatHeader": false,
+        "headerSample": "No | Arah Strategis | Uraian | Luaran yang diharapkan"
+      },
+      {
+        "tableIndex": 14,
+        "rowCount": 196,
+        "columnCount": 7,
+        "tblW": "w:w=\"16991\" w:type=\"dxa\"",
+        "fontSizes": [
+          "10pt"
+        ],
+        "hasRepeatHeader": true,
+        "headerSample": "No | PERANGKAT DAERAH/UNIT KERJA | INOVASI | DESKRIPSI | OUTPUT | OUTCOME | DAMP"
+      }
+    ]
+  },
+  "RKPD 2027 PERBUP - BAB V (16.07).docx": {
+    "fileName": "RKPD 2027 PERBUP - BAB V (16.07).docx",
+    "styles": {
+      "defaultFont": "Times New Roman",
+      "defaultSizePt": 12
+    },
+    "sections": [
+      {
+        "sectionIndex": 1,
+        "orientation": "portrait",
+        "widthDxa": 12240,
+        "heightDxa": 18720,
+        "widthMm": 216,
+        "heightMm": 330,
+        "margins": {
+          "topDxa": 1418,
+          "bottomDxa": 1418,
+          "leftDxa": 2268,
+          "rightDxa": 1418,
+          "topCm": "2.50",
+          "bottomCm": "2.50",
+          "leftCm": "4.00",
+          "rightCm": "2.50"
+        }
+      }
+    ],
+    "fontUsage": {
+      "Bookman Old Style": 3751
+    },
+    "fontSizeUsage": {
+      "11pt": 26,
+      "10pt": 555,
+      "7pt": 3
+    },
+    "headers": [],
+    "footers": [
+      {
+        "file": "word/footer1.xml",
+        "text": "109",
+        "hasPageNumber": true,
+        "alignment": "right",
+        "fontSizesPt": [],
+        "fonts": []
+      },
+      {
+        "file": "word/footer2.xml",
+        "text": "RKPD Kabupaten Cilacap Tahun 202 7 V-1",
+        "hasPageNumber": true,
+        "alignment": "right",
+        "fontSizesPt": [
+          "9pt"
+        ],
+        "fonts": [
+          "Bookman Old Style"
+        ]
+      }
+    ],
+    "tables": [
+      {
+        "tableIndex": 1,
+        "rowCount": 35,
+        "columnCount": 3,
+        "tblW": "w:w=\"7759\" w:type=\"dxa\"",
+        "fontSizes": [
+          "11pt",
+          "10pt"
+        ],
+        "hasRepeatHeader": false,
+        "headerSample": "No | Uraian | Tahun  | 202 | 7"
+      },
+      {
+        "tableIndex": 2,
+        "rowCount": 53,
+        "columnCount": 3,
+        "tblW": "w:w=\"8784\" w:type=\"dxa\"",
+        "fontSizes": [
+          "10pt"
+        ],
+        "hasRepeatHeader": true,
+        "headerSample": "No | OPD |  Pagu Indikatif |   | 202 | 7 |  *) "
+      }
+    ]
+  },
+  "RKPD 2027 PERBUP - BAB VI (17.07).docx": {
+    "fileName": "RKPD 2027 PERBUP - BAB VI (17.07).docx",
+    "styles": {
+      "defaultFont": "Unknown",
+      "defaultSizePt": 12
+    },
+    "sections": [
+      {
+        "sectionIndex": 1,
+        "orientation": "portrait",
+        "widthDxa": 12242,
+        "heightDxa": 18722,
+        "widthMm": 216,
+        "heightMm": 330,
+        "margins": {
+          "topDxa": 1418,
+          "bottomDxa": 1418,
+          "leftDxa": 2268,
+          "rightDxa": 1418,
+          "topCm": "2.50",
+          "bottomCm": "2.50",
+          "leftCm": "4.00",
+          "rightCm": "2.50"
+        }
+      }
+    ],
+    "fontUsage": {
+      "Bookman Old Style": 3553
+    },
+    "fontSizeUsage": {
+      "12pt": 112,
+      "10pt": 31,
+      "9pt": 3346,
+      "8pt": 2
+    },
+    "headers": [],
+    "footers": [
+      {
+        "file": "word/footer1.xml",
+        "text": "R KPD Kabupaten Cilacap Tahun 20 27                                                                                       VI-1",
+        "hasPageNumber": true,
+        "alignment": "right",
+        "fontSizesPt": [
+          "9pt"
+        ],
+        "fonts": [
+          "Arial",
+          "Bookman Old Style"
+        ]
+      }
+    ],
+    "tables": [
+      {
+        "tableIndex": 1,
+        "rowCount": 6,
+        "columnCount": 4,
+        "tblW": "w:w=\"9067\" w:type=\"dxa\"",
+        "fontSizes": [],
+        "hasRepeatHeader": true,
+        "headerSample": "No | Indikator Kinerja Utama | Satuan | Target 202 | 7"
+      },
+      {
+        "tableIndex": 2,
+        "rowCount": 134,
+        "columnCount": 4,
+        "tblW": "w:w=\"8500\" w:type=\"dxa\"",
+        "fontSizes": [
+          "10pt",
+          "9pt",
+          "8pt"
+        ],
+        "hasRepeatHeader": true,
+        "headerSample": "No | Indikator | Satuan | Target  | 2027"
+      },
+      {
+        "tableIndex": 3,
+        "rowCount": 78,
+        "columnCount": 4,
+        "tblW": "w:w=\"8500\" w:type=\"dxa\"",
+        "fontSizes": [
+          "10pt",
+          "9pt"
+        ],
+        "hasRepeatHeader": true,
+        "headerSample": "No | Indikator | Satuan | Target  | 2027"
+      },
+      {
+        "tableIndex": 4,
+        "rowCount": 149,
+        "columnCount": 4,
+        "tblW": "w:w=\"8500\" w:type=\"dxa\"",
+        "fontSizes": [
+          "10pt",
+          "9pt"
+        ],
+        "hasRepeatHeader": true,
+        "headerSample": "No | Indikator | Satuan | Target  | 2027"
+      },
+      {
+        "tableIndex": 5,
+        "rowCount": 61,
+        "columnCount": 4,
+        "tblW": "w:w=\"9629\" w:type=\"dxa\"",
+        "fontSizes": [
+          "9pt"
+        ],
+        "hasRepeatHeader": true,
+        "headerSample": "No | Indikator | Satuan | Target 202 | 7"
+      }
+    ]
+  },
+  "RKPD 2027 PERBUP - BAB VII (09.07).docx": {
+    "fileName": "RKPD 2027 PERBUP - BAB VII (09.07).docx",
+    "styles": {
+      "defaultFont": "Times New Roman",
+      "defaultSizePt": 12
+    },
+    "sections": [
+      {
+        "sectionIndex": 1,
+        "orientation": "portrait",
+        "widthDxa": 12242,
+        "heightDxa": 18722,
+        "widthMm": 216,
+        "heightMm": 330,
+        "margins": {
+          "topDxa": 1418,
+          "bottomDxa": 1418,
+          "leftDxa": 2268,
+          "rightDxa": 1418,
+          "topCm": "2.50",
+          "bottomCm": "2.50",
+          "leftCm": "4.00",
+          "rightCm": "2.50"
+        }
+      }
+    ],
+    "fontUsage": {
+      "Bookman Old Style": 188
+    },
+    "fontSizeUsage": {
+      "5pt": 1,
+      "12pt": 161
+    },
+    "headers": [],
+    "footers": [
+      {
+        "file": "word/footer1.xml",
+        "text": "R KPD Kabupaten Cilacap Tahun  202 7                                                                                           VII-2",
+        "hasPageNumber": true,
+        "alignment": "both",
+        "fontSizesPt": [
+          "9pt",
+          "10pt"
+        ],
+        "fonts": [
+          "Bookman Old Style"
+        ]
+      }
+    ],
+    "tables": [
+      {
+        "tableIndex": 1,
+        "rowCount": 6,
+        "columnCount": 2,
+        "tblW": "w:w=\"0\" w:type=\"auto\"",
+        "fontSizes": [],
+        "hasRepeatHeader": false,
+        "headerSample": "J A B A T A N | PARAF"
+      }
+    ]
+  }
+}

@@ -1015,13 +1015,17 @@ app.put('/api/sections/:id/content', (req, res) => {
     return res.status(403).json({ success: false, message: 'Anda tidak memiliki hak akses untuk mengedit bagian ini' });
   }
 
-  const { content, title, code } = req.body;
-  const updated = db.updateSection(section.id, {
+  const { content, title, code, orientation, tableFontSize } = req.body;
+  const updatePayload = {
     content: content !== undefined ? content : section.content,
     title: title || section.title,
     code: code !== undefined ? code : section.code,
     status: section.status === 'DRAFT' ? 'IN_PROGRESS' : section.status
-  });
+  };
+  if (orientation !== undefined) updatePayload.orientation = orientation;
+  if (tableFontSize !== undefined) updatePayload.tableFontSize = tableFontSize;
+
+  const updated = db.updateSection(section.id, updatePayload);
 
   db.addLog({
     documentId: section.documentId,

@@ -99,31 +99,38 @@
 
 /* Word Tables: Proportionate & Bordered like official Perbup tables */
 .word-content table {
-  border-collapse: collapse;
-  margin: 14pt 0;
-  font-size: 10.5pt;
-  line-height: 1.35;
+  border-collapse: collapse !important;
+  margin: 12pt 0 !important;
+  font-family: 'Bookman Old Style', Georgia, 'Times New Roman', serif;
+  font-size: var(--tbl-data-size, 9pt);
+  line-height: 1.25;
   color: #000000;
-  display: table;
-}
-
-.word-content table, 
-.word-content table td, 
-.word-content table th {
-  border: 1px solid #000000;
+  display: table !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  table-layout: auto !important;
+  box-sizing: border-box !important;
+  word-break: break-word !important;
+  overflow-wrap: anywhere !important;
 }
 
 .word-content table th {
   background-color: #f1f5f9;
   font-weight: bold;
-  padding: 5px 8px;
+  font-size: var(--tbl-header-size, 9.5pt);
+  padding: 4px 6px;
   text-align: center;
   vertical-align: middle;
+  word-break: break-word;
+  overflow-wrap: anywhere;
 }
 
 .word-content table td {
-  padding: 4px 8px;
+  padding: 3.5px 6px;
   vertical-align: top;
+  word-break: break-word;
+  overflow-wrap: anywhere;
+  font-size: inherit;
 }
 
 .word-content table td p,
@@ -131,30 +138,44 @@
   margin: 0;
   white-space: normal;
   text-indent: 0 !important;
+  line-height: inherit;
+  font-size: inherit;
 }
 
-/* Smart Table Proportions */
-/* Multi-column data tables (3 or more columns) take full 100% width */
-.word-content table:has(tr > td:nth-child(3)),
-.word-content table:has(tr > th:nth-child(3)) {
-  width: 100%;
+.word-content .table-caption,
+.word-content caption {
+  caption-side: top;
+  font-size: 11pt;
+  font-weight: bold;
+  text-align: left;
+  margin-bottom: 4pt;
+  color: #000000;
 }
 
-/* 2-column tables (like Paraf Koordinasi / Tanda Tangan) have compact width (60%) */
+.word-content .table-source {
+  font-size: 8.5pt;
+  font-style: italic;
+  margin-top: 4pt;
+  margin-bottom: 8pt;
+  color: #333333;
+}
+
+/* Smart Table Proportions: 2-column signature/paraf tables */
+.word-content table.table-paraf-koordinasi,
 .word-content table:not(:has(tr > td:nth-child(3))):not(:has(tr > th:nth-child(3))) {
-  width: 60%;
-  max-width: 440px;
-  margin: 16pt 0;
+  width: 60% !important;
+  max-width: 440px !important;
+  margin: 16pt 0 !important;
 }
 
 .word-content table:not(:has(tr > td:nth-child(3))) td:first-child,
-.word-content table:not(:has(tr > th:nth-child(3))) th:first-child {
-  width: 75%;
+.word-content table:not(:has(tr > td:nth-child(3))) th:first-child {
+  width: 70%;
 }
 
 .word-content table:not(:has(tr > td:nth-child(3))) td:last-child,
-.word-content table:not(:has(tr > th:nth-child(3))) th:last-child {
-  width: 25%;
+.word-content table:not(:has(tr > td:nth-child(3))) th:last-child {
+  width: 30%;
   min-width: 65px;
 }
 
