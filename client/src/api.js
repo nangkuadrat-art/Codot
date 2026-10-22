@@ -253,6 +253,30 @@ export const api = {
     return res.json();
   },
 
+  // Microsoft Word Desktop Direct Integration
+  async openWordDesktop(docId) {
+    const res = await fetch(`/api/documents/${docId}/open-word-desktop`, {
+      method: 'POST',
+      headers: getHeaders()
+    });
+    return res.json();
+  },
+
+  async syncWordDoc(docId) {
+    const res = await fetch(`/api/documents/${docId}/sync-word`, {
+      method: 'POST',
+      headers: getHeaders()
+    });
+    return res.json();
+  },
+
+  async getWordFileInfo(docId) {
+    const res = await fetch(`/api/documents/${docId}/word-file-info`, {
+      headers: getHeaders()
+    });
+    return res.json();
+  },
+
   // Sections
   async getSection(secId) {
     const res = await fetch(`/api/sections/${secId}`, { headers: getHeaders() });

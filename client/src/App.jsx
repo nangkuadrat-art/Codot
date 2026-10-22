@@ -313,6 +313,7 @@ export default function App() {
             onSeedTemplates={handleSeedTemplates}
             onOpenClosingModal={() => setIsClosingModalOpen(true)}
             onOpenConsistencyModal={() => setIsConsistencyModalOpen(true)}
+            onRefreshDocs={() => loadDocuments(selectedStageId)}
           />
         ) : (
           <DocumentWorkspace

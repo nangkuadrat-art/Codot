@@ -4,6 +4,7 @@ const multer = require('multer');
 const path = require('path');
 const fs = require('fs');
 const os = require('os');
+const { exec, spawn } = require('child_process');
 const uuidv4 = () => require('crypto').randomUUID();
 
 const db = require('./db');
@@ -741,6 +742,293 @@ app.post('/api/rkpd-templates/import-all', async (req, res) => {
   } catch (err) {
     console.error('Import all chapters error:', err);
     res.status(500).json({ success: false, message: 'Gagal mengimpor seluruh bab: ' + err.message });
+  }
+});
+
+// ================= MICROSOFT WORD DESKTOP DIRECT INTEGRATION & AUTO-SYNC =================
+
+/**
+ * Resolve the matching original .docx template file for a document
+ */
+function resolveTemplateDocx(doc) {
+  if (!doc) return null;
+  
+  // 1. Check if originalFilename is specified and exists
+  if (doc.originalFilename) {
+    const directPath = path.join(TEMPLATE_DIR, doc.originalFilename);
+    if (fs.existsSync(directPath)) {
+      return { fileName: doc.originalFilename, filePath: directPath };
+    }
+  }
+
+  if (!fs.existsSync(TEMPLATE_DIR)) return null;
+
+  // 2. Match by CHAPTER_METADATA and chapter code
+  const chapter = doc.chapter || '';
+  for (const [fn, meta] of Object.entries(CHAPTER_METADATA)) {
+    if ((chapter && meta.chapter === chapter) || (chapter && fn.includes(chapter)) || (doc.title && doc.title.includes(meta.chapter))) {
+      const p = path.join(TEMPLATE_DIR, fn);
+      if (fs.existsSync(p)) {
+        return { fileName: fn, filePath: p };
+      }
+    }
+  }
+
+  // 3. Fallback: match by BAB roman numeral in filename
+  try {
+    const files = fs.readdirSync(TEMPLATE_DIR).filter(f => f.endsWith('.docx') && !f.startsWith('~$'));
+    for (const fn of files) {
+      const chMatch = fn.match(/BAB\s+([IVXLCDM\d]+)/i);
+      if (chMatch && doc.title && doc.title.toUpperCase().includes(chMatch[0].toUpperCase())) {
+        return { fileName: fn, filePath: path.join(TEMPLATE_DIR, fn) };
+      }
+    }
+  } catch (e) {}
+
+  return null;
+}
+
+/**
+ * Robust docx parsing with retry in case Word still holds an exclusive write lock
+ */
+async function safeParseDocxWithRetry(filePath, docId, maxRetries = 4, delayMs = 600) {
+  for (let attempt = 1; attempt <= maxRetries; attempt++) {
+    try {
+      return await parseDocxToSections(filePath, docId);
+    } catch (err) {
+      const isLockError = err.code === 'EBUSY' || err.code === 'EACCES' || (err.message && err.message.includes('busy'));
+      if (isLockError && attempt < maxRetries) {
+        console.log(`[WORD AUTO-SYNC] File sedang disimpan oleh Word, mencoba membaca kembali dalam ${delayMs}ms (percobaan ${attempt}/${maxRetries})...`);
+        await new Promise(r => setTimeout(r, delayMs));
+      } else {
+        throw err;
+      }
+    }
+  }
+}
+
+/**
+ * Synchronize a modified .docx template file back into the Codot database
+ */
+async function syncTemplateFileToDatabase(fileName, docId, triggeredBy = 'Microsoft Word (Auto-Sync)') {
+  const filePath = path.join(TEMPLATE_DIR, fileName);
+  if (!fs.existsSync(filePath)) {
+    throw new Error(`File template "${fileName}" tidak ditemukan di folder Template/`);
+  }
+
+  const doc = db.data.documents.find(d => d.id === docId);
+  if (!doc) {
+    throw new Error(`Dokumen dengan ID "${docId}" tidak ditemukan`);
+  }
+
+  // Parse docx with formatting and section hierarchy preserved
+  const parsedSections = await safeParseDocxWithRetry(filePath, docId);
+
+  // Update document metadata
+  doc.fullContentHtml = parsedSections.fullHtml || '';
+  doc.originalFilename = fileName;
+  doc.updatedAt = new Date().toISOString();
+
+  // Merge parsed sections with existing sections to preserve OPD assignments, status, comments
+  const existingSections = db.getSectionsByDocumentId(docId);
+
+  if (existingSections.length > 0) {
+    const existingByCode = new Map();
+    existingSections.forEach(s => {
+      if (s.code) existingByCode.set(s.code.trim().toUpperCase(), s);
+      if (s.title) existingByCode.set(s.title.trim().toUpperCase(), s);
+    });
+
+    const updatedSections = [];
+    const usedExistingIds = new Set();
+
+    parsedSections.forEach((parsedSec, idx) => {
+      const match = existingByCode.get(parsedSec.code?.trim().toUpperCase()) ||
+                    existingByCode.get(parsedSec.title?.trim().toUpperCase()) ||
+                    existingSections[idx];
+
+      if (match && !usedExistingIds.has(match.id)) {
+        usedExistingIds.add(match.id);
+        match.content = parsedSec.content;
+        match.code = parsedSec.code || match.code;
+        match.title = parsedSec.title || match.title;
+        match.level = parsedSec.level || match.level;
+        match.order = idx + 1;
+        match.orientation = parsedSec.orientation;
+        match.tableFontSize = parsedSec.tableFontSize;
+        match.hasTable = parsedSec.hasTable;
+        match.maxTableColumns = parsedSec.maxTableColumns;
+        match.updatedAt = new Date().toISOString();
+        if (match.status === 'DRAFT') {
+          match.status = 'IN_PROGRESS';
+        }
+        updatedSections.push(match);
+      } else {
+        parsedSec.order = idx + 1;
+        parsedSec.assignedUserIds = existingSections[0]?.assignedUserIds || ['user_admin'];
+        updatedSections.push(parsedSec);
+      }
+    });
+
+    db.data.sections = db.data.sections.filter(s => s.documentId !== docId).concat(updatedSections);
+  } else {
+    db.addSectionsBatch(parsedSections);
+  }
+
+  db.addLog({
+    documentId: docId,
+    userId: 'user_admin',
+    userName: triggeredBy,
+    action: 'WORD_AUTOSYNC',
+    details: `Perubahan file Word "${fileName}" otomatis disimpan ke server Codot (${parsedSections.length} bagian naskah diperbarui)`
+  });
+
+  db.save();
+  return { doc, sectionCount: parsedSections.length };
+}
+
+// Live File Watcher on Template/ directory
+let templateWatcherActive = false;
+const debounceTimers = new Map();
+
+function initTemplateWatcher() {
+  if (templateWatcherActive || !fs.existsSync(TEMPLATE_DIR)) return;
+
+  try {
+    fs.watch(TEMPLATE_DIR, { persistent: true }, (eventType, filename) => {
+      if (!filename || !filename.endsWith('.docx')) return;
+      if (filename.startsWith('~$') || filename.startsWith('.')) return;
+
+      if (debounceTimers.has(filename)) {
+        clearTimeout(debounceTimers.get(filename));
+      }
+
+      const timer = setTimeout(async () => {
+        debounceTimers.delete(filename);
+        try {
+          const fullPath = path.join(TEMPLATE_DIR, filename);
+          if (!fs.existsSync(fullPath)) return;
+
+          // Find which document corresponds to this filename
+          const matchingDoc = db.data.documents.find(d => {
+            if (d.originalFilename === filename) return true;
+            const res = resolveTemplateDocx(d);
+            return res && res.fileName === filename;
+          });
+
+          if (matchingDoc) {
+            console.log(`⚡ [WORD AUTO-SYNC] Mendeteksi penyimpanan file Word: "${filename}"`);
+            await syncTemplateFileToDatabase(filename, matchingDoc.id, 'Microsoft Word (Auto-Sync Live)');
+            console.log(`✅ [WORD AUTO-SYNC] Dokumen "${matchingDoc.title}" berhasil disinkronkan ke server Codot`);
+          }
+        } catch (err) {
+          console.error(`❌ [WORD AUTO-SYNC] Gagal sinkronisasi otomatis "${filename}":`, err.message);
+        }
+      }, 1200);
+
+      debounceTimers.set(filename, timer);
+    });
+
+    templateWatcherActive = true;
+    console.log(`👀 [WORD AUTO-SYNC] Live watcher aktif mengawasi folder Template/`);
+  } catch (err) {
+    console.error('Gagal mengaktifkan live file watcher:', err.message);
+  }
+}
+
+// 1. Direct Open in Microsoft Word Desktop
+app.post('/api/documents/:id/open-word-desktop', (req, res) => {
+  try {
+    const doc = db.getDocumentById(req.params.id);
+    if (!doc) {
+      return res.status(404).json({ success: false, message: 'Dokumen tidak ditemukan' });
+    }
+
+    const resolved = resolveTemplateDocx(doc);
+    if (!resolved) {
+      return res.status(404).json({ success: false, message: 'File Word (.docx) asli tidak ditemukan di folder Template/' });
+    }
+
+    // Ensure live watcher is active
+    initTemplateWatcher();
+
+    // Launch Microsoft Word desktop via Windows start command
+    exec(`start "" "${resolved.filePath}"`, (err) => {
+      if (err) {
+        console.error('Gagal membuka Microsoft Word desktop:', err);
+      }
+    });
+
+    db.addLog({
+      documentId: doc.id,
+      userId: req.currentUser.id,
+      userName: req.currentUser.name,
+      action: 'OPEN_WORD_DESKTOP',
+      details: `Membuka naskah langsung di Microsoft Word Desktop: "${resolved.fileName}"`
+    });
+
+    res.json({
+      success: true,
+      message: `Membuka "${resolved.fileName}" di Microsoft Word Desktop. Setiap kali Anda menekan Ctrl+S di Word, perubahan langsung tersimpan ke server Codot!`,
+      fileName: resolved.fileName,
+      filePath: resolved.filePath,
+      watcherActive: templateWatcherActive
+    });
+  } catch (err) {
+    console.error('Open word desktop error:', err);
+    res.status(500).json({ success: false, message: 'Gagal membuka Microsoft Word: ' + err.message });
+  }
+});
+
+// 2. Manual Sync Trigger from Word File
+app.post('/api/documents/:id/sync-word', async (req, res) => {
+  try {
+    const doc = db.getDocumentById(req.params.id);
+    if (!doc) {
+      return res.status(404).json({ success: false, message: 'Dokumen tidak ditemukan' });
+    }
+
+    const resolved = resolveTemplateDocx(doc);
+    if (!resolved) {
+      return res.status(404).json({ success: false, message: 'File Word asli tidak ditemukan di folder Template/' });
+    }
+
+    const result = await syncTemplateFileToDatabase(resolved.fileName, doc.id, `${req.currentUser.name} (Sinkronisasi Manual)`);
+
+    res.json({
+      success: true,
+      message: `Naskah "${doc.title}" berhasil disinkronkan dari file "${resolved.fileName}" (${result.sectionCount} bagian naskah diperbarui)`,
+      data: result.doc
+    });
+  } catch (err) {
+    console.error('Manual sync word error:', err);
+    res.status(500).json({ success: false, message: 'Gagal sinkronisasi dari Word: ' + err.message });
+  }
+});
+
+// 3. Word File Metadata & Sync Status
+app.get('/api/documents/:id/word-file-info', (req, res) => {
+  try {
+    const doc = db.getDocumentById(req.params.id);
+    if (!doc) return res.status(404).json({ success: false, message: 'Dokumen tidak ditemukan' });
+
+    const resolved = resolveTemplateDocx(doc);
+    if (!resolved || !fs.existsSync(resolved.filePath)) {
+      return res.json({ success: true, exists: false });
+    }
+
+    const stat = fs.statSync(resolved.filePath);
+    res.json({
+      success: true,
+      exists: true,
+      fileName: resolved.fileName,
+      filePath: resolved.filePath,
+      sizeKb: (stat.size / 1024).toFixed(1),
+      lastModified: stat.mtime.toISOString(),
+      watcherActive: templateWatcherActive
+    });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
   }
 });
 
@@ -1550,6 +1838,9 @@ app.use((err, req, res, next) => {
 if (process.env.NODE_ENV !== 'test' && require.main === module) {
   app.listen(PORT, () => {
     console.log(`🚀 RKPD Document Collaboration Server running on http://localhost:${PORT}`);
+
+    // Inisialisasi Live Auto-Sync Watcher untuk Folder Template/
+    initTemplateWatcher();
 
     // Auto-seed Stage 1 if database has 0 documents
     if (db.data.documents.length === 0) {

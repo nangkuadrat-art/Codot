@@ -19,9 +19,20 @@ import {
   Layers,
   Info,
   Check,
-  Eye
+  Eye,
+  RefreshCw,
+  ExternalLink
 } from 'lucide-react';
 import ProgressTrackingDashboard from './ProgressTrackingDashboard';
+import { api } from '../api';
+
+function WordIcon({ className = "w-4 h-4" }) {
+  return (
+    <span className={`inline-flex items-center justify-center font-black rounded-xs bg-[#103f91] text-white shrink-0 text-[10px] w-4 h-4 shadow-2xs ${className}`}>
+      W
+    </span>
+  );
+}
 
 export default function DocumentList({
   documents,
@@ -38,11 +49,58 @@ export default function DocumentList({
   onExportDoc,
   onSeedTemplates,
   onOpenClosingModal,
-  onOpenConsistencyModal
+  onOpenConsistencyModal,
+  onRefreshDocs
 }) {
   const [activeTab, setActiveTab] = useState('DOCUMENTS'); // DOCUMENTS or TRACKING
   const [searchDocQuery, setSearchDocQuery] = useState('');
   const [docFilterType, setDocFilterType] = useState('ALL'); // ALL, MY_RESPONSIBILITY, READ_ONLY
+  const [openingWordDocId, setOpeningWordDocId] = useState(null);
+  const [syncingWordDocId, setSyncingWordDocId] = useState(null);
+  const [toast, setToast] = useState(null);
+
+  const showToast = (message, type = 'info') => {
+    setToast({ message, type });
+    setTimeout(() => {
+      setToast(null);
+    }, 6000);
+  };
+
+  const handleOpenWordDesktop = async (docId, docTitle) => {
+    try {
+      setOpeningWordDocId(docId);
+      const res = await api.openWordDesktop(docId);
+      if (res.success) {
+        showToast(res.message || 'Membuka Microsoft Word desktop... Tekan Ctrl+S di Word untuk menyimpan otomatis ke server Codot.', 'success');
+        setTimeout(() => {
+          onRefreshDocs?.();
+        }, 2500);
+      } else {
+        showToast(res.message || 'Gagal membuka Word desktop', 'error');
+      }
+    } catch (err) {
+      showToast('Gagal membuka file di Word: ' + err.message, 'error');
+    } finally {
+      setOpeningWordDocId(null);
+    }
+  };
+
+  const handleSyncWord = async (docId, docTitle) => {
+    try {
+      setSyncingWordDocId(docId);
+      const res = await api.syncWordDoc(docId);
+      if (res.success) {
+        showToast(res.message || 'Naskah berhasil disinkronkan langsung dari file Word!', 'success');
+        onRefreshDocs?.();
+      } else {
+        showToast(res.message || 'Gagal sinkronisasi naskah dari Word', 'error');
+      }
+    } catch (err) {
+      showToast('Gagal sinkronisasi: ' + err.message, 'error');
+    } finally {
+      setSyncingWordDocId(null);
+    }
+  };
 
   const isClosed = selectedStage?.status === 'CLOSED';
   const isLocked = selectedStage?.status === 'LOCKED';
@@ -217,6 +275,61 @@ export default function DocumentList({
               )}
             </div>
           )}
+
+          {/* Toast Notification for Word Launch / Sync */}
+          {toast && (
+            <div className={`p-4 rounded-xl border flex items-center justify-between gap-3 text-xs font-medium shadow-sm transition-all ${
+              toast.type === 'error'
+                ? 'bg-rose-50 border-rose-200 text-rose-900'
+                : toast.type === 'success'
+                ? 'bg-emerald-50 border-emerald-200 text-emerald-950'
+                : 'bg-blue-50 border-blue-200 text-blue-950'
+            }`}>
+              <div className="flex items-center gap-2.5">
+                {toast.type === 'success' ? (
+                  <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
+                ) : (
+                  <Info className="w-4 h-4 text-blue-600 shrink-0" />
+                )}
+                <span>{toast.message}</span>
+              </div>
+              <button onClick={() => setToast(null)} className="text-slate-400 hover:text-slate-600 font-bold px-1.5 cursor-pointer">✕</button>
+            </div>
+          )}
+
+          {/* Microsoft Word Live Synchronization Banner */}
+          <div className="bg-gradient-to-r from-[#0d2a58] via-[#103f91] to-[#185abd] text-white rounded-2xl p-4 sm:p-5 shadow-sm border border-blue-700/50 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+            <div className="flex items-start gap-3.5">
+              <div className="w-10 h-10 rounded-xl bg-white flex items-center justify-center font-black text-xl shadow-inner shrink-0 text-[#185abd]">
+                W
+              </div>
+              <div className="space-y-1">
+                <div className="flex flex-wrap items-center gap-2">
+                  <h3 className="font-bold text-sm sm:text-base text-white">
+                    Kolaborasi Langsung dengan Microsoft Word Desktop
+                  </h3>
+                  <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-emerald-500/25 text-emerald-300 border border-emerald-400/30">
+                    <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                    Auto-Sync Server Aktif
+                  </span>
+                </div>
+                <p className="text-xs text-blue-100/90 leading-relaxed max-w-3xl">
+                  Klik tombol <strong>Edit di Microsoft Word</strong> pada bab yang ingin diedit. File naskah asli (<code className="bg-white/20 px-1 py-0.5 rounded text-[11px] font-mono">.docx</code>) langsung dibuka di aplikasi Microsoft Word desktop Anda. Setiap kali Anda menekan <kbd className="px-1.5 py-0.5 bg-white/20 rounded text-[11px] font-mono font-bold text-white">Ctrl + S</kbd> di Word, server Codot otomatis mendeteksi dan menyimpan seluruh perubahannya!
+                </p>
+              </div>
+            </div>
+
+            <div className="flex items-center gap-2 shrink-0 self-end md:self-center">
+              <button
+                onClick={() => onRefreshDocs?.()}
+                className="px-3.5 py-2 bg-white/10 hover:bg-white/20 active:bg-white/30 text-white rounded-xl text-xs font-semibold flex items-center gap-2 transition cursor-pointer border border-white/20"
+                title="Periksa dan perbarui status dokumen dari server"
+              >
+                <RefreshCw className="w-3.5 h-3.5" />
+                <span>Segarkan Status</span>
+              </button>
+            </div>
+          </div>
 
           {/* Role Access Guide Strip */}
           {!isAdmin && (
@@ -402,6 +515,61 @@ export default function DocumentList({
                         </span>
                       </div>
                     )}
+
+                    {/* Dedicated Microsoft Word Direct Integration Box */}
+                    <div className="mt-3.5 bg-gradient-to-r from-blue-50/90 to-indigo-50/60 border border-blue-200/90 rounded-xl p-3 flex flex-col gap-2 shadow-2xs">
+                      <div className="flex items-center justify-between gap-2">
+                        <div className="flex items-center gap-1.5 min-w-0">
+                          <span className="relative flex h-2 w-2 shrink-0">
+                            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                            <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+                          </span>
+                          <span className="text-[11px] font-bold text-blue-950 truncate" title={doc.originalFilename || 'File Naskah Asli .docx'}>
+                            {doc.originalFilename || `${doc.chapter || 'BAB'}.docx`}
+                          </span>
+                        </div>
+                        <span className="text-[10px] font-bold px-2 py-0.5 rounded-md bg-emerald-100 text-emerald-800 shrink-0 border border-emerald-200 flex items-center gap-1">
+                          <span className="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+                          Auto-Sync Aktif
+                        </span>
+                      </div>
+
+                      <div className="flex items-center gap-2 pt-0.5">
+                        <button
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleOpenWordDesktop(doc.id, doc.title);
+                          }}
+                          disabled={openingWordDocId === doc.id}
+                          className="flex-1 bg-[#185abd] hover:bg-[#134794] active:bg-[#0f3875] text-white font-bold text-xs py-2 px-3 rounded-lg shadow-2xs hover:shadow transition flex items-center justify-center gap-2 cursor-pointer disabled:opacity-60"
+                          title="Buka langsung file asli di aplikasi Microsoft Word desktop Anda. Tekan Ctrl+S di Word untuk menyimpan otomatis ke server Codot."
+                        >
+                          {openingWordDocId === doc.id ? (
+                            <>
+                              <RefreshCw className="w-3.5 h-3.5 animate-spin" />
+                              <span>Membuka Word...</span>
+                            </>
+                          ) : (
+                            <>
+                              <WordIcon />
+                              <span>Edit di Microsoft Word</span>
+                            </>
+                          )}
+                        </button>
+
+                        <button
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleSyncWord(doc.id, doc.title);
+                          }}
+                          disabled={syncingWordDocId === doc.id}
+                          className="p-2 text-blue-800 bg-white hover:bg-blue-100/70 border border-blue-300 rounded-lg shadow-2xs transition cursor-pointer shrink-0 disabled:opacity-50"
+                          title="Sinkronkan Naskah dari File Word Sekarang (Reload pembaruan Ctrl+S)"
+                        >
+                          <RefreshCw className={`w-3.5 h-3.5 ${syncingWordDocId === doc.id ? 'animate-spin text-blue-600' : ''}`} />
+                        </button>
+                      </div>
+                    </div>
 
                     {/* Progress Bar & Breakdown */}
                     <div className="mt-4 pt-3 border-t border-slate-100">
