@@ -319,16 +319,16 @@ class Database {
 
   save() {
     try {
-      fs.writeFileSync(DB_FILE, JSON.stringify(this.data, null, 2), 'utf-8');
-    } catch (err) {
-      if (err.code === 'EROFS' || isServerless) {
-        try {
-          fs.writeFileSync(TMP_DB_FILE, JSON.stringify(this.data, null, 2), 'utf-8');
-        } catch (tmpErr) {
-          console.error('Failed to save DB in tmpdir:', tmpErr.message);
-        }
+      if (isServerless) {
+        fs.writeFileSync(TMP_DB_FILE, JSON.stringify(this.data, null, 2), 'utf-8');
       } else {
-        console.error('Failed to save DB:', err.message);
+        fs.writeFileSync(DB_FILE, JSON.stringify(this.data, null, 2), 'utf-8');
+      }
+    } catch (err) {
+      try {
+        fs.writeFileSync(TMP_DB_FILE, JSON.stringify(this.data, null, 2), 'utf-8');
+      } catch (tmpErr) {
+        console.error('Failed to save DB in fallback tmpdir:', tmpErr.message);
       }
     }
   }

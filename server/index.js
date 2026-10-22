@@ -47,6 +47,32 @@ const upload = multer({
   limits: { fileSize: 50 * 1024 * 1024 } // 50MB max
 });
 
+// Middleware for checking and restoring routes on Vercel / serverless reverse proxy
+app.use((req, res, next) => {
+  // If Vercel rewrote URL to /api/index.js, restore from matched path header
+  if (req.url.startsWith('/api/index.js') || req.url === '/api') {
+    const realPath = req.headers['x-matched-path'] || req.headers['x-forwarded-uri'];
+    if (realPath) {
+      req.url = realPath;
+    }
+  }
+  // If URL lost /api prefix in rewrite, restore it
+  if (!req.url.startsWith('/api') && (
+    req.url.startsWith('/auth') ||
+    req.url.startsWith('/stages') ||
+    req.url.startsWith('/documents') ||
+    req.url.startsWith('/users') ||
+    req.url.startsWith('/sections') ||
+    req.url.startsWith('/consistency') ||
+    req.url.startsWith('/gdrive') ||
+    req.url.startsWith('/chapters') ||
+    req.url.startsWith('/rkpd-templates')
+  )) {
+    req.url = '/api' + req.url;
+  }
+  next();
+});
+
 // Middleware for checking current user from header
 app.use((req, res, next) => {
   const currentUserId = req.headers['x-user-id'] || 'user_admin';
@@ -56,38 +82,43 @@ app.use((req, res, next) => {
 
 // ================= AUTH API =================
 app.post('/api/auth/login', (req, res) => {
-  const { username, password } = req.body;
-  if (!username) {
-    return res.status(400).json({ success: false, message: 'Username / Email / Akun wajib diisi' });
-  }
-
-  const user = db.getUserByUsernameOrEmail(username);
-  if (!user) {
-    return res.status(401).json({ success: false, message: 'Akun atau Pengguna tidak ditemukan' });
-  }
-
-  const expectedPassword = user.password || '12345@';
-  if (password !== expectedPassword) {
-    return res.status(401).json({ success: false, message: 'Password salah. Gunakan password default: 12345@' });
-  }
-
-  res.json({
-    success: true,
-    message: 'Login berhasil',
-    data: {
-      user: {
-        id: user.id,
-        username: user.username,
-        name: user.name,
-        role: user.role,
-        opd: user.opd,
-        email: user.email,
-        color: user.color,
-        reviewedChapters: user.reviewedChapters || []
-      },
-      token: user.id
+  try {
+    const { username, password } = req.body || {};
+    if (!username) {
+      return res.status(400).json({ success: false, message: 'Username / Email / Akun wajib diisi' });
     }
-  });
+
+    const user = db.getUserByUsernameOrEmail(username);
+    if (!user) {
+      return res.status(401).json({ success: false, message: 'Akun atau Pengguna tidak ditemukan' });
+    }
+
+    const expectedPassword = user.password || '12345@';
+    if (password !== expectedPassword) {
+      return res.status(401).json({ success: false, message: 'Password salah. Gunakan password default: 12345@' });
+    }
+
+    res.json({
+      success: true,
+      message: 'Login berhasil',
+      data: {
+        user: {
+          id: user.id,
+          username: user.username,
+          name: user.name,
+          role: user.role,
+          opd: user.opd,
+          email: user.email,
+          color: user.color,
+          reviewedChapters: user.reviewedChapters || []
+        },
+        token: user.id
+      }
+    });
+  } catch (err) {
+    console.error('Login error:', err);
+    res.status(500).json({ success: false, message: 'Gagal memproses login: ' + err.message });
+  }
 });
 
 app.get('/api/auth/me', (req, res) => {
@@ -1303,6 +1334,11 @@ app.post('/api/gdrive/restore', upload.single('backupFile'), (req, res) => {
   }
 });
 
+// Catch-all API 404 handler (ensures json response instead of HTML)
+app.use('/api', (req, res) => {
+  res.status(404).json({ success: false, message: `Endpoint API tidak ditemukan: ${req.method} ${req.originalUrl || req.url}` });
+});
+
 // Serve frontend static build
 const clientDist = path.join(__dirname, '..', 'client', 'dist');
 if (fs.existsSync(clientDist)) {
@@ -1311,6 +1347,12 @@ if (fs.existsSync(clientDist)) {
     res.sendFile(path.join(clientDist, 'index.html'));
   });
 }
+
+// Global Express error handler
+app.use((err, req, res, next) => {
+  console.error('Unhandled Server Error:', err);
+  res.status(500).json({ success: false, message: 'Terjadi kesalahan pada server: ' + (err.message || 'Unknown error') });
+});
 
 // Start server
 if (process.env.NODE_ENV !== 'test' && require.main === module) {
