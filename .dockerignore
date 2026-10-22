@@ -1,0 +1,11 @@
+node_modules
+client/node_modules
+client/dist
+.git
+.gitignore
+uploads/*
+!uploads/.gitkeep
+temp_bab7
+cloudflared.exe
+*.log
+README.md

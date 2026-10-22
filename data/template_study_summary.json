@@ -1,0 +1,625 @@
+[
+  {
+    "file": "RKPD 2027 PERBUP - BAB I (08.07).docx",
+    "sizeKb": "439.0",
+    "pCount": 48,
+    "tableCount": 1,
+    "headingCount": 8,
+    "headings": [
+      {
+        "tag": "h1",
+        "text": "PENDAHULUAN"
+      },
+      {
+        "tag": "h2",
+        "text": "Latar Belakang"
+      },
+      {
+        "tag": "h3",
+        "text": "Gambar 1.1"
+      },
+      {
+        "tag": "h2",
+        "text": "Dasar Hukum Penyusunan"
+      },
+      {
+        "tag": "h2",
+        "text": "Hubungan Antar Dokumen"
+      },
+      {
+        "tag": "h3",
+        "text": "Gambar 1.2"
+      },
+      {
+        "tag": "h2",
+        "text": "Maksud dan Tujuan"
+      },
+      {
+        "tag": "h2",
+        "text": "Sistematika Dokumen RKPD"
+      }
+    ]
+  },
+  {
+    "file": "RKPD 2027 PERBUP - BAB II (17.07) .docx",
+    "sizeKb": "8011.6",
+    "pCount": 16353,
+    "tableCount": 222,
+    "headingCount": 40,
+    "headings": [
+      {
+        "tag": "h4",
+        "text": "BAB IIGAMBARAN UMUM KONDISI DAERAH"
+      },
+      {
+        "tag": "h2",
+        "text": "Kondisi Umum Daerah"
+      },
+      {
+        "tag": "h3",
+        "text": "Aspek Geografi dan Demografi"
+      },
+      {
+        "tag": "h4",
+        "text": "Karakteristik Lokasi dan Wilayah"
+      },
+      {
+        "tag": "h4",
+        "text": "Potensi Pengembangan Wilayah"
+      },
+      {
+        "tag": "h4",
+        "text": "Potensi Energi Baru Terbarukan (EBT)"
+      },
+      {
+        "tag": "h4",
+        "text": "Wilayah Rawan Bencana"
+      },
+      {
+        "tag": "h4",
+        "text": "Demografi"
+      },
+      {
+        "tag": "h3",
+        "text": "Aspek Kesejahteraan Masyarakat"
+      },
+      {
+        "tag": "h4",
+        "text": "Fokus Kesejahteraan dan Pemerataan Ekonomi"
+      },
+      {
+        "tag": "h4",
+        "text": "Fokus Kesejahteran Sosial"
+      },
+      {
+        "tag": "h3",
+        "text": "Aspek Pelayanan Umum"
+      },
+      {
+        "tag": "h4",
+        "text": "Urusan Pemerintahan Wajib Yang Berkaitan Dengan Pelayanan Dasar"
+      },
+      {
+        "tag": "h4",
+        "text": "Urusan Pemerintahan Wajib Yang Tidak Berkaitan Dengan Pelayanan Dasar"
+      },
+      {
+        "tag": "h4",
+        "text": "Urusan Pemerintahan Pilihan"
+      },
+      {
+        "tag": "h4",
+        "text": "Unsur Pendukung Urusan Pemerintahan"
+      },
+      {
+        "tag": "h4",
+        "text": "Unsur Penunjang Urusan Pemerintahan"
+      },
+      {
+        "tag": "h4",
+        "text": "Unsur Pengawasan Urusan Pemerintahan"
+      },
+      {
+        "tag": "h4",
+        "text": "Unsur Pemerintahan Umum"
+      },
+      {
+        "tag": "h3",
+        "text": "Aspek Daya Saing"
+      },
+      {
+        "tag": "h4",
+        "text": "Fokus Fasilitas Wilayah/Infrastruktur"
+      },
+      {
+        "tag": "h4",
+        "text": "Fokus Iklim Berinvestasi"
+      },
+      {
+        "tag": "h4",
+        "text": "Fokus Sumber Daya Manusia"
+      },
+      {
+        "tag": "h3",
+        "text": "Riset dan Inovasi Daerah"
+      },
+      {
+        "tag": "h4",
+        "text": "Riset Daerah"
+      },
+      {
+        "tag": "h4",
+        "text": "Inovasi Daerah"
+      },
+      {
+        "tag": "h2",
+        "text": "Evaluasi Pelaksanaan Program dan Kegiatan RKPD Sampai Tahun 2025 dan Realisasi RPD"
+      },
+      {
+        "tag": "h3",
+        "text": "Capaian Indikator Kinerja Daerah Kabupaten Cilacap Tahun 2025"
+      },
+      {
+        "tag": "h3",
+        "text": "Capaian Indikator Kinerja Urusan Kabupaten Cilacap Tahun 2025"
+      },
+      {
+        "tag": "h2",
+        "text": "Permasalahan Pembangunan"
+      },
+      {
+        "tag": "h3",
+        "text": "Permasalahan Pembangunan Daerah"
+      },
+      {
+        "tag": "h3",
+        "text": "Identifikasi Permasalahan Penyelenggaraan Urusan Pemerintah Daerah"
+      },
+      {
+        "tag": "h4",
+        "text": "Urusan Pemerintahan Wajib Yang Berkaitan Dengan Pelayanan Dasar"
+      },
+      {
+        "tag": "h4",
+        "text": "Urusan Pemerintahan Wajib Yang Tidak Berkaitan Dengan Pelayanan Dasar"
+      },
+      {
+        "tag": "h4",
+        "text": "Urusan Pemerintahan Pilihan"
+      },
+      {
+        "tag": "h4",
+        "text": "Unsur Pendukung Urusan Pemerintahan"
+      },
+      {
+        "tag": "h4",
+        "text": "Urusan Penunjang Urusan Pemerintahan"
+      },
+      {
+        "tag": "h4",
+        "text": "Unsur Pengawasan Urusan Pemerintahan"
+      },
+      {
+        "tag": "h4",
+        "text": "Unsur Pemerintahan Umum"
+      },
+      {
+        "tag": "h2",
+        "text": "Isu Strategis Pembangunan Daerah"
+      }
+    ]
+  },
+  {
+    "file": "RKPD 2027 PERBUP - BAB III (10.07).docx",
+    "sizeKb": "110.5",
+    "pCount": 719,
+    "tableCount": 9,
+    "headingCount": 11,
+    "headings": [
+      {
+        "tag": "h1",
+        "text": "KERANGKA EKONOMI DAERAH DAN KEUANGAN DAERAH"
+      },
+      {
+        "tag": "h2",
+        "text": "Arah Kebijakan Ekonomi Daerah"
+      },
+      {
+        "tag": "h4",
+        "text": "Peningkatan Daya saing ekonomi daerah yang mandiri, dan berkelanjutan;"
+      },
+      {
+        "tag": "h4",
+        "text": "Peningkatan Daya saing sumber daya masyarakat yang unggul, terampil, andal, berbudaya, dan sejahtera;"
+      },
+      {
+        "tag": "h4",
+        "text": "Peningkatan Pembangunan daerah yang merata, berkeadilan dan berkelanjutan;"
+      },
+      {
+        "tag": "h4",
+        "text": "Pengembangan Tata kelola pemerintahan yang baik, akuntabel dan berbasis digital;"
+      },
+      {
+        "tag": "h2",
+        "text": "Arah Kebijakan Keuangan Daerah"
+      },
+      {
+        "tag": "h3",
+        "text": "Arah Kebijakan Pendapatan Daerah"
+      },
+      {
+        "tag": "h3",
+        "text": "Arah Kebijakan Belanja Daerah"
+      },
+      {
+        "tag": "h3",
+        "text": "Arah Kebijakan Pembiayaan Daerah"
+      },
+      {
+        "tag": "h3",
+        "text": "Sumber Pendanaan Lainnya"
+      }
+    ]
+  },
+  {
+    "file": "RKPD 2027 PERBUP - BAB IV (17.07).docx",
+    "sizeKb": "538.6",
+    "pCount": 4689,
+    "tableCount": 14,
+    "headingCount": 63,
+    "headings": [
+      {
+        "tag": "h1",
+        "text": "SASARAN DAN PRIORITAS PEMBANGUNAN DAERAH"
+      },
+      {
+        "tag": "h2",
+        "text": "Tujuan dan Sasaran Pembangunan"
+      },
+      {
+        "tag": "h2",
+        "text": "Prioritas dan Sasaran Pembangunan Tahun 2027"
+      },
+      {
+        "tag": "h3",
+        "text": "Prioritas Pembangunan Nasional Tahun 2027"
+      },
+      {
+        "tag": "h4",
+        "text": "Memperkokoh ideologi Pancasila, demokrasi, dan hak asasi manusia (HAM);"
+      },
+      {
+        "tag": "h4",
+        "text": "Memantapkan sistem pertahanan keamanan negara dan mendorong kemandirian bangsa melalui swasembada pangan, energi, air, ekonomi syariah, ekonomi digital, ekonomi hijau, dan ekonomi biru;"
+      },
+      {
+        "tag": "h4",
+        "text": "Melanjutkan pengembangan infrastruktur dan meningkatkan lapangan kerja yang berkualitas, mendorong kewirausahaan, mengembangkan industri kreatif serta mengembangkan agromaritim industri di sentra produksi melalui peran aktif koperasi;"
+      },
+      {
+        "tag": "h4",
+        "text": "Memperkuat pembangunan sumberdaya manusia (SDM), sains, teknologi, pendidikan, kesehatan, prestasi olahraga, kesetaraan gender, serta penguatan peran perempuan, pemuda (generasi milenial dan generasi Z), dan penyandang disabilitas;"
+      },
+      {
+        "tag": "h4",
+        "text": "Melanjutkan hilirisasi dan mengembangkan industri berbasis sumber daya alam untuk meningkatkan nilai tambah di dalam negeri;"
+      },
+      {
+        "tag": "h4",
+        "text": "Membangun dari desa dan dari bawah untuk pertumbuhan ekonomi, pemerataan ekonomi, dan pemberantasan kemiskinan;"
+      },
+      {
+        "tag": "h4",
+        "text": "Memperkuat reformasi politik, hukum, dan birokrasi, serta memperkuat pencegahan dan pemberantasan korupsi, narkoba, judi, dan penyelundupan;"
+      },
+      {
+        "tag": "h4",
+        "text": "Memperkuat penyelarasan kehidupan yang harmonis dengan lingkungan, alam, dan budaya, serta peningkatan toleransi antar umat beragama untuk mencapai masyarakat yang adil dan makmur."
+      },
+      {
+        "tag": "h4",
+        "text": "Penanggulangan kemiskinan meliputi optimalisasi pelaksanaan pengentasan kemiskinan dan penghapusan kemiskinan ekstrem; Sekolah Rakyat, Pembangunan 3 juta rumah."
+      },
+      {
+        "tag": "h4",
+        "text": "Ketahanan pangan meliputi pengadaan dan pengelolaan gabah/beras dalam negeri serta penyaluran Cadangan beras pemerintah."
+      },
+      {
+        "tag": "h4",
+        "text": "Kesehatan untuk semua, meliputi jaminan Kesehatan nasional, makan bergizi gratis."
+      },
+      {
+        "tag": "h4",
+        "text": "Perluasan akses Pendidikan meliputi Pembangunan dan revitalisasi Pendidikan dasar dan menengah."
+      },
+      {
+        "tag": "h4",
+        "text": "Pertumbuhan ekonomi, melalui pengendalian inflasi, percepatan pembentukan Koperasi Desa/Kelurahan Merah Putih, kemudahan perizinan di daerah."
+      },
+      {
+        "tag": "h3",
+        "text": "Prioritas dan Sasaran Pembangunan Jawa Tengah Tahun 2027"
+      },
+      {
+        "tag": "h3",
+        "text": "Rapat Koordinasi Teknis Perencanaan Pembangunan Provinsi Jawa Tengah"
+      },
+      {
+        "tag": "h3",
+        "text": "Pokok-Pokok Pikiran DPRD Kabupaten Cilacap"
+      },
+      {
+        "tag": "h3",
+        "text": "Prioritas dan Sasaran Pembangunan Kabupaten Cilacap Tahun 2027"
+      },
+      {
+        "tag": "h4",
+        "text": "Daya saing ekonomi daerah yang mandiri, dan berkelanjutan, difokuskan pada:"
+      },
+      {
+        "tag": "h4",
+        "text": "Daya saing sumber daya masyarakat yang unggul, terampil, andal, berbudaya, dan sejahtera, difokuskan pada :"
+      },
+      {
+        "tag": "h4",
+        "text": "Meningkatkan keaktifan Jaminan Pemeliharaan Kesehatan."
+      },
+      {
+        "tag": "h4",
+        "text": "Penguatan akses dan mutu pelayanan pendidikan, serta merintis implementasi pelayanan pendidikan swasta gratis;"
+      },
+      {
+        "tag": "h4",
+        "text": "Penguatan pelayanan kesehatan dasar dengan mendorong implementasi integrasi layanan primer, meningkatkan digitalisasi pelayanan kesehatan. Peningkatan perilaku hidup sehat dalam rangka mengendalikan penyakit menular dan tidak menular;"
+      },
+      {
+        "tag": "h4",
+        "text": "Peningkatan kualitas perpustakaan dalam meningkatkan tingkat gemar membaca;"
+      },
+      {
+        "tag": "h4",
+        "text": "Penguatan keluarga berkualitas, serta mendorong pengendalian penduduk;"
+      },
+      {
+        "tag": "h4",
+        "text": "Peningkatan event budaya dan olahraga, pembangunan fasilitas seni budaya."
+      },
+      {
+        "tag": "h4",
+        "text": "Pembangunan daerah yang merata, berkeadilan dan berkelanjutan, difokuskan pada :"
+      },
+      {
+        "tag": "h4",
+        "text": "Peningkatan kualitas infrastruktur untuk percepatan pertumbuhan ekonomi dan pengurangan kesenjangan antar wilayah;"
+      },
+      {
+        "tag": "h4",
+        "text": "Peningkatan konektivitas daerah perbatasan Provinsi Jawa Barat;"
+      },
+      {
+        "tag": "h4",
+        "text": "Pengembangan TPA Tritih lor dan pengelolaan persampahan; Peningkatan keaneragaman hayati yang mendorong peningkatan kualitas udara, peningkatan pengendalian pencemaran udara dari limbah pabrik dan pertanian serta pengendalian pencemaran air dari limbah pabrik dan domestik;"
+      },
+      {
+        "tag": "h4",
+        "text": "Penataan, perawatan dan optimalisasi pemanfaatan Ruang Terbuka Hijau;"
+      },
+      {
+        "tag": "h4",
+        "text": "Penyusunan dokumen tata ruang dan melakukan revisi dokumen RTRW;"
+      },
+      {
+        "tag": "h4",
+        "text": "Pemantapan pembangunan kewilayahan dalam mendorong percepatan pertumbuhan ekonomi wilayah baru di daerah Cilacap Barat;"
+      },
+      {
+        "tag": "h4",
+        "text": "Pengembangan desa mandiri, penguatan tata kelola desa."
+      },
+      {
+        "tag": "h4",
+        "text": "Tata kelola pemerintahan yang baik, akuntabel dan berbasis digital, difokuskan pada :"
+      },
+      {
+        "tag": "h4",
+        "text": "Pemantapan digitalisasi birokrasi pada pelayanan publik dan infrastruktur menyeluruh;"
+      },
+      {
+        "tag": "h4",
+        "text": "Pemantapan kapasitas fiskal, pengelolaan keuangan dan aset;"
+      },
+      {
+        "tag": "h4",
+        "text": "Penguatan merit system, pengembangan kompetensi ASN dan peningkatan kualitas karir dan budaya kerja;"
+      },
+      {
+        "tag": "h4",
+        "text": "Penguatan satu data, data sektoral dan keamanan informasi;"
+      },
+      {
+        "tag": "h4",
+        "text": "Penguatan digitalisasi kearsipan sebagai bagian reformasi birokrasi;"
+      },
+      {
+        "tag": "h4",
+        "text": "Penguatan kualitas kebijakan reformasi hukum, akuntabilitas pembangunan dan peningkatan integritas."
+      },
+      {
+        "tag": "h4",
+        "text": "Tujuan 1"
+      },
+      {
+        "tag": "h4",
+        "text": "Meningkanya daya saing Kabupaten Cilacap"
+      },
+      {
+        "tag": "h4",
+        "text": "Sasaran 1"
+      },
+      {
+        "tag": "h4",
+        "text": "Meningkatknya daya saing ekonomi"
+      },
+      {
+        "tag": "h4",
+        "text": "Sasaran 3"
+      },
+      {
+        "tag": "h4",
+        "text": "Meningkatnya daya saing lingkungan hidup"
+      },
+      {
+        "tag": "h4",
+        "text": "Tujuan 1"
+      },
+      {
+        "tag": "h4",
+        "text": "Meningkanya daya saing Kabupaten Cilacap"
+      },
+      {
+        "tag": "h4",
+        "text": "Sasaran 2"
+      },
+      {
+        "tag": "h4",
+        "text": "Meningkatnya daya saing SDM"
+      },
+      {
+        "tag": "h4",
+        "text": "Tujuan 3"
+      },
+      {
+        "tag": "h4",
+        "text": "Meningkatnya tata kelola pemerintahan yang bersih, akuntabel dan responsif, dengan sasaran"
+      },
+      {
+        "tag": "h4",
+        "text": "Sasaran 6"
+      },
+      {
+        "tag": "h4",
+        "text": "Meningkatnya akuntabilitas, transparansi tata kelola pemerintahan, dan kualitas pelayanan publik yang berbasis digital."
+      },
+      {
+        "tag": "h2",
+        "text": "Pembangunan Kewilayahan"
+      },
+      {
+        "tag": "h4",
+        "text": "Kawasan Pertumbuhan"
+      },
+      {
+        "tag": "h2",
+        "text": "Riset dan Inovasi Daerah"
+      },
+      {
+        "tag": "h3",
+        "text": "4.4.1 Riset – Penelitian, Pengembangan, Pengkajian dan Penerapan"
+      },
+      {
+        "tag": "h3",
+        "text": "4.4.2 Invensi dan Inovasi"
+      }
+    ]
+  },
+  {
+    "file": "RKPD 2027 PERBUP - BAB V (16.07).docx",
+    "sizeKb": "116.7",
+    "pCount": 409,
+    "tableCount": 2,
+    "headingCount": 11,
+    "headings": [
+      {
+        "tag": "h1",
+        "text": "RENCANA KERJA DAN PENDANAAN DAERAH"
+      },
+      {
+        "tag": "h2",
+        "text": "Pendanaan Daerah"
+      },
+      {
+        "tag": "h2",
+        "text": "Program dan Kegiatan Prioritas Pembangunan Tahun 2027"
+      },
+      {
+        "tag": "h2",
+        "text": "Urusan Pemerintahan Wajib yang Berkaitan Dengan Pelayanan Dasar"
+      },
+      {
+        "tag": "h2",
+        "text": "Urusan Pemerintahan Wajib Tidak Berkaitan Dengan Pelayanan Dasar"
+      },
+      {
+        "tag": "h2",
+        "text": "Urusan Pilihan"
+      },
+      {
+        "tag": "h2",
+        "text": "Unsur Pendukung Urusan Pemerintahan"
+      },
+      {
+        "tag": "h2",
+        "text": "Unsur Penunjang Urusan Pemerintahan"
+      },
+      {
+        "tag": "h2",
+        "text": "Unsur Pengawasan Urusan Pemerintahan"
+      },
+      {
+        "tag": "h2",
+        "text": "Unsur Kewilayahan"
+      },
+      {
+        "tag": "h2",
+        "text": "Non Urusan"
+      }
+    ]
+  },
+  {
+    "file": "RKPD 2027 PERBUP - BAB VI (17.07).docx",
+    "sizeKb": "97.3",
+    "pCount": 1713,
+    "tableCount": 5,
+    "headingCount": 6,
+    "headings": [
+      {
+        "tag": "h1",
+        "text": "KINERJA PENYELENGGARAANPEMERINTAHAN DAERAH"
+      },
+      {
+        "tag": "h2",
+        "text": "Indikator Kinerja Utama (IKU) Tahun 2027"
+      },
+      {
+        "tag": "h2",
+        "text": "Indikator Tujuan Sasaran Perangkat Daerah Tahun 2027"
+      },
+      {
+        "tag": "h2",
+        "text": "Indikator Kinerja Daerah Tahun 2027"
+      },
+      {
+        "tag": "h2",
+        "text": "Indikator Kinerja Kunci (IKK) Tahun 2027"
+      },
+      {
+        "tag": "h2",
+        "text": "Indikator Utama Pembangunan (IUP) Tahun 2027"
+      }
+    ]
+  },
+  {
+    "file": "RKPD 2027 PERBUP - BAB VII (09.07).docx",
+    "sizeKb": "23.8",
+    "pCount": 13,
+    "tableCount": 1,
+    "headingCount": 1,
+    "headings": [
+      {
+        "tag": "h1",
+        "text": "PENUTUP"
+      }
+    ]
+  }
+]

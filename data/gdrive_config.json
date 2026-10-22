@@ -1,0 +1,10 @@
+{
+  "enabled": true,
+  "syncMode": "FOLDER_SYNC",
+  "syncFolderPath": "D:\\RKPD_GOOGLE_DRIVE_BACKUP",
+  "autoSync": true,
+  "serviceAccountKey": "",
+  "driveFolderId": "",
+  "lastSync": "2026-10-21T05:06:17.398Z",
+  "lastSyncMessage": "Berhasil mencadangkan 8 file ke folder Google Drive: D:\\RKPD_GOOGLE_DRIVE_BACKUP"
+}
