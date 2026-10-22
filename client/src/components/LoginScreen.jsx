@@ -233,12 +233,6 @@ export default function LoginScreen({ onLoginSuccess, availableUsers = [] }) {
                 </button>
               </form>
             </div>
-
-            {/* Micro footer */}
-            <div className="mt-8 pt-4 border-t border-slate-100 text-[11px] text-slate-400 flex items-center justify-between">
-              <span>Bappeda Kabupaten Cilacap &bull; 2026/2027</span>
-              <span>Versi 2.5 RKPD</span>
-            </div>
           </div>
 
           {/* Right Column: Brand Panel */}
@@ -273,7 +267,7 @@ export default function LoginScreen({ onLoginSuccess, availableUsers = [] }) {
       {/* Footer System Info */}
       <footer className="relative z-10 text-center py-4 text-xs text-slate-400">
         <p>
-          &copy; 2026/2027 <span className="font-bold text-slate-300">Co.</span> (Collaborative Document Tools) &bull; Badan Perencanaan Pembangunan Daerah Kabupaten Cilacap
+          &copy; {new Date().getFullYear()} <span className="font-bold text-slate-300">Co.</span> (Collaborative Document Tools) &bull; Badan Perencanaan Pembangunan Daerah Kabupaten Cilacap
         </p>
       </footer>
     </div>
