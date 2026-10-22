@@ -27,96 +27,194 @@ const DEFAULT_USERS = [
     opd: 'Bappeda - Sekretariat / Bidang PPEPD',
     email: 'admin@bappeda.go.id',
     color: '#4f46e5',
+    password: '12345@',
     reviewedChapters: ['BAB I', 'BAB II', 'BAB III', 'BAB IV', 'BAB V', 'BAB VI', 'BAB VII']
   },
   {
-    id: 'user_reviewer',
-    username: 'reviewer_ahli',
-    name: 'Dr. Joko Susanto (Reviewer Ahli)',
-    role: 'REVIEWER',
-    opd: 'Tim Ahli / Penjamin Mutu RKPD',
-    email: 'reviewer@rkpd.go.id',
-    color: '#0891b2',
-    reviewedChapters: ['BAB I', 'BAB II', 'BAB IV']
-  },
-  {
-    id: 'user_reviewer_apip',
-    username: 'reviewer_apip',
-    name: 'Drs. Hendro Wibowo (Reviewer APIP / Inspektorat)',
-    role: 'REVIEWER',
-    opd: 'Inspektorat Daerah Kabupaten Cilacap',
-    email: 'inspektorat@cilacapkab.go.id',
+    id: 'user_pandu',
+    username: 'Pandu',
+    name: 'Pandu Setiabudi',
+    role: 'CONTRIBUTOR',
+    opd: 'IKP - Kewilayahan',
+    email: 'pandu@cilacapkab.go.id',
     color: '#0284c7',
-    reviewedChapters: ['BAB III', 'BAB V', 'BAB VI', 'BAB VII']
-  },
-  {
-    id: 'user_pic_ikp',
-    username: 'pic_ikp',
-    name: 'PIC Bidang IKP (Diskominfo)',
-    role: 'CONTRIBUTOR',
-    opd: 'Diskominfo - Bidang Informasi & Komunikasi Publik',
-    email: 'ikp@diskominfo.cilacapkab.go.id',
-    color: '#059669',
+    password: '12345@',
     reviewedChapters: []
   },
   {
-    id: 'user_pic_rinov',
-    username: 'pic_rinov',
-    name: 'PIC Bidang Rinov (Bappeda)',
+    id: 'user_nabila',
+    username: 'Nabila',
+    name: 'Nabila Dezty Anggraeni',
     role: 'CONTRIBUTOR',
-    opd: 'Bappeda - Bidang Riset & Inovasi Daerah',
-    email: 'rinov@bappeda.cilacapkab.go.id',
+    opd: 'Progev - PP',
+    email: 'nabila@cilacapkab.go.id',
+    color: '#ec4899',
+    password: '12345@',
+    reviewedChapters: []
+  },
+  {
+    id: 'user_dodo',
+    username: 'Dodo',
+    name: 'Dodo Riyatno',
+    role: 'CONTRIBUTOR',
+    opd: 'Sekretariat',
+    email: 'dodo@cilacapkab.go.id',
+    color: '#8b5cf6',
+    password: '12345@',
+    reviewedChapters: []
+  },
+  {
+    id: 'user_anny',
+    username: 'Anny',
+    name: 'Anny Sutrisnawati',
+    role: 'CONTRIBUTOR',
+    opd: 'PPM - Pemb. Manusia',
+    email: 'anny@cilacapkab.go.id',
+    color: '#f59e0b',
+    password: '12345@',
+    reviewedChapters: []
+  },
+  {
+    id: 'user_ahmad',
+    username: 'Ahmad',
+    name: 'Ahmad Maghfuri',
+    role: 'CONTRIBUTOR',
+    opd: 'Progev - PP',
+    email: 'ahmad@cilacapkab.go.id',
     color: '#10b981',
+    password: '12345@',
     reviewedChapters: []
   },
   {
-    id: 'user_pic_ppm',
-    username: 'pic_ppm',
-    name: 'PIC Bidang PPM (Bappeda)',
+    id: 'user_uci',
+    username: 'Uci',
+    name: 'Uci Nur Wijayanti',
     role: 'CONTRIBUTOR',
-    opd: 'Bappeda - Bidang Pemerintahan & Pembangunan Manusia',
-    email: 'ppm@bappeda.cilacapkab.go.id',
-    color: '#9333ea',
+    opd: 'Progev - Datin',
+    email: 'uci@cilacapkab.go.id',
+    color: '#06b6d4',
+    password: '12345@',
     reviewedChapters: []
   },
   {
-    id: 'user_pic_program',
-    username: 'pic_program',
-    name: 'PIC Bidang Program (PPEPD Bappeda)',
+    id: 'user_hadi',
+    username: 'Hadi',
+    name: 'Hadi Satriyo',
+    role: 'REVIEWER',
+    opd: 'Progev - Datin',
+    email: 'hadi@cilacapkab.go.id',
+    color: '#3b82f6',
+    password: '12345@',
+    reviewedChapters: ['BAB I', 'BAB II', 'BAB III', 'BAB IV', 'BAB V', 'BAB VI', 'BAB VII']
+  },
+  {
+    id: 'user_sumaryanto',
+    username: 'Sumaryanto',
+    name: 'Sumaryanto',
+    role: 'REVIEWER',
+    opd: 'Progev - Dalev',
+    email: 'sumaryanto@cilacapkab.go.id',
+    color: '#6366f1',
+    password: '12345@',
+    reviewedChapters: ['BAB I', 'BAB II', 'BAB III', 'BAB IV', 'BAB V', 'BAB VI', 'BAB VII']
+  },
+  {
+    id: 'user_ilyasa',
+    username: 'Ilyasa',
+    name: 'Ilyasa Suryaningpraja',
+    role: 'REVIEWER',
+    opd: 'Progev - PP',
+    email: 'ilyasa@cilacapkab.go.id',
+    color: '#0891b2',
+    password: '12345@',
+    reviewedChapters: ['BAB I', 'BAB II', 'BAB III', 'BAB IV', 'BAB V', 'BAB VI', 'BAB VII']
+  },
+  {
+    id: 'user_jatmiko',
+    username: 'Jatmiko',
+    name: 'Jatmiko Rudiono',
     role: 'CONTRIBUTOR',
-    opd: 'Bappeda - Bidang Perencanaan, Pengendalian & Evaluasi (PPEPD)',
-    email: 'program@bappeda.cilacapkab.go.id',
-    color: '#2563eb',
+    opd: 'IKP - Infrastruktur',
+    email: 'jatmiko@cilacapkab.go.id',
+    color: '#f97316',
+    password: '12345@',
     reviewedChapters: []
   },
   {
-    id: 'user_dinkes',
-    username: 'dinkes',
-    name: 'Dinas Kesehatan (dr. Siti Aminah)',
+    id: 'user_widiyatno',
+    username: 'Widiyatno',
+    name: 'Widiyatno',
     role: 'CONTRIBUTOR',
-    opd: 'Dinas Kesehatan',
-    email: 'program@dinkes.go.id',
+    opd: 'IKP - Kewilayahan',
+    email: 'widiyatno@cilacapkab.go.id',
     color: '#14b8a6',
+    password: '12345@',
     reviewedChapters: []
   },
   {
-    id: 'user_disdik',
-    username: 'disdik',
-    name: 'Dinas Pendidikan (Drs. Budi Santoso)',
+    id: 'user_titin',
+    username: 'Titin',
+    name: 'Titin Indriati',
     role: 'CONTRIBUTOR',
-    opd: 'Dinas Pendidikan & Kebudayaan',
-    email: 'perencanaan@disdik.go.id',
+    opd: 'IKP - Perekonomian',
+    email: 'titin@cilacapkab.go.id',
     color: '#d97706',
+    password: '12345@',
     reviewedChapters: []
   },
   {
-    id: 'user_ekonomi',
-    username: 'bappeda_ekonomi',
-    name: 'Bidang Ekonomi & SDA (Ir. Agus Prasetyo)',
+    id: 'user_be',
+    username: 'Be',
+    name: 'Be Santoso Nugroho',
     role: 'CONTRIBUTOR',
-    opd: 'Bappeda - Bidang Perekonomian & SDA',
-    email: 'ekonomi@bappeda.go.id',
-    color: '#dc2626',
+    opd: 'IKP - SDA',
+    email: 'be@cilacapkab.go.id',
+    color: '#059669',
+    password: '12345@',
+    reviewedChapters: []
+  },
+  {
+    id: 'user_huliman',
+    username: 'Huliman',
+    name: 'Huliman Hamid Ar Rasyi',
+    role: 'CONTRIBUTOR',
+    opd: 'PPM - Kesra',
+    email: 'huliman@cilacapkab.go.id',
+    color: '#9333ea',
+    password: '12345@',
+    reviewedChapters: []
+  },
+  {
+    id: 'user_bina',
+    username: 'Bina',
+    name: 'Bina Mariana',
+    role: 'CONTRIBUTOR',
+    opd: 'PPM - Pemb. Manusia',
+    email: 'bina@cilacapkab.go.id',
+    color: '#db2777',
+    password: '12345@',
+    reviewedChapters: []
+  },
+  {
+    id: 'user_heri',
+    username: 'Heri',
+    name: 'Heri Fitrianto',
+    role: 'CONTRIBUTOR',
+    opd: 'PPM - Pemerintahan',
+    email: 'heri@cilacapkab.go.id',
+    color: '#2563eb',
+    password: '12345@',
+    reviewedChapters: []
+  },
+  {
+    id: 'user_sunarko',
+    username: 'Sunarko',
+    name: 'Sunarko',
+    role: 'CONTRIBUTOR',
+    opd: 'Sekretariat',
+    email: 'sunarko@cilacapkab.go.id',
+    color: '#475569',
+    password: '12345@',
     reviewedChapters: []
   }
 ];
@@ -274,27 +372,39 @@ class Database {
           logs: parsed.logs || []
         };
 
-        // Ensure all default users exist
+        // Clean up obsolete old users: ensure only current valid users exist
         let changed = false;
+        const validIds = new Set(DEFAULT_USERS.map(u => u.id));
+        const filteredUsers = this.data.users.filter(u => validIds.has(u.id));
+        if (filteredUsers.length !== this.data.users.length) {
+          this.data.users = filteredUsers;
+          changed = true;
+        }
+
+        // Ensure all default users exist and have updated metadata
         DEFAULT_USERS.forEach(defUser => {
-          const exists = this.data.users.find(u => u.id === defUser.id);
-          if (!exists) {
+          const idx = this.data.users.findIndex(u => u.id === defUser.id);
+          if (idx === -1) {
             this.data.users.push({ ...defUser });
             changed = true;
+          } else {
+            const existing = this.data.users[idx];
+            if (existing.username !== defUser.username || existing.name !== defUser.name || existing.role !== defUser.role || existing.opd !== defUser.opd) {
+              this.data.users[idx] = { ...defUser, password: existing.password || defUser.password };
+              changed = true;
+            }
           }
         });
 
         // Ensure every user has reviewedChapters
         this.data.users.forEach(u => {
-          if (!u.reviewedChapters) {
-            if (u.role === 'ADMIN') {
+          if (!u.reviewedChapters || u.reviewedChapters.length === 0) {
+            if (u.role === 'ADMIN' || u.role === 'REVIEWER') {
               u.reviewedChapters = ['BAB I', 'BAB II', 'BAB III', 'BAB IV', 'BAB V', 'BAB VI', 'BAB VII'];
-            } else if (u.role === 'REVIEWER') {
-              u.reviewedChapters = ['BAB I', 'BAB II', 'BAB IV'];
+              changed = true;
             } else {
               u.reviewedChapters = [];
             }
-            changed = true;
           }
         });
 

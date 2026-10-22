@@ -385,7 +385,7 @@ export default function UserManagementModal({
                   <input
                     type="text"
                     required
-                    placeholder="Contoh: pic_ikp / reviewer_ahli"
+                    placeholder="Contoh: Pandu / Hadi / Nabila"
                     value={username}
                     onChange={(e) => setUsername(e.target.value.toLowerCase().replace(/\s+/g, '_'))}
                     className="w-full px-3 py-2 text-xs bg-white border border-slate-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500"
