@@ -3646,6 +3646,136 @@ export default function DocumentWorkspace({
             </div>
           )}
 
+          {/* Top Control Bar & Notification in Section Editor (Moved outside canvas onto desk) */}
+          {viewMode === 'SECTION_EDITOR' && (
+            <div style={{ maxWidth: `${paperDims.width}px` }} className="w-full mb-3 select-none font-sans flex flex-col gap-2">
+              {/* Read-only notification */}
+              {!activeSection?.canEdit && (
+                <div className="px-3.5 py-2 rounded-lg bg-amber-50 border border-amber-200 text-amber-900 text-xs flex items-center justify-between shadow-2xs">
+                  <div className="flex items-center gap-2">
+                    <Lock className="w-3.5 h-3.5 text-amber-600 shrink-0" />
+                    <span>
+                      <strong>Mode Lihat Saja:</strong>{' '}
+                      {activeSection?.isLocked
+                        ? 'Naskah berstatus final / dikunci.'
+                        : currentUser?.role === 'REVIEWER'
+                        ? 'Bab di luar penugasan review Anda.'
+                        : 'Naskah ditugaskan kepada kontributor lain.'}
+                    </span>
+                  </div>
+                  {activeSection?.canComment ? (
+                    <button
+                      type="button"
+                      onClick={() => setShowReviewPane(true)}
+                      className="text-xs font-semibold text-amber-900 hover:underline shrink-0 ml-2 cursor-pointer"
+                    >
+                      Catatan Review ➔
+                    </button>
+                  ) : (
+                    <span className="text-[10px] font-semibold px-2 py-0.5 rounded bg-amber-200 text-amber-900 shrink-0 ml-2">
+                      Hanya Baca
+                    </span>
+                  )}
+                </div>
+              )}
+
+              {/* Word Page Navigation & Table Anti-Overflow Control Bar */}
+              <div className="px-3.5 py-2 bg-white border border-slate-200 rounded-lg flex flex-wrap items-center justify-between gap-2 text-xs shadow-2xs">
+                <div className="flex items-center gap-2 flex-wrap">
+                  {/* Prev Page Button */}
+                  <button
+                    type="button"
+                    disabled={currentIndex <= 0}
+                    onClick={() => selectSection(sections[currentIndex - 1])}
+                    className="px-2.5 py-1 bg-white hover:bg-slate-100 disabled:opacity-40 text-slate-700 font-semibold rounded border border-slate-300 text-xs flex items-center gap-1 transition cursor-pointer"
+                    title="Ke Halaman Sebelumnya"
+                  >
+                    <ChevronLeft className="w-3.5 h-3.5" />
+                    <span>Sebelumnya</span>
+                  </button>
+
+                  {/* Current Page Pill */}
+                  <div className="px-2.5 py-1 bg-blue-100/80 border border-blue-200 text-[#185abd] font-bold rounded text-xs">
+                    Halaman {activeSection?.pageLabel || `${getRomanChapter()}-${currentIndex + 1}`} ({currentIndex + 1} dari {sections.length})
+                  </div>
+
+                  {/* Next Page Button */}
+                  <button
+                    type="button"
+                    disabled={currentIndex >= sections.length - 1}
+                    onClick={() => selectSection(sections[currentIndex + 1])}
+                    className="px-2.5 py-1 bg-white hover:bg-slate-100 disabled:opacity-40 text-slate-700 font-semibold rounded border border-slate-300 text-xs flex items-center gap-1 transition cursor-pointer"
+                    title="Ke Halaman Selanjutnya"
+                  >
+                    <span>Selanjutnya</span>
+                    <ChevronRight className="w-3.5 h-3.5" />
+                  </button>
+
+                  <span className="text-slate-300">|</span>
+
+                  {/* Orientation Toggle Button */}
+                  <button
+                    type="button"
+                    onClick={() => toggleSectionOrientation()}
+                    className={`px-2.5 py-1 rounded font-semibold text-xs border flex items-center gap-1.5 transition cursor-pointer ${
+                      orientation === 'LANDSCAPE'
+                        ? 'bg-amber-100 text-amber-900 border-amber-300 hover:bg-amber-200'
+                        : 'bg-blue-50 text-blue-800 border-blue-200 hover:bg-blue-100'
+                    }`}
+                    title="Ubah Orientasi Halaman (Lanskap 330×216 mm untuk tabel matriks lebar)"
+                  >
+                    <LayoutTemplate className="w-3.5 h-3.5" />
+                    <span>{orientation === 'LANDSCAPE' ? 'Lanskap (330 × 216 mm)' : 'Potret (216 × 330 mm)'}</span>
+                  </button>
+
+                  {/* AutoFit Table Button */}
+                  <button
+                    type="button"
+                    onClick={() => handleAutoFitTables()}
+                    className="px-2.5 py-1 bg-emerald-50 hover:bg-emerald-100 text-emerald-800 font-semibold rounded border border-emerald-200 text-xs flex items-center gap-1 transition cursor-pointer"
+                    title="AutoFit ala Word: Sesuaikan seluruh tabel agar pas dalam margin kertas Folio tanpa overflow"
+                  >
+                    <TableIcon className="w-3.5 h-3.5 text-emerald-600" />
+                    <span>Paskan Tabel</span>
+                  </button>
+
+                  <div className="flex items-center gap-1 pl-2 border-l border-slate-200">
+                    <span className="text-[11px] text-slate-500 font-medium">Font Tabel:</span>
+                    <select
+                      value={tableFontSize}
+                      onChange={(e) => handleSetTableFontSize(e.target.value)}
+                      className="px-1.5 py-0.5 bg-white border border-slate-300 rounded text-xs text-slate-700 font-medium focus:outline-none focus:border-blue-500 cursor-pointer"
+                      title="Ukuran font tabel (Standar 9pt / 8.5pt untuk matriks lebar)"
+                    >
+                      <option value="8pt">8pt (Sangat Padat)</option>
+                      <option value="8.5pt">8.5pt (Matriks 10+ Kolom)</option>
+                      <option value="9pt">9pt (Standar Bab II/IV)</option>
+                      <option value="10pt">10pt (Standar Bab I/III/V)</option>
+                      <option value="11pt">11pt (Tabel Besar)</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div className="flex items-center gap-2 text-[11px] text-slate-500">
+                  <span className="bg-slate-100 text-slate-700 px-2 py-0.5 rounded font-mono font-medium border border-slate-200">
+                    Margin {marginCm.left}cm / {marginCm.right}cm
+                  </span>
+                  <span>• Folio F4</span>
+
+                  <button
+                    type="button"
+                    onClick={() => setViewMode('FULL_DOCUMENT')}
+                    className="ml-2 px-2 py-1 bg-slate-50 hover:bg-slate-100 text-slate-700 font-medium rounded border border-slate-200 text-xs transition flex items-center gap-1 cursor-pointer"
+                    title="Lihat seluruh dokumen bersambung"
+                  >
+                    <FileText className="w-3.5 h-3.5 text-blue-600" />
+                    <span>Seluruh Bab</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
+
           <div
             className="w-full flex justify-center transition-transform origin-top pb-24"
             style={{ transform: `scale(${zoomLevel / 100})` }}
@@ -3828,121 +3958,6 @@ export default function DocumentWorkspace({
                 )}
 
                 <div className="relative z-10">
-                  {/* Read-only notification */}
-                  {!activeSection?.canEdit && (
-                    <div className="mb-3 px-3 py-2 rounded-lg bg-amber-50 border border-amber-200 text-amber-900 text-xs flex items-center justify-between select-none font-sans">
-                      <div className="flex items-center gap-2">
-                        <Lock className="w-3.5 h-3.5 text-amber-600 shrink-0" />
-                        <span>
-                          <strong>Mode Lihat Saja:</strong>{' '}
-                          {activeSection?.isLocked
-                            ? 'Naskah berstatus final / dikunci.'
-                            : currentUser?.role === 'REVIEWER'
-                            ? 'Bab di luar penugasan review Anda.'
-                            : 'Naskah ditugaskan kepada kontributor lain.'}
-                        </span>
-                      </div>
-                      {activeSection?.canComment ? (
-                        <button
-                          type="button"
-                          onClick={() => setShowReviewPane(true)}
-                          className="text-xs font-semibold text-amber-900 hover:underline shrink-0 ml-2"
-                        >
-                          Catatan Review ➔
-                        </button>
-                      ) : (
-                        <span className="text-[10px] font-semibold px-2 py-0.5 rounded bg-amber-200 text-amber-900 shrink-0 ml-2">
-                          Hanya Baca
-                        </span>
-                      )}
-                    </div>
-                  )}
-
-                  {/* Word Page Navigation & Anti-Overflow Bar */}
-                  <div className="mb-4 px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg flex flex-wrap items-center justify-between gap-2 text-xs font-sans select-none shadow-2xs">
-                    <div className="flex items-center gap-2">
-                      {/* Prev Page Button */}
-                      <button
-                        type="button"
-                        disabled={currentIndex <= 0}
-                        onClick={() => selectSection(sections[currentIndex - 1])}
-                        className="px-2 py-1 bg-white hover:bg-slate-100 disabled:opacity-40 text-slate-700 font-semibold rounded border border-slate-300 text-xs flex items-center gap-1 transition cursor-pointer"
-                        title="Ke Halaman Sebelumnya"
-                      >
-                        <ChevronLeft className="w-3.5 h-3.5" />
-                        <span>Sebelumnya</span>
-                      </button>
-
-                      {/* Current Page Pill */}
-                      <div className="px-2.5 py-1 bg-blue-100/80 border border-blue-200 text-[#185abd] font-bold rounded text-xs">
-                        Halaman {activeSection?.pageLabel || `${getRomanChapter()}-${currentIndex + 1}`} ({currentIndex + 1} dari {sections.length})
-                      </div>
-
-                      {/* Next Page Button */}
-                      <button
-                        type="button"
-                        disabled={currentIndex >= sections.length - 1}
-                        onClick={() => selectSection(sections[currentIndex + 1])}
-                        className="px-2 py-1 bg-white hover:bg-slate-100 disabled:opacity-40 text-slate-700 font-semibold rounded border border-slate-300 text-xs flex items-center gap-1 transition cursor-pointer"
-                        title="Ke Halaman Selanjutnya"
-                      >
-                        <span>Selanjutnya</span>
-                        <ChevronRight className="w-3.5 h-3.5" />
-                      </button>
-
-                      <span className="text-slate-300">|</span>
-
-                      {/* Orientation Toggle Button */}
-                      <button
-                        type="button"
-                        onClick={() => toggleSectionOrientation()}
-                        className={`px-2.5 py-1 rounded font-semibold text-xs border flex items-center gap-1.5 transition cursor-pointer ${
-                          orientation === 'LANDSCAPE'
-                            ? 'bg-amber-100 text-amber-900 border-amber-300 hover:bg-amber-200'
-                            : 'bg-blue-50 text-blue-800 border-blue-200 hover:bg-blue-100'
-                        }`}
-                        title="Ubah Orientasi Halaman (Lanskap 330×216 mm untuk tabel matriks lebar)"
-                      >
-                        <LayoutTemplate className="w-3.5 h-3.5" />
-                        <span>{orientation === 'LANDSCAPE' ? 'Lanskap (330 × 216 mm)' : 'Potret (216 × 330 mm)'}</span>
-                      </button>
-
-                      {/* AutoFit Table Button */}
-                      <button
-                        type="button"
-                        onClick={() => handleAutoFitTables()}
-                        className="px-2.5 py-1 bg-emerald-50 hover:bg-emerald-100 text-emerald-800 font-semibold rounded border border-emerald-200 text-xs flex items-center gap-1 transition cursor-pointer"
-                        title="AutoFit ala Word: Sesuaikan seluruh tabel agar pas dalam margin kertas Folio tanpa overflow"
-                      >
-                        <TableIcon className="w-3.5 h-3.5 text-emerald-600" />
-                        <span>Paskan Tabel</span>
-                      </button>
-
-                      <div className="flex items-center gap-1 pl-2 border-l border-slate-200">
-                        <span className="text-[11px] text-slate-500 font-medium">Font Tabel:</span>
-                        <select
-                          value={tableFontSize}
-                          onChange={(e) => handleSetTableFontSize(e.target.value)}
-                          className="px-1.5 py-0.5 bg-white border border-slate-300 rounded text-xs text-slate-700 font-medium focus:outline-none focus:border-blue-500 cursor-pointer"
-                          title="Ukuran font tabel (Standar 9pt / 8.5pt untuk matriks lebar)"
-                        >
-                          <option value="8pt">8pt (Sangat Padat)</option>
-                          <option value="8.5pt">8.5pt (Matriks 10+ Kolom)</option>
-                          <option value="9pt">9pt (Standar Bab II/IV)</option>
-                          <option value="10pt">10pt (Standar Bab I/III/V)</option>
-                          <option value="11pt">11pt (Tabel Besar)</option>
-                        </select>
-                      </div>
-                    </div>
-
-                    <div className="flex items-center gap-2 text-[11px] text-slate-500">
-                      <span className="bg-slate-200/70 text-slate-700 px-2 py-0.5 rounded font-mono font-medium">
-                        Margin {marginCm.left}cm / {marginCm.right}cm
-                      </span>
-                      <span>• Folio F4</span>
-                    </div>
-                  </div>
-
                   {/* Section Title Inputs */}
                   <div className="mb-5 pb-2 border-b border-slate-200 flex items-center gap-2 font-sans select-none">
                     <input
