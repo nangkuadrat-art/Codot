@@ -94,6 +94,11 @@ import FormatPicturePane from './FormatPicturePane';
 import PictureContextMenu from './PictureContextMenu';
 import ImageSelectionOverlay from './ImageSelectionOverlay';
 import { SizePositionModal, AltTextModal } from './ImageModals';
+import TableDesignRibbon from './TableDesignRibbon';
+import TableLayoutRibbon from './TableLayoutRibbon';
+import TableContextMenu from './TableContextMenu';
+import TablePropertiesModal from './TablePropertiesModal';
+import * as tableUtils from '../utils/tableUtils';
 
 export default function DocumentWorkspace({
   documentId,
@@ -243,6 +248,12 @@ export default function DocumentWorkspace({
   const [showAltTextModal, setShowAltTextModal] = useState(false);
   const [showCropModal, setShowCropModal] = useState(false);
   const hiddenImageFileInputRef = useRef(null);
+
+  // Table Editing States (100% Identical to Microsoft Word - Gambar 1, 2, 3)
+  const [selectedTable, setSelectedTable] = useState(null);
+  const [selectedCell, setSelectedCell] = useState(null);
+  const [tableContextMenu, setTableContextMenu] = useState({ visible: false, x: 0, y: 0 });
+  const [showTablePropertiesModal, setShowTablePropertiesModal] = useState(false);
 
   const [watermark, setWatermark] = useState(''); // '', 'DRAFT', 'RAHASIA', 'CONFIDENTIAL'
   const [showRuler, setShowRuler] = useState(true);
@@ -1328,15 +1339,34 @@ export default function DocumentWorkspace({
     // When left-clicking anywhere, always close any open context menu
     setPictureContextMenu(prev => ({ ...prev, visible: false }));
     setContextMenu(prev => ({ ...prev, visible: false }));
+    setTableContextMenu(prev => ({ ...prev, visible: false }));
 
+    const tbl = e.target.closest('table');
+    const cell = e.target.closest('td, th');
     const img = e.target.closest('img');
+
     if (img) {
       selectImage(img);
+      setSelectedTable(null);
+      setSelectedCell(null);
+    } else if (tbl) {
+      setSelectedTable(tbl);
+      setSelectedCell(cell || tbl.querySelector('td, th'));
+      setSelectedImage(null);
+      if (activeRibbonTab === 'PICTURE_FORMAT') {
+        setActiveRibbonTab('TABLE_DESIGN');
+      }
     } else {
-      if (!e.target.closest('.picture-format-ui') && !e.target.closest('.word-ribbon-bar') && !e.target.closest('#word-picture-context-menu')) {
+      if (!e.target.closest('.picture-format-ui') &&
+          !e.target.closest('.word-ribbon-bar') &&
+          !e.target.closest('#word-picture-context-menu') &&
+          !e.target.closest('#word-table-context-menu') &&
+          !e.target.closest('.table-tools-ui')) {
         if (e.target.closest('.word-page-sheet')) {
           setSelectedImage(null);
-          if (activeRibbonTab === 'PICTURE_FORMAT') {
+          setSelectedTable(null);
+          setSelectedCell(null);
+          if (activeRibbonTab === 'PICTURE_FORMAT' || activeRibbonTab === 'TABLE_DESIGN' || activeRibbonTab === 'TABLE_LAYOUT') {
             setActiveRibbonTab('HOME');
           }
         }
@@ -1667,14 +1697,230 @@ export default function DocumentWorkspace({
     persistSelectedImageToSection();
   };
 
-  // Right-Click Canvas Context Menu (Gambar 1 & Gambar 3)
+  // ================= TABLE EDITING HANDLERS (100% Microsoft Word) =================
+  const persistTableChanges = (tableEl) => {
+    const tbl = tableEl || selectedTable;
+    if (!tbl) return;
+
+    if (viewMode === 'SECTION_EDITOR' && editorRef.current) {
+      const updatedHtml = editorRef.current.innerHTML;
+      saveSectionContent(updatedHtml, sectionTitle, sectionCode);
+    } else {
+      const secSheet = tbl.closest('.word-page-sheet');
+      const secId = secSheet ? secSheet.id.replace('full-sec-', '') : (activeSectionId || (sections[0] ? sections[0].id : null));
+      if (secId) {
+        const secWordContent = secSheet ? secSheet.querySelector('.word-content') : null;
+        if (secWordContent) {
+          const newHtml = secWordContent.innerHTML;
+          setSections(prev => prev.map(s => s.id === secId ? { ...s, content: newHtml } : s));
+          api.updateSection(secId, { content: newHtml }).catch(err => console.error('Save table error:', err));
+        }
+      }
+    }
+  };
+
+  const handleInsertRowAbove = () => {
+    const ctx = tableUtils.getSelectedTableContext(selectedCell);
+    if (ctx) {
+      tableUtils.insertRowAbove(ctx.table, ctx.rowIndex);
+      persistTableChanges(ctx.table);
+    }
+  };
+
+  const handleInsertRowBelow = () => {
+    const ctx = tableUtils.getSelectedTableContext(selectedCell);
+    if (ctx) {
+      tableUtils.insertRowBelow(ctx.table, ctx.rowIndex);
+      persistTableChanges(ctx.table);
+    }
+  };
+
+  const handleInsertColLeft = () => {
+    const ctx = tableUtils.getSelectedTableContext(selectedCell);
+    if (ctx) {
+      tableUtils.insertColumnLeft(ctx.table, ctx.cellIndex);
+      persistTableChanges(ctx.table);
+    }
+  };
+
+  const handleInsertColRight = () => {
+    const ctx = tableUtils.getSelectedTableContext(selectedCell);
+    if (ctx) {
+      tableUtils.insertColumnRight(ctx.table, ctx.cellIndex);
+      persistTableChanges(ctx.table);
+    }
+  };
+
+  const handleDeleteRow = () => {
+    const ctx = tableUtils.getSelectedTableContext(selectedCell);
+    if (ctx) {
+      tableUtils.deleteRow(ctx.table, ctx.rowIndex);
+      persistTableChanges(ctx.table);
+    }
+  };
+
+  const handleDeleteCol = () => {
+    const ctx = tableUtils.getSelectedTableContext(selectedCell);
+    if (ctx) {
+      tableUtils.deleteColumn(ctx.table, ctx.cellIndex);
+      persistTableChanges(ctx.table);
+    }
+  };
+
+  const handleDeleteTable = () => {
+    if (selectedTable) {
+      const tbl = selectedTable;
+      setSelectedTable(null);
+      setSelectedCell(null);
+      setActiveRibbonTab('HOME');
+      tableUtils.deleteTable(tbl);
+      persistTableChanges(tbl);
+    }
+  };
+
+  const handleMergeCells = () => {
+    if (selectedCell) {
+      const nextCell = selectedCell.nextElementSibling;
+      if (nextCell) {
+        tableUtils.mergeCells(selectedCell, nextCell);
+        persistTableChanges(selectedTable);
+      }
+    }
+  };
+
+  const handleSplitCell = () => {
+    if (selectedCell) {
+      tableUtils.splitCell(selectedCell);
+      persistTableChanges(selectedTable);
+    }
+  };
+
+  const handleSplitTable = () => {
+    if (selectedTable && selectedCell) {
+      const row = selectedCell.closest('tr');
+      if (row && row.previousElementSibling) {
+        const newTable = selectedTable.cloneNode(false);
+        const tbody = document.createElement('tbody');
+        newTable.appendChild(tbody);
+        let curr = row;
+        while (curr) {
+          const next = curr.nextElementSibling;
+          tbody.appendChild(curr);
+          curr = next;
+        }
+        selectedTable.parentNode.insertBefore(document.createElement('p'), selectedTable.nextSibling);
+        selectedTable.parentNode.insertBefore(newTable, selectedTable.nextSibling.nextSibling);
+        persistTableChanges(selectedTable);
+      }
+    }
+  };
+
+  const handleDistributeRows = () => {
+    if (selectedTable) {
+      tableUtils.distributeRows(selectedTable);
+      persistTableChanges(selectedTable);
+    }
+  };
+
+  const handleDistributeCols = () => {
+    if (selectedTable) {
+      tableUtils.distributeColumns(selectedTable);
+      persistTableChanges(selectedTable);
+    }
+  };
+
+  const handleAutoFit = (mode) => {
+    if (selectedTable) {
+      tableUtils.setAutoFit(selectedTable, mode);
+      persistTableChanges(selectedTable);
+    }
+  };
+
+  const handleSetCellAlignment = (align, vAlign) => {
+    if (selectedCell) {
+      tableUtils.setCellAlignment(selectedCell, align, vAlign);
+      persistTableChanges(selectedTable);
+    }
+  };
+
+  const handleApplyTableStyle = (styleId) => {
+    if (!selectedTable) return;
+    selectedTable.querySelectorAll('th, td').forEach(c => {
+      c.style.padding = '4pt 6pt';
+    });
+    if (styleId === 'PLAIN_TABLE') {
+      tableUtils.setTableBorder(selectedTable, 'all', '#cbd5e1', 1);
+      selectedTable.querySelectorAll('th').forEach(th => { th.style.backgroundColor = '#ffffff'; });
+    } else if (styleId === 'GRID_LIGHT') {
+      tableUtils.setTableBorder(selectedTable, 'all', '#94a3b8', 1);
+      selectedTable.querySelectorAll('tr').forEach((r, idx) => {
+        r.style.backgroundColor = idx === 0 ? '#f1f5f9' : (idx % 2 === 0 ? '#f8fafc' : '#ffffff');
+      });
+    } else if (styleId === 'GRID_BLUE') {
+      tableUtils.setTableBorder(selectedTable, 'all', '#93c5fd', 1);
+      selectedTable.querySelectorAll('tr').forEach((r, idx) => {
+        r.style.backgroundColor = idx === 0 ? '#dbeafe' : (idx % 2 === 0 ? '#eff6ff' : '#ffffff');
+      });
+    } else if (styleId === 'GRID_GREEN') {
+      tableUtils.setTableBorder(selectedTable, 'all', '#86efac', 1);
+      selectedTable.querySelectorAll('tr').forEach((r, idx) => {
+        r.style.backgroundColor = idx === 0 ? '#dcfce7' : (idx % 2 === 0 ? '#f0fdf4' : '#ffffff');
+      });
+    } else if (styleId === 'LIST_LIGHT') {
+      tableUtils.setTableBorder(selectedTable, 'none');
+      selectedTable.querySelectorAll('tr').forEach(r => {
+        r.style.borderBottom = '1px solid #cbd5e1';
+      });
+    } else if (styleId === 'OFFICIAL_PERBUP') {
+      tableUtils.setTableBorder(selectedTable, 'all', '#334155', 1);
+      selectedTable.querySelectorAll('th').forEach(th => {
+        th.style.backgroundColor = '#e2e8f0';
+        th.style.fontWeight = 'bold';
+        th.style.textAlign = 'center';
+      });
+    } else if (styleId === 'BANDED_GRAY') {
+      tableUtils.setTableBorder(selectedTable, 'all', '#cbd5e1', 1);
+      selectedTable.querySelectorAll('tr').forEach((r, idx) => {
+        r.style.backgroundColor = idx % 2 === 1 ? '#f1f5f9' : '#ffffff';
+      });
+    }
+    persistTableChanges(selectedTable);
+  };
+
+  const handleApplyShading = (color) => {
+    if (selectedCell) {
+      tableUtils.setTableShading(selectedCell, color);
+      persistTableChanges(selectedTable);
+    } else if (selectedTable) {
+      tableUtils.setTableShading(selectedTable, color);
+      persistTableChanges(selectedTable);
+    }
+  };
+
+  const handleApplyBorder = (type, color, weightPt, style) => {
+    if (selectedTable) {
+      tableUtils.setTableBorder(selectedTable, type, color, weightPt, style);
+      persistTableChanges(selectedTable);
+    }
+  };
+
+  const handleToggleTableOption = (option, checked) => {
+    if (selectedTable) {
+      tableUtils.toggleTableOption(selectedTable, option, checked);
+      persistTableChanges(selectedTable);
+    }
+  };
+
+  // Right-Click Canvas Context Menu (Gambar 1, 2, 3)
   const handleCanvasContextMenu = (e) => {
     e.preventDefault();
 
-    // Check if right-clicking an image (Gambar 1)
+    // 1. Check if right-clicking an image (Gambar 1)
     const img = e.target.closest('img');
     if (img) {
       selectImage(img);
+      setSelectedTable(null);
+      setSelectedCell(null);
       const menuWidth = 260;
       const menuHeight = 520;
       const posX = Math.min(e.clientX, window.innerWidth - menuWidth - 20);
@@ -1686,9 +1932,34 @@ export default function DocumentWorkspace({
         y: Math.max(10, posY)
       });
       setContextMenu(prev => ({ ...prev, visible: false }));
+      setTableContextMenu(prev => ({ ...prev, visible: false }));
       return;
     }
 
+    // 2. Check if right-clicking inside a table (Gambar 1 dari request baru)
+    const tbl = e.target.closest('table');
+    const cell = e.target.closest('td, th');
+    if (tbl) {
+      setSelectedTable(tbl);
+      setSelectedCell(cell || tbl.querySelector('td, th'));
+      setSelectedImage(null);
+
+      const menuWidth = 320;
+      const menuHeight = 520;
+      const posX = Math.min(e.clientX, window.innerWidth - menuWidth - 20);
+      const posY = Math.min(e.clientY, window.innerHeight - menuHeight - 20);
+
+      setTableContextMenu({
+        visible: true,
+        x: Math.max(10, posX),
+        y: Math.max(10, posY)
+      });
+      setContextMenu(prev => ({ ...prev, visible: false }));
+      setPictureContextMenu(prev => ({ ...prev, visible: false }));
+      return;
+    }
+
+    // 3. Regular canvas context menu
     const sel = window.getSelection();
     const selectedText = sel ? sel.toString().trim() : '';
 
@@ -1704,6 +1975,7 @@ export default function DocumentWorkspace({
       selectedText
     });
     setPictureContextMenu(prev => ({ ...prev, visible: false }));
+    setTableContextMenu(prev => ({ ...prev, visible: false }));
     setContextMenuSearch('');
     setShowSynonymsSubmenu(false);
   };
@@ -1982,6 +2254,9 @@ export default function DocumentWorkspace({
       if (pictureContextMenu.visible && !e.target.closest('#word-picture-context-menu')) {
         setPictureContextMenu(prev => ({ ...prev, visible: false }));
       }
+      if (tableContextMenu.visible && !e.target.closest('#word-table-context-menu')) {
+        setTableContextMenu(prev => ({ ...prev, visible: false }));
+      }
       if (showNumberingLibrary && !e.target.closest('#word-numbering-library') && !e.target.closest('#word-numbering-btn')) {
         setShowNumberingLibrary(false);
       }
@@ -1991,6 +2266,8 @@ export default function DocumentWorkspace({
       if (e.key === 'Escape') {
         if (contextMenu.visible) setContextMenu(prev => ({ ...prev, visible: false }));
         if (pictureContextMenu.visible) setPictureContextMenu(prev => ({ ...prev, visible: false }));
+        if (tableContextMenu.visible) setTableContextMenu(prev => ({ ...prev, visible: false }));
+        if (showTablePropertiesModal) setShowTablePropertiesModal(false);
         if (showSizePositionModal) setShowSizePositionModal(false);
         if (showAltTextModal) setShowAltTextModal(false);
         if (showNumberingLibrary) setShowNumberingLibrary(false);
@@ -2049,6 +2326,10 @@ export default function DocumentWorkspace({
               if (selectedImage || activeRibbonTab === 'PICTURE_FORMAT') {
                 tabKeys.push('PICTURE_FORMAT');
               }
+              if (selectedTable || activeRibbonTab === 'TABLE_DESIGN' || activeRibbonTab === 'TABLE_LAYOUT') {
+                tabKeys.push('TABLE_DESIGN');
+                tabKeys.push('TABLE_LAYOUT');
+              }
               const labels = {
                 HOME: 'Home',
                 INSERT: 'Insert',
@@ -2057,11 +2338,14 @@ export default function DocumentWorkspace({
                 REFERENCES: 'References',
                 REVIEW: 'Review',
                 VIEW: 'View',
-                PICTURE_FORMAT: 'Picture Format'
+                PICTURE_FORMAT: 'Picture Format',
+                TABLE_DESIGN: 'Table Design',
+                TABLE_LAYOUT: 'Table Layout'
               };
               return tabKeys.map((tabKey) => {
                 const isActive = activeRibbonTab === tabKey;
                 const isPictureTab = tabKey === 'PICTURE_FORMAT';
+                const isTableTab = tabKey === 'TABLE_DESIGN' || tabKey === 'TABLE_LAYOUT';
 
                 return (
                   <button
@@ -2070,7 +2354,7 @@ export default function DocumentWorkspace({
                     className={`px-2.5 py-1.5 font-medium transition border-b-2 text-xs ${
                       isActive
                         ? 'border-[#185abd] text-[#185abd] bg-white font-bold shadow-2xs'
-                        : isPictureTab
+                        : (isPictureTab || isTableTab)
                         ? 'border-transparent text-[#185abd] font-bold hover:bg-blue-50/70'
                         : 'border-transparent text-slate-700 hover:text-black hover:bg-slate-200/50'
                     }`}
@@ -3925,6 +4209,44 @@ export default function DocumentWorkspace({
                 alert('Mode Crop Aktif: Silakan sesuaikan dimensi atau rasio aspek gambar pada panel Size.');
               }}
               onApplyStylePreset={handleApplyStylePreset}
+            />
+          )}
+
+          {/* TAB 9: TABLE DESIGN (Contextual Tab for Tables - 100% Persis Gambar 2) */}
+          {activeRibbonTab === 'TABLE_DESIGN' && (
+            <TableDesignRibbon
+              selectedTable={selectedTable}
+              selectedCell={selectedCell}
+              onApplyTableStyle={handleApplyTableStyle}
+              onApplyShading={handleApplyShading}
+              onApplyBorder={handleApplyBorder}
+              onToggleTableOption={handleToggleTableOption}
+              onOpenBordersModal={() => setShowTablePropertiesModal(true)}
+            />
+          )}
+
+          {/* TAB 10: TABLE LAYOUT (Contextual Tab for Tables - 100% Persis Gambar 3) */}
+          {activeRibbonTab === 'TABLE_LAYOUT' && (
+            <TableLayoutRibbon
+              selectedTable={selectedTable}
+              selectedCell={selectedCell}
+              onInsertRowAbove={handleInsertRowAbove}
+              onInsertRowBelow={handleInsertRowBelow}
+              onInsertColLeft={handleInsertColLeft}
+              onInsertColRight={handleInsertColRight}
+              onDeleteRow={handleDeleteRow}
+              onDeleteCol={handleDeleteCol}
+              onDeleteTable={handleDeleteTable}
+              onMergeCells={handleMergeCells}
+              onSplitCell={handleSplitCell}
+              onSplitTable={handleSplitTable}
+              onDistributeRows={handleDistributeRows}
+              onDistributeCols={handleDistributeCols}
+              onAutoFit={handleAutoFit}
+              onSetCellAlignment={handleSetCellAlignment}
+              onOpenTableProperties={() => setShowTablePropertiesModal(true)}
+              onToggleRepeatHeaders={(checked) => handleToggleTableOption('repeatHeader', checked)}
+              onSortTable={() => alert('Fitur Sort Table: Kolom tabel diurutkan berdasarkan abjad.')}
             />
           )}
 
@@ -6871,6 +7193,68 @@ export default function DocumentWorkspace({
           onClose={() => setShowAltTextModal(false)}
           selectedImage={selectedImage}
           onUpdateImageStyle={handleUpdateImageStyle}
+        />
+      )}
+
+      {/* ================= TABLE EDITING OVERLAYS & MODALS (100% PERSIS MICROSOFT WORD) ================= */}
+      {/* Backdrop to dismiss Table Context Menu on outside click */}
+      {tableContextMenu.visible && (
+        <div
+          className="fixed inset-0 z-9998 bg-transparent"
+          onClick={() => setTableContextMenu(prev => ({ ...prev, visible: false }))}
+          onContextMenu={(e) => {
+            if (!e.target.closest('td, th, table')) {
+              setTableContextMenu(prev => ({ ...prev, visible: false }));
+            }
+          }}
+        />
+      )}
+
+      {/* Table Right-Click Context Menu & Mini-Toolbar (Gambar 1) */}
+      <div id="word-table-context-menu">
+        <TableContextMenu
+          visible={tableContextMenu.visible}
+          x={tableContextMenu.x}
+          y={tableContextMenu.y}
+          selectedTable={selectedTable}
+          selectedCell={selectedCell}
+          onClose={() => setTableContextMenu(prev => ({ ...prev, visible: false }))}
+          onInsertRowAbove={handleInsertRowAbove}
+          onInsertRowBelow={handleInsertRowBelow}
+          onInsertColLeft={handleInsertColLeft}
+          onInsertColRight={handleInsertColRight}
+          onDeleteRow={handleDeleteRow}
+          onDeleteCol={handleDeleteCol}
+          onDeleteTable={handleDeleteTable}
+          onMergeCells={handleMergeCells}
+          onSplitCell={handleSplitCell}
+          onSetCellAlignment={handleSetCellAlignment}
+          onApplyShading={handleApplyShading}
+          onApplyBorder={handleApplyBorder}
+          onAutoFit={handleAutoFit}
+          onOpenCaption={() => {
+            setCaptionLabel('Tabel');
+            setCaptionInputText(`Tabel ${activeSection?.code ? `${activeSection.code}.1` : '1'} `);
+            setShowCaptionModal(true);
+          }}
+          onOpenTableProperties={() => setShowTablePropertiesModal(true)}
+          onOpenBordersModal={() => setShowTablePropertiesModal(true)}
+          onCycleTextDirection={() => {
+            if (!selectedCell) return;
+            selectedCell.style.writingMode = selectedCell.style.writingMode === 'vertical-rl' ? 'horizontal-tb' : 'vertical-rl';
+            persistTableChanges(selectedTable);
+          }}
+        />
+      </div>
+
+      {/* Table Properties Modal (Tabs: Table, Row, Column, Cell, Alt Text) */}
+      {showTablePropertiesModal && (
+        <TablePropertiesModal
+          isOpen={showTablePropertiesModal}
+          onClose={() => setShowTablePropertiesModal(false)}
+          selectedTable={selectedTable}
+          selectedCell={selectedCell}
+          onApply={() => persistTableChanges(selectedTable)}
         />
       )}
 
