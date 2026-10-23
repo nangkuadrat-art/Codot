@@ -4372,7 +4372,7 @@ export default function DocumentWorkspace({
 
                       {/* Floating Quick Action Bar on Hover */}
                       <div className="absolute -top-3 right-4 opacity-0 group-hover:opacity-100 transition-opacity bg-white/95 border border-slate-300 shadow-md rounded-md px-2 py-1 flex items-center gap-1.5 text-[11px] font-sans z-30 select-none">
-                        <span className="font-bold text-slate-700">{sec.code || `Bagian ${secIdx + 1}`}</span>
+                        <span className="font-bold text-slate-700">{sec.code || sec.title || `Bagian ${secIdx + 1}`}</span>
                         <span className="text-slate-300">|</span>
                         <span className={`px-1.5 py-0.5 rounded text-[10px] font-semibold ${isLand ? 'bg-amber-100 text-amber-800' : 'bg-blue-100 text-blue-800'}`}>
                           {isLand ? 'Lanskap (330×216 mm)' : 'Potret (216×330 mm)'}
@@ -4411,7 +4411,7 @@ export default function DocumentWorkspace({
                       <div className="pb-3 mb-6 border-b border-slate-300 flex items-center justify-between text-[10px] text-slate-500 select-none relative z-10 font-['Bookman_Old_Style',Georgia,serif]">
                         <span className="font-semibold tracking-wide">RKPD Kabupaten Cilacap Tahun 2027</span>
                         <span className="uppercase tracking-wide text-slate-400">
-                          {sec.code ? `${sec.code} ${sec.title}` : (doc?.title?.replace('RKPD 2027 PERBUP - ', '') || 'DOKUMEN RESMI')}
+                          {sec.title ? `${sec.code ? `${sec.code} ` : ''}${sec.title}` : (doc?.title?.replace('RKPD 2027 PERBUP - ', '') || 'DOKUMEN RESMI')}
                         </span>
                       </div>
 

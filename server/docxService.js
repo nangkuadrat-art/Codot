@@ -221,7 +221,7 @@ async function parseDocxToSections(filePath, documentId) {
     }
 
     // Abaikan butir rincian narasi biasa (misal: "1) ...", "(1) ...", "a. ...")
-    if (/^(\d+\)|\([0-9]+\)|[a-z]\.|\([a-z]\))\s+/.test(text)) {
+    if (!['h1', 'h2', 'h3', 'h4', 'h5', 'h6'].includes(tagName) && /^(\d+\)|\([0-9]+\)|[a-z]\.|\([a-z]\))\s+/.test(text)) {
       if (currentSection) currentSection.contentElements.push(elementHtml);
       else pendingIntroElements.push(elementHtml);
       return;
@@ -231,6 +231,7 @@ async function parseDocxToSections(filePath, documentId) {
     const subChapRegex2 = new RegExp(`^${chapterNum}\\.\\d+\\.?\\s+[A-Za-z]`);
     const subChapRegex3 = new RegExp(`^${chapterNum}\\.\\d+\\.\\d+\\.?\\s+[A-Za-z]`);
     const subChapRegex4 = new RegExp(`^${chapterNum}\\.\\d+\\.\\d+\\.\\d+\\.?\\s+[A-Za-z]`);
+    const subChapRegex5 = new RegExp(`^${chapterNum}\\.\\d+\\.\\d+\\.\\d+\\.\\d+\\.?\\s+[A-Za-z]`);
 
     let detectedLevel = null;
     let code = '';
@@ -238,7 +239,7 @@ async function parseDocxToSections(filePath, documentId) {
 
     if (tagName === 'h1' || startsWithBab) {
       detectedLevel = 1;
-      idxL2 = 0; idxL3 = 0; idxL4 = 0;
+      idxL2 = 0; idxL3 = 0; idxL4 = 0; idxL5 = 0;
       const m = text.match(/^(BAB\s+[IVXLCDM\d]+)[:\.\s-]*(.*)$/i);
       if (m) {
         const rawNum = m[1].replace(/BAB\s*/i, '').trim().toUpperCase();
@@ -249,26 +250,37 @@ async function parseDocxToSections(filePath, documentId) {
         code = `BAB ${romanChapter}`;
         title = text;
       }
-    } else if (tagName === 'h2' || (subChapRegex2.test(text) && !subChapRegex3.test(text) && !subChapRegex4.test(text))) {
+    } else if (tagName === 'h2' || (subChapRegex2.test(text) && !subChapRegex3.test(text) && !subChapRegex4.test(text) && !subChapRegex5.test(text))) {
       detectedLevel = 2;
       idxL2++;
-      idxL3 = 0; idxL4 = 0;
+      idxL3 = 0; idxL4 = 0; idxL5 = 0;
       const m = text.match(/^(\d+\.\d+)[:\.\s-]*(.*)$/);
       code = m ? m[1].trim() : `${chapterNum}.${idxL2}`;
       title = m && m[2] ? m[2].trim() : text;
-    } else if (tagName === 'h3' || (subChapRegex3.test(text) && !subChapRegex4.test(text))) {
+    } else if (tagName === 'h3' || (subChapRegex3.test(text) && !subChapRegex4.test(text) && !subChapRegex5.test(text))) {
       detectedLevel = 3;
       idxL3++;
-      idxL4 = 0;
+      idxL4 = 0; idxL5 = 0;
       const m = text.match(/^(\d+\.\d+\.\d+)[:\.\s-]*(.*)$/);
       code = m ? m[1].trim() : `${chapterNum}.${idxL2 || 1}.${idxL3}`;
       title = m && m[2] ? m[2].trim() : text;
-    } else if (tagName === 'h4' || subChapRegex4.test(text)) {
+    } else if (tagName === 'h4' || (subChapRegex4.test(text) && !subChapRegex5.test(text))) {
       detectedLevel = 4;
       idxL4++;
+      idxL5 = 0;
       const m = text.match(/^(\d+\.\d+\.\d+\.\d+\.?)[:\s-]*(.*)$/);
       code = m ? m[1].trim() : `${chapterNum}.${idxL2 || 1}.${idxL3 || 1}.${idxL4}`;
       title = m && m[2] ? m[2].trim() : text;
+    } else if (tagName === 'h5' || subChapRegex5.test(text)) {
+      detectedLevel = 5;
+      idxL5++;
+      const m = text.match(/^(\d+\.\d+\.\d+\.\d+\.\d+\.?|[a-z]\.|\d+\))[:\s-]*(.*)$/i);
+      code = m ? m[1].trim() : '';
+      title = m && m[2] ? m[2].trim() : text;
+    } else if (tagName === 'h6') {
+      detectedLevel = 6;
+      code = '';
+      title = text;
     }
 
     if (detectedLevel !== null && text.length > 0) {
