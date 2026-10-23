@@ -89,6 +89,11 @@ import {
   CornerDownRight
 } from 'lucide-react';
 import { api } from '../api';
+import PictureFormatRibbon from './PictureFormatRibbon';
+import FormatPicturePane from './FormatPicturePane';
+import PictureContextMenu from './PictureContextMenu';
+import ImageSelectionOverlay from './ImageSelectionOverlay';
+import { SizePositionModal, AltTextModal } from './ImageModals';
 
 export default function DocumentWorkspace({
   documentId,
@@ -229,6 +234,15 @@ export default function DocumentWorkspace({
   const [showSynonymsSubmenu, setShowSynonymsSubmenu] = useState(false);
   const [showParagraphDialog, setShowParagraphDialog] = useState(false);
   const [showFontDialog, setShowFontDialog] = useState(false);
+
+  // Picture Formatting States (100% Identical to Microsoft Word - Gambar 1 & Gambar 2)
+  const [selectedImage, setSelectedImage] = useState(null);
+  const [showFormatPicturePane, setShowFormatPicturePane] = useState(false);
+  const [pictureContextMenu, setPictureContextMenu] = useState({ visible: false, x: 0, y: 0 });
+  const [showSizePositionModal, setShowSizePositionModal] = useState(false);
+  const [showAltTextModal, setShowAltTextModal] = useState(false);
+  const [showCropModal, setShowCropModal] = useState(false);
+  const hiddenImageFileInputRef = useRef(null);
 
   const [watermark, setWatermark] = useState(''); // '', 'DRAFT', 'RAHASIA', 'CONFIDENTIAL'
   const [showRuler, setShowRuler] = useState(true);
@@ -1270,9 +1284,407 @@ export default function DocumentWorkspace({
     }
   };
 
-  // Right-Click Canvas Context Menu (Gambar 3)
+  // ================= PICTURE FORMATTING HANDLERS (100% MICROSOFT WORD) =================
+  const selectImage = (img) => {
+    if (!img) return;
+    const wPx = img.offsetWidth || img.naturalWidth || 400;
+    const hPx = img.offsetHeight || img.naturalHeight || 300;
+    const wCm = +(wPx / 37.795).toFixed(2);
+    const hCm = +(hPx / 37.795).toFixed(2);
+    const ratio = (img.naturalWidth && img.naturalHeight) ? (img.naturalWidth / img.naturalHeight) : (wPx / hPx);
+
+    const secSheet = img.closest('.word-page-sheet');
+    const secId = secSheet ? secSheet.id.replace('full-sec-', '') : activeSection?.id;
+
+    setSelectedImage({
+      el: img,
+      src: img.src,
+      widthCm: wCm,
+      heightCm: hCm,
+      aspectRatio: ratio,
+      lockAspectRatio: true,
+      secId: secId,
+      borderColor: img.style.borderColor || '#000000',
+      borderWidthPt: img.style.borderWidth ? parseFloat(img.style.borderWidth) / 1.33 : 0,
+      borderStyle: img.style.borderStyle || 'none',
+      borderRadius: img.style.borderRadius || '0px',
+      boxShadow: img.style.boxShadow || 'none',
+      opacity: img.style.opacity ? parseFloat(img.style.opacity) : 1,
+      altText: img.alt || '',
+      rotateDeg: 0,
+      brightness: 1,
+      contrast: 1,
+      blur: 0,
+      saturation: 1,
+      recolor: 'none',
+      artisticEffect: 'none',
+      wrapText: 'inline'
+    });
+
+    setActiveRibbonTab('PICTURE_FORMAT');
+  };
+
+  const handleCanvasClick = (e) => {
+    const img = e.target.closest('img');
+    if (img) {
+      selectImage(img);
+    } else {
+      if (!e.target.closest('.picture-format-ui') && !e.target.closest('.word-ribbon-bar') && !e.target.closest('#word-picture-context-menu')) {
+        if (e.target.closest('.word-page-sheet')) {
+          setSelectedImage(null);
+          if (activeRibbonTab === 'PICTURE_FORMAT') {
+            setActiveRibbonTab('HOME');
+          }
+        }
+      }
+    }
+  };
+
+  const persistSelectedImageToSection = () => {
+    if (!selectedImage?.el) return;
+    const img = selectedImage.el;
+
+    if (viewMode === 'SECTION_EDITOR' && editorRef.current) {
+      const updatedHtml = editorRef.current.innerHTML;
+      saveSectionContent(updatedHtml, sectionTitle, sectionCode);
+    } else {
+      const secSheet = img.closest('.word-page-sheet');
+      const secId = selectedImage.secId || (secSheet ? secSheet.id.replace('full-sec-', '') : null);
+      if (secId) {
+        const secWordContent = secSheet ? secSheet.querySelector('.word-content') : null;
+        if (secWordContent) {
+          const newHtml = secWordContent.innerHTML;
+          setSections(prev => prev.map(s => s.id === secId ? { ...s, content: newHtml } : s));
+          api.updateSection(secId, { content: newHtml }).catch(err => console.error('Save img error:', err));
+        }
+      }
+    }
+  };
+
+  const handleUpdateImageStyle = (styles) => {
+    if (!selectedImage?.el) return;
+    const img = selectedImage.el;
+
+    if (styles.widthCm !== undefined) {
+      const px = styles.widthCm * 37.795;
+      img.style.width = `${px}px`;
+      img.setAttribute('width', Math.round(px));
+    }
+    if (styles.heightCm !== undefined) {
+      const px = styles.heightCm * 37.795;
+      img.style.height = `${px}px`;
+      img.setAttribute('height', Math.round(px));
+    }
+
+    if (styles.borderColor !== undefined) img.style.borderColor = styles.borderColor;
+    if (styles.borderWidthPt !== undefined) {
+      img.style.borderWidth = `${styles.borderWidthPt * 1.33}px`;
+      if (!img.style.borderStyle || img.style.borderStyle === 'none') img.style.borderStyle = 'solid';
+    }
+    if (styles.borderStyle !== undefined) img.style.borderStyle = styles.borderStyle;
+    if (styles.borderRadius !== undefined) img.style.borderRadius = styles.borderRadius;
+    if (styles.boxShadow !== undefined) img.style.boxShadow = styles.boxShadow;
+    if (styles.opacity !== undefined) img.style.opacity = styles.opacity;
+
+    // Build CSS filters
+    const filters = [];
+    const b = styles.brightness !== undefined ? styles.brightness : (selectedImage.brightness || 1);
+    const c = styles.contrast !== undefined ? styles.contrast : (selectedImage.contrast || 1);
+    const bl = styles.blur !== undefined ? styles.blur : (selectedImage.blur || 0);
+    const sat = styles.saturation !== undefined ? styles.saturation : (selectedImage.saturation ?? 1);
+    const rec = styles.recolor !== undefined ? styles.recolor : (selectedImage.recolor || 'none');
+    const art = styles.artisticEffect !== undefined ? styles.artisticEffect : (selectedImage.artisticEffect || 'none');
+
+    if (b !== 1) filters.push(`brightness(${b})`);
+    if (c !== 1) filters.push(`contrast(${c})`);
+    if (bl > 0) filters.push(`blur(${bl}px)`);
+    if (sat !== 1) filters.push(`saturate(${sat})`);
+
+    if (rec === 'grayscale') filters.push('grayscale(100%)');
+    else if (rec === 'sepia') filters.push('sepia(100%)');
+    else if (rec === 'washout') filters.push('brightness(1.4) contrast(0.6) opacity(0.85)');
+    else if (rec === 'bw') filters.push('grayscale(100%) contrast(300%)');
+    else if (rec === 'invert') filters.push('invert(100%)');
+
+    if (art === 'marker') filters.push('contrast(1.5) saturate(1.8)');
+    else if (art === 'pencil') filters.push('grayscale(100%) contrast(1.8) brightness(1.2)');
+    else if (art === 'blur') filters.push('blur(3px)');
+    else if (art === 'glow') filters.push('invert(100%) hue-rotate(180deg) contrast(2)');
+    else if (art === 'grain') filters.push('contrast(1.3) brightness(0.9)');
+
+    img.style.filter = filters.length > 0 ? filters.join(' ') : 'none';
+
+    // Rotation & Flip
+    const rot = styles.rotateDeg !== undefined ? styles.rotateDeg : (selectedImage.rotateDeg || 0);
+    const flipH = styles.flipH !== undefined ? styles.flipH : (selectedImage.flipH || false);
+    const flipV = styles.flipV !== undefined ? styles.flipV : (selectedImage.flipV || false);
+    const transforms = [];
+    if (rot) transforms.push(`rotate(${rot}deg)`);
+    if (flipH) transforms.push('scaleX(-1)');
+    if (flipV) transforms.push('scaleY(-1)');
+    img.style.transform = transforms.length > 0 ? transforms.join(' ') : 'none';
+
+    // Wrap text
+    if (styles.wrapText !== undefined) {
+      if (styles.wrapText === 'inline') {
+        img.style.display = 'inline-block';
+        img.style.float = 'none';
+        img.style.margin = '6pt';
+        img.style.verticalAlign = 'middle';
+      } else if (styles.wrapText === 'square-left') {
+        img.style.display = 'block';
+        img.style.float = 'left';
+        img.style.margin = '6pt 16pt 6pt 0';
+      } else if (styles.wrapText === 'square-right') {
+        img.style.display = 'block';
+        img.style.float = 'right';
+        img.style.margin = '6pt 0 6pt 16pt';
+      } else if (styles.wrapText === 'top-bottom') {
+        img.style.display = 'block';
+        img.style.float = 'none';
+        img.style.margin = '14pt auto';
+        img.style.clear = 'both';
+      } else if (styles.wrapText === 'behind') {
+        img.style.position = 'relative';
+        img.style.zIndex = '0';
+        img.style.opacity = '0.55';
+      } else if (styles.wrapText === 'in-front') {
+        img.style.position = 'relative';
+        img.style.zIndex = '20';
+      }
+    }
+
+    // Alignment
+    if (styles.alignment !== undefined) {
+      if (styles.alignment === 'center') {
+        img.style.display = 'block';
+        img.style.marginLeft = 'auto';
+        img.style.marginRight = 'auto';
+      } else if (styles.alignment === 'left') {
+        img.style.display = 'block';
+        img.style.marginLeft = '0';
+        img.style.marginRight = 'auto';
+      } else if (styles.alignment === 'right') {
+        img.style.display = 'block';
+        img.style.marginLeft = 'auto';
+        img.style.marginRight = '0';
+      }
+    }
+
+    if (styles.altText !== undefined) {
+      img.alt = styles.altText;
+      img.title = styles.altText;
+    }
+
+    if (styles.blendMode !== undefined) {
+      img.style.mixBlendMode = styles.blendMode;
+    }
+
+    setSelectedImage(prev => ({
+      ...prev,
+      ...styles,
+      widthCm: styles.widthCm !== undefined ? styles.widthCm : prev.widthCm,
+      heightCm: styles.heightCm !== undefined ? styles.heightCm : prev.heightCm,
+      brightness: b,
+      contrast: c,
+      blur: bl,
+      saturation: sat,
+      recolor: rec,
+      artisticEffect: art,
+      rotateDeg: rot,
+      flipH,
+      flipV
+    }));
+
+    persistSelectedImageToSection();
+  };
+
+  const handleUpdateDimensions = (newWidthCm, newHeightCm, newWPx, newHPx) => {
+    if (!selectedImage?.el) return;
+    selectedImage.el.style.width = `${newWPx}px`;
+    selectedImage.el.style.height = `${newHPx}px`;
+    selectedImage.el.setAttribute('width', Math.round(newWPx));
+    selectedImage.el.setAttribute('height', Math.round(newHPx));
+
+    setSelectedImage(prev => ({
+      ...prev,
+      widthCm: newWidthCm,
+      heightCm: newHeightCm
+    }));
+
+    persistSelectedImageToSection();
+  };
+
+  const handleApplyStylePreset = (presetId) => {
+    if (!selectedImage?.el) return;
+    if (presetId === 'SIMPLE_WHITE') {
+      handleUpdateImageStyle({
+        borderColor: '#ffffff',
+        borderWidthPt: 3,
+        borderStyle: 'solid',
+        boxShadow: '0 2px 8px rgba(0,0,0,0.25)',
+        borderRadius: '0px'
+      });
+    } else if (presetId === 'DROP_SHADOW') {
+      handleUpdateImageStyle({
+        borderStyle: 'none',
+        borderWidthPt: 0,
+        boxShadow: '6px 8px 18px rgba(0,0,0,0.35)',
+        borderRadius: '0px'
+      });
+    } else if (presetId === 'SOFT_EDGE') {
+      handleUpdateImageStyle({
+        borderStyle: 'none',
+        borderWidthPt: 0,
+        boxShadow: '0 0 16px rgba(0,0,0,0.25)',
+        borderRadius: '6px'
+      });
+    } else if (presetId === 'DOUBLE_BLACK') {
+      handleUpdateImageStyle({
+        borderColor: '#0f172a',
+        borderWidthPt: 3,
+        borderStyle: 'double',
+        boxShadow: 'none',
+        borderRadius: '0px'
+      });
+    } else if (presetId === 'THICK_BLACK') {
+      handleUpdateImageStyle({
+        borderColor: '#0f172a',
+        borderWidthPt: 4.5,
+        borderStyle: 'solid',
+        boxShadow: 'none',
+        borderRadius: '0px'
+      });
+    } else if (presetId === 'ROUND_DIAG') {
+      handleUpdateImageStyle({
+        borderColor: '#cbd5e1',
+        borderWidthPt: 1,
+        borderStyle: 'solid',
+        borderRadius: '24px 0 24px 0',
+        boxShadow: '0 2px 6px rgba(0,0,0,0.1)'
+      });
+    } else if (presetId === 'OVAL') {
+      handleUpdateImageStyle({
+        borderColor: '#cbd5e1',
+        borderWidthPt: 2,
+        borderStyle: 'solid',
+        borderRadius: '50%',
+        boxShadow: '0 2px 8px rgba(0,0,0,0.15)'
+      });
+    } else if (presetId === 'BEVELED') {
+      handleUpdateImageStyle({
+        borderColor: '#e2e8f0',
+        borderWidthPt: 3,
+        borderStyle: 'outset',
+        boxShadow: 'inset 1px 1px 3px rgba(255,255,255,0.7), inset -1px -1px 3px rgba(0,0,0,0.3)',
+        borderRadius: '0px'
+      });
+    } else if (presetId === 'METAL_FRAME') {
+      handleUpdateImageStyle({
+        borderColor: '#94a3b8',
+        borderWidthPt: 4,
+        borderStyle: 'solid',
+        boxShadow: '0 4px 12px rgba(0,0,0,0.25)',
+        borderRadius: '0px'
+      });
+    }
+  };
+
+  const handleSaveAsPicture = () => {
+    if (!selectedImage?.el) return;
+    const link = document.createElement('a');
+    link.href = selectedImage.el.src;
+    link.download = `gambar-rkpd-${Date.now()}.png`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
+  const handleChangePicture = (type) => {
+    if (type === 'URL') {
+      const url = prompt('Masukkan URL gambar online:', 'https://');
+      if (url && selectedImage?.el) {
+        selectedImage.el.src = url;
+        setSelectedImage(prev => ({ ...prev, src: url }));
+        persistSelectedImageToSection();
+      }
+    } else {
+      if (hiddenImageFileInputRef.current) {
+        hiddenImageFileInputRef.current.click();
+      }
+    }
+  };
+
+  const handleFilePicked = (e) => {
+    const file = e.target.files?.[0];
+    if (!file || !selectedImage?.el) return;
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      const base64 = event.target.result;
+      selectedImage.el.src = base64;
+      setSelectedImage(prev => ({ ...prev, src: base64 }));
+      persistSelectedImageToSection();
+    };
+    reader.readAsDataURL(file);
+    e.target.value = '';
+  };
+
+  const handleResetPicture = () => {
+    if (!selectedImage?.el) return;
+    const img = selectedImage.el;
+    img.removeAttribute('style');
+    img.style.maxWidth = '100%';
+    img.style.height = 'auto';
+    img.style.margin = '14pt auto';
+    img.style.display = 'block';
+
+    const wCm = (img.naturalWidth || 600) / 37.795;
+    const hCm = (img.naturalHeight || 400) / 37.795;
+    setSelectedImage(prev => ({
+      ...prev,
+      widthCm: +wCm.toFixed(2),
+      heightCm: +hCm.toFixed(2),
+      borderColor: '#000000',
+      borderWidthPt: 0,
+      borderStyle: 'none',
+      boxShadow: 'none',
+      borderRadius: '0px',
+      brightness: 1,
+      contrast: 1,
+      blur: 0,
+      saturation: 1,
+      recolor: 'none',
+      artisticEffect: 'none',
+      rotateDeg: 0,
+      flipH: false,
+      flipV: false,
+      opacity: 1
+    }));
+    persistSelectedImageToSection();
+  };
+
+  // Right-Click Canvas Context Menu (Gambar 1 & Gambar 3)
   const handleCanvasContextMenu = (e) => {
     e.preventDefault();
+
+    // Check if right-clicking an image (Gambar 1)
+    const img = e.target.closest('img');
+    if (img) {
+      selectImage(img);
+      const menuWidth = 260;
+      const menuHeight = 520;
+      const posX = Math.min(e.clientX, window.innerWidth - menuWidth - 20);
+      const posY = Math.min(e.clientY, window.innerHeight - menuHeight - 20);
+
+      setPictureContextMenu({
+        visible: true,
+        x: Math.max(10, posX),
+        y: Math.max(10, posY)
+      });
+      setContextMenu(prev => ({ ...prev, visible: false }));
+      return;
+    }
+
     const sel = window.getSelection();
     const selectedText = sel ? sel.toString().trim() : '';
 
@@ -1287,6 +1699,7 @@ export default function DocumentWorkspace({
       y: Math.max(10, posY),
       selectedText
     });
+    setPictureContextMenu(prev => ({ ...prev, visible: false }));
     setContextMenuSearch('');
     setShowSynonymsSubmenu(false);
   };
@@ -1562,6 +1975,9 @@ export default function DocumentWorkspace({
       if (contextMenu.visible && !e.target.closest('#word-context-menu')) {
         setContextMenu(prev => ({ ...prev, visible: false }));
       }
+      if (pictureContextMenu.visible && !e.target.closest('#word-picture-context-menu')) {
+        setPictureContextMenu(prev => ({ ...prev, visible: false }));
+      }
       if (showNumberingLibrary && !e.target.closest('#word-numbering-library') && !e.target.closest('#word-numbering-btn')) {
         setShowNumberingLibrary(false);
       }
@@ -1570,6 +1986,9 @@ export default function DocumentWorkspace({
     const handleKeyDown = (e) => {
       if (e.key === 'Escape') {
         if (contextMenu.visible) setContextMenu(prev => ({ ...prev, visible: false }));
+        if (pictureContextMenu.visible) setPictureContextMenu(prev => ({ ...prev, visible: false }));
+        if (showSizePositionModal) setShowSizePositionModal(false);
+        if (showAltTextModal) setShowAltTextModal(false);
         if (showNumberingLibrary) setShowNumberingLibrary(false);
         if (showCaptionModal) setShowCaptionModal(false);
         if (showCaptionNumberingModal) setShowCaptionNumberingModal(false);
@@ -1621,7 +2040,11 @@ export default function DocumentWorkspace({
           
           {/* Left Group: Word Tabs & View Mode Switcher */}
           <div className="flex items-center shrink-0 min-w-0">
-            {['HOME', 'INSERT', 'DESIGN', 'LAYOUT', 'REFERENCES', 'REVIEW', 'VIEW'].map((tabKey) => {
+            {(() => {
+              const tabKeys = ['HOME', 'INSERT', 'DESIGN', 'LAYOUT', 'REFERENCES', 'REVIEW', 'VIEW'];
+              if (selectedImage || activeRibbonTab === 'PICTURE_FORMAT') {
+                tabKeys.push('PICTURE_FORMAT');
+              }
               const labels = {
                 HOME: 'Home',
                 INSERT: 'Insert',
@@ -1629,24 +2052,30 @@ export default function DocumentWorkspace({
                 LAYOUT: 'Layout',
                 REFERENCES: 'References',
                 REVIEW: 'Review',
-                VIEW: 'View'
+                VIEW: 'View',
+                PICTURE_FORMAT: 'Picture Format'
               };
-              const isActive = activeRibbonTab === tabKey;
+              return tabKeys.map((tabKey) => {
+                const isActive = activeRibbonTab === tabKey;
+                const isPictureTab = tabKey === 'PICTURE_FORMAT';
 
-              return (
-                <button
-                  key={tabKey}
-                  onClick={() => setActiveRibbonTab(tabKey)}
-                  className={`px-2.5 py-1.5 font-medium transition border-b-2 text-xs ${
-                    isActive
-                      ? 'border-[#185abd] text-[#185abd] bg-white font-bold shadow-2xs'
-                      : 'border-transparent text-slate-700 hover:text-black hover:bg-slate-200/50'
-                  }`}
-                >
-                  {labels[tabKey]}
-                </button>
-              );
-            })}
+                return (
+                  <button
+                    key={tabKey}
+                    onClick={() => setActiveRibbonTab(tabKey)}
+                    className={`px-2.5 py-1.5 font-medium transition border-b-2 text-xs ${
+                      isActive
+                        ? 'border-[#185abd] text-[#185abd] bg-white font-bold shadow-2xs'
+                        : isPictureTab
+                        ? 'border-transparent text-[#185abd] font-bold hover:bg-blue-50/70'
+                        : 'border-transparent text-slate-700 hover:text-black hover:bg-slate-200/50'
+                    }`}
+                  >
+                    {labels[tabKey]}
+                  </button>
+                );
+              });
+            })()}
 
             {/* View Mode Switcher: Full Document Preview vs Section Editor */}
             <div className="flex items-center bg-[#e1dfdd] p-0.5 rounded-md ml-2 shadow-inner">
@@ -3478,6 +3907,23 @@ export default function DocumentWorkspace({
             </div>
           )}
 
+          {/* TAB 8: PICTURE FORMAT (Contextual Tab for Images - 100% Persis Gambar 2) */}
+          {activeRibbonTab === 'PICTURE_FORMAT' && (
+            <PictureFormatRibbon
+              selectedImage={selectedImage}
+              onUpdateImageStyle={handleUpdateImageStyle}
+              onOpenFormatPane={() => setShowFormatPicturePane(true)}
+              onOpenSizePosition={() => setShowSizePositionModal(true)}
+              onOpenAltText={() => setShowAltTextModal(true)}
+              onChangePicture={handleChangePicture}
+              onResetPicture={handleResetPicture}
+              onStartCrop={() => {
+                alert('Mode Crop Aktif: Silakan sesuaikan dimensi atau rasio aspek gambar pada panel Size.');
+              }}
+              onApplyStylePreset={handleApplyStylePreset}
+            />
+          )}
+
         </div>
       </div>
 
@@ -4332,6 +4778,7 @@ export default function DocumentWorkspace({
           <div
             className="w-full flex justify-center transition-transform origin-top pb-24"
             style={{ transform: `scale(${zoomLevel / 100})` }}
+            onClick={handleCanvasClick}
           >
             {/* ================= VIEW MODE 1: FULL DOCUMENT PREVIEW (IDENTIK PER SUB-BAB & TABEL DENGAN ORIENTASI ASLI) ================= */}
             {viewMode === 'FULL_DOCUMENT' ? (
@@ -4592,6 +5039,16 @@ export default function DocumentWorkspace({
 
         </main>
         </div>
+
+        {/* RIGHT: Format Picture Task Pane (100% Persis Microsoft Word) */}
+        {showFormatPicturePane && selectedImage && (
+          <FormatPicturePane
+            visible={showFormatPicturePane}
+            onClose={() => setShowFormatPicturePane(false)}
+            selectedImage={selectedImage}
+            onUpdateImageStyle={handleUpdateImageStyle}
+          />
+        )}
 
         {/* RIGHT: Word Review & Collaboration Pane */}
         {showReviewPane && (
@@ -6343,6 +6800,71 @@ export default function DocumentWorkspace({
           </div>
         </div>
       )}
+
+      {/* ================= PICTURE FORMATTING OVERLAYS & MODALS (100% PERSIS MICROSOFT WORD) ================= */}
+      {/* Picture Right-Click Context Menu (Gambar 1) */}
+      <div id="word-picture-context-menu">
+        <PictureContextMenu
+          visible={pictureContextMenu.visible}
+          x={pictureContextMenu.x}
+          y={pictureContextMenu.y}
+          selectedImage={selectedImage}
+          onClose={() => setPictureContextMenu(prev => ({ ...prev, visible: false }))}
+          onOpenFormatPane={() => setShowFormatPicturePane(true)}
+          onOpenSizePosition={() => setShowSizePositionModal(true)}
+          onOpenAltText={() => setShowAltTextModal(true)}
+          onOpenCaption={() => {
+            setCaptionLabel('Gambar');
+            setCaptionInputText(`Gambar ${activeSection?.code ? `${activeSection.code}.1` : '1'} `);
+            setShowCaptionModal(true);
+          }}
+          onChangePicture={handleChangePicture}
+          onSaveAsPicture={handleSaveAsPicture}
+          onSetWrapText={(wrapMode) => handleUpdateImageStyle({ wrapText: wrapMode })}
+          onApplyStylePreset={handleApplyStylePreset}
+          onStartCrop={() => {
+            alert('Mode Crop Aktif: Silakan sesuaikan ukuran atau rasio aspek gambar pada panel Size.');
+          }}
+        />
+      </div>
+
+      {/* Image Selection Bounding Box Overlay with Circular Resize Handles */}
+      {selectedImage && (
+        <ImageSelectionOverlay
+          selectedImage={selectedImage}
+          onUpdateDimensions={handleUpdateDimensions}
+          onDeselect={() => setSelectedImage(null)}
+        />
+      )}
+
+      {/* Size & Position Modal */}
+      {showSizePositionModal && (
+        <SizePositionModal
+          visible={showSizePositionModal}
+          onClose={() => setShowSizePositionModal(false)}
+          selectedImage={selectedImage}
+          onUpdateImageStyle={handleUpdateImageStyle}
+        />
+      )}
+
+      {/* Alt Text Modal */}
+      {showAltTextModal && (
+        <AltTextModal
+          visible={showAltTextModal}
+          onClose={() => setShowAltTextModal(false)}
+          selectedImage={selectedImage}
+          onUpdateImageStyle={handleUpdateImageStyle}
+        />
+      )}
+
+      {/* Hidden file input for changing picture from local device */}
+      <input
+        ref={hiddenImageFileInputRef}
+        type="file"
+        accept="image/*"
+        onChange={handleFilePicked}
+        className="hidden"
+      />
 
     </div>
   );
