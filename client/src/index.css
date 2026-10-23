@@ -179,7 +179,7 @@
   min-width: 65px;
 }
 
-/* Lists */
+/* Lists & Word Numbering Library Styles */
 .word-content ul {
   list-style-type: disc;
   padding-left: 28pt;
@@ -191,6 +191,97 @@
   padding-left: 28pt;
   margin: 4pt 0 8pt 0;
 }
+
+.word-content ol.list-paren-decimal,
+.word-content ol[data-list-style="paren-decimal"] {
+  list-style-type: none;
+  counter-reset: item;
+  padding-left: 28pt;
+}
+.word-content ol.list-paren-decimal > li,
+.word-content ol[data-list-style="paren-decimal"] > li {
+  counter-increment: item;
+  position: relative;
+}
+.word-content ol.list-paren-decimal > li::before,
+.word-content ol[data-list-style="paren-decimal"] > li::before {
+  content: counter(item) ") ";
+  position: absolute;
+  left: -22pt;
+  font-weight: normal;
+}
+
+.word-content ol.list-chapter-decimal,
+.word-content ol[data-list-style="chapter-decimal"] {
+  list-style-type: none;
+  counter-reset: item;
+  padding-left: 34pt;
+}
+.word-content ol.list-chapter-decimal > li,
+.word-content ol[data-list-style="chapter-decimal"] > li {
+  counter-increment: item;
+  position: relative;
+}
+.word-content ol.list-chapter-decimal > li::before,
+.word-content ol[data-list-style="chapter-decimal"] > li::before {
+  content: var(--list-prefix, "2.") counter(item) " ";
+  position: absolute;
+  left: -30pt;
+  font-weight: normal;
+}
+
+.word-content ol.list-paren-alpha,
+.word-content ol[data-list-style="paren-alpha"] {
+  list-style-type: none;
+  counter-reset: item;
+  padding-left: 28pt;
+}
+.word-content ol.list-paren-alpha > li,
+.word-content ol[data-list-style="paren-alpha"] > li {
+  counter-increment: item;
+  position: relative;
+}
+.word-content ol.list-paren-alpha > li::before,
+.word-content ol[data-list-style="paren-alpha"] > li::before {
+  content: counter(item, lower-alpha) ") ";
+  position: absolute;
+  left: -22pt;
+}
+
+.word-content ol.list-upper-roman,
+.word-content ol[data-list-style="upper-roman"] {
+  list-style-type: upper-roman;
+  padding-left: 32pt;
+}
+
+.word-content ol.list-upper-alpha,
+.word-content ol[data-list-style="upper-alpha"] {
+  list-style-type: upper-alpha;
+  padding-left: 28pt;
+}
+
+.word-content ol.list-lower-alpha,
+.word-content ol[data-list-style="lower-alpha"] {
+  list-style-type: lower-alpha;
+  padding-left: 28pt;
+}
+
+.word-content ol.list-lower-roman,
+.word-content ol[data-list-style="lower-roman"] {
+  list-style-type: lower-roman;
+  padding-left: 32pt;
+}
+
+/* List Indentation Levels */
+.word-content ol.level-1, .word-content ul.level-1 { padding-left: 20pt; }
+.word-content ol.level-2, .word-content ul.level-2 { padding-left: 36pt; }
+.word-content ol.level-3, .word-content ul.level-3 { padding-left: 52pt; }
+.word-content ol.level-4, .word-content ul.level-4 { padding-left: 68pt; }
+.word-content ol.level-5, .word-content ul.level-5 { padding-left: 84pt; }
+.word-content ol.level-6, .word-content ul.level-6 { padding-left: 100pt; }
+.word-content ol.level-7, .word-content ul.level-7 { padding-left: 116pt; }
+.word-content ol.level-8, .word-content ul.level-8 { padding-left: 132pt; }
+.word-content ol.level-9, .word-content ul.level-9 { padding-left: 148pt; }
 
 .word-content li {
   margin-bottom: 3pt;

@@ -83,7 +83,10 @@ import {
   Split,
   FileCheck,
   FilePlus,
-  LayoutTemplate
+  LayoutTemplate,
+  Volume2,
+  Languages,
+  CornerDownRight
 } from 'lucide-react';
 import { api } from '../api';
 
@@ -173,14 +176,59 @@ export default function DocumentWorkspace({
   const [showPageSetupModal, setShowPageSetupModal] = useState(false);
   const rulerTrackRef = useRef(null);
 
-  // Caption Modal State (Judul Resmi Tabel & Gambar)
+  // Caption Modal State (100% Identical to Microsoft Word - Gambar 1)
   const [showCaptionModal, setShowCaptionModal] = useState(false);
-  const [captionLabel, setCaptionLabel] = useState('Tabel'); // 'Tabel', 'Gambar', 'Bagan', 'Peta', 'Grafik', 'Kustom'
-  const [captionNumber, setCaptionNumber] = useState('2.1');
-  const [captionTitle, setCaptionTitle] = useState('');
-  const [captionPosition, setCaptionPosition] = useState('DI_ATAS'); // 'DI_ATAS' or 'DI_BAWAH'
+  const [captionLabel, setCaptionLabel] = useState('Figure'); // 'Figure', 'Table', 'Equation', 'Tabel', 'Gambar', etc.
+  const [captionNumber, setCaptionNumber] = useState('1');
+  const [captionPosition, setCaptionPosition] = useState('Below selected item'); // 'Below selected item' or 'Above selected item'
+  const [captionExcludeLabel, setCaptionExcludeLabel] = useState(false);
+  const [captionInputText, setCaptionInputText] = useState('Figure 1');
+  const [captionLabelsList, setCaptionLabelsList] = useState([
+    'Figure',
+    'Table',
+    'Equation',
+    'Tabel',
+    'Gambar',
+    'Bagan',
+    'Grafik',
+    'Peta',
+    'Lampiran'
+  ]);
+  const [showCaptionNumberingModal, setShowCaptionNumberingModal] = useState(false);
+  const [captionNumberFormat, setCaptionNumberFormat] = useState('1, 2, 3, ...');
+  const [captionIncludeChapter, setCaptionIncludeChapter] = useState(false);
+  const [captionChapterStyle, setCaptionChapterStyle] = useState('Heading 1');
+  const [captionChapterSeparator, setCaptionChapterSeparator] = useState('. (period)');
+  const [showNewLabelModal, setShowNewLabelModal] = useState(false);
+  const [newLabelInput, setNewLabelInput] = useState('');
+  const [showAutoCaptionModal, setShowAutoCaptionModal] = useState(false);
   const [captionSource, setCaptionSource] = useState('Sumber : Bappeda Kabupaten Cilacap Tahun 2026 (data diolah)');
   const [includeTableWithCaption, setIncludeTableWithCaption] = useState(false);
+
+  // Numbering Library State (100% Identical to Microsoft Word - Gambar 2)
+  const [showNumberingLibrary, setShowNumberingLibrary] = useState(false);
+  const [activeNumberingStyle, setActiveNumberingStyle] = useState('decimal');
+  const [showDefineNumberFormatModal, setShowDefineNumberFormatModal] = useState(false);
+  const [showSetNumberValueModal, setShowSetNumberValueModal] = useState(false);
+  const [customNumberFormatStr, setCustomNumberFormatStr] = useState('1.');
+  const [customNumberStyleChoice, setCustomNumberStyleChoice] = useState('1, 2, 3');
+  const [customNumberAlign, setCustomNumberAlign] = useState('Left');
+  const [numberListStartVal, setNumberListStartVal] = useState(1);
+  const [numberValueChoice, setNumberValueChoice] = useState('NEW'); // 'NEW' or 'CONTINUE'
+  const [showListLevelFlyout, setShowListLevelFlyout] = useState(false);
+  const numberingBtnRef = useRef(null);
+
+  // Right-Click Canvas Context Menu & Mini-Toolbar State (100% Identical to Microsoft Word - Gambar 3)
+  const [contextMenu, setContextMenu] = useState({
+    visible: false,
+    x: 0,
+    y: 0,
+    selectedText: ''
+  });
+  const [contextMenuSearch, setContextMenuSearch] = useState('');
+  const [showSynonymsSubmenu, setShowSynonymsSubmenu] = useState(false);
+  const [showParagraphDialog, setShowParagraphDialog] = useState(false);
+  const [showFontDialog, setShowFontDialog] = useState(false);
 
   const [watermark, setWatermark] = useState(''); // '', 'DRAFT', 'RAHASIA', 'CONFIDENTIAL'
   const [showRuler, setShowRuler] = useState(true);
@@ -1011,81 +1059,283 @@ export default function DocumentWorkspace({
     execCmd('insertHTML', footnoteHtml + footnoteContent);
   };
 
-  // Insert Word Caption (Keterangan Resmi Tabel & Gambar Standar Perbup RKPD)
-  const insertCaption = () => {
-    const fullTitle = captionTitle.trim() || `Judul ${captionLabel}`;
-    const fullLabel = `${captionLabel} ${captionNumber}. ${fullTitle}`;
+  // Caption & Context Menu Helper Functions (100% Identical to Microsoft Word - Gambar 1, 2, 3)
+  const updateCaptionInputText = (label, num, exclude) => {
+    const l = label !== undefined ? label : captionLabel;
+    const n = num !== undefined ? num : captionNumber;
+    const ex = exclude !== undefined ? exclude : captionExcludeLabel;
+    const prefix = ex ? `${n}` : `${l} ${n}`;
+    setCaptionInputText(prefix);
+  };
 
-    let captionHtml = '';
-    if (captionLabel === 'Tabel') {
-      const tableSample = includeTableWithCaption ? `
-        <table border="1" style="width: 100%; border-collapse: collapse; margin: 8pt 0; font-size: 10.5pt; font-family: inherit;">
-          <thead>
-            <tr style="background-color: #f1f5f9;">
-              <th style="border: 1px solid #94a3b8; padding: 6px 10px; font-weight: bold; text-align: center; width: 40px;">No.</th>
-              <th style="border: 1px solid #94a3b8; padding: 6px 10px; font-weight: bold; text-align: center;">Indikator / Uraian</th>
-              <th style="border: 1px solid #94a3b8; padding: 6px 10px; font-weight: bold; text-align: center; width: 80px;">Satuan</th>
-              <th style="border: 1px solid #94a3b8; padding: 6px 10px; font-weight: bold; text-align: center; width: 100px;">Realisasi 2025</th>
-              <th style="border: 1px solid #94a3b8; padding: 6px 10px; font-weight: bold; text-align: center; width: 100px;">Target 2027</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td style="border: 1px solid #94a3b8; padding: 6px 10px; text-align: center;">1</td>
-              <td style="border: 1px solid #94a3b8; padding: 6px 10px;">Pertumbuhan Ekonomi</td>
-              <td style="border: 1px solid #94a3b8; padding: 6px 10px; text-align: center;">%</td>
-              <td style="border: 1px solid #94a3b8; padding: 6px 10px; text-align: right;">5,43</td>
-              <td style="border: 1px solid #94a3b8; padding: 6px 10px; text-align: right;">5,60</td>
-            </tr>
-            <tr>
-              <td style="border: 1px solid #94a3b8; padding: 6px 10px; text-align: center;">2</td>
-              <td style="border: 1px solid #94a3b8; padding: 6px 10px;">Tingkat Pengangguran Terbuka</td>
-              <td style="border: 1px solid #94a3b8; padding: 6px 10px; text-align: center;">%</td>
-              <td style="border: 1px solid #94a3b8; padding: 6px 10px; text-align: right;">8,21</td>
-              <td style="border: 1px solid #94a3b8; padding: 6px 10px; text-align: right;">7,80</td>
-            </tr>
-          </tbody>
-        </table>
-      ` : '';
-
-      captionHtml = `
-        <div class="word-caption-block" style="margin: 14pt 0 6pt 0;">
-          <p class="word-caption-title" style="margin: 0 0 4pt 0; font-family: inherit; font-size: 11pt; font-weight: bold; line-height: 1.35; text-align: left;">
-            ${fullLabel}
-          </p>
-          ${tableSample}
-          ${captionSource ? `<p class="word-caption-source" style="margin: 4pt 0 10pt 0; font-family: inherit; font-size: 9.5pt; font-style: italic; color: #334155; line-height: 1.3; text-align: left;"><em>${captionSource}</em></p>` : ''}
-        </div>
-        <p></p>
-      `;
+  const handleCaptionLabelChange = (newLabel) => {
+    setCaptionLabel(newLabel);
+    if (newLabel === 'Table' || newLabel === 'Tabel') {
+      setCaptionPosition('Above selected item');
     } else {
-      // Gambar / Bagan / Peta / Grafik
-      captionHtml = `
-        <div class="word-caption-block" style="margin: 14pt 0 6pt 0; text-align: center;">
-          ${captionPosition === 'DI_ATAS' ? `<p class="word-caption-title" style="margin: 0 0 6pt 0; font-family: inherit; font-size: 11pt; font-weight: bold; line-height: 1.35; text-align: center;">${fullLabel}</p>` : ''}
-          <div style="min-height: 130px; border: 1.5px dashed #cbd5e1; background-color: #f8fafc; border-radius: 4px; display: flex; align-items: center; justify-content: center; margin: 8pt auto; color: #64748b; font-size: 11pt;">
-            <span>[ Sisipkan ${captionLabel}: ${fullLabel} di sini ]</span>
-          </div>
-          ${captionPosition === 'DI_BAWAH' ? `<p class="word-caption-title" style="margin: 6pt 0 4pt 0; font-family: inherit; font-size: 11pt; font-weight: bold; line-height: 1.35; text-align: center;">${fullLabel}</p>` : ''}
-          ${captionSource ? `<p class="word-caption-source" style="margin: 2pt 0 10pt 0; font-family: inherit; font-size: 9.5pt; font-style: italic; color: #334155; line-height: 1.3; text-align: center;"><em>${captionSource}</em></p>` : ''}
-        </div>
-        <p></p>
-      `;
+      setCaptionPosition('Below selected item');
     }
+    updateCaptionInputText(newLabel, captionNumber, captionExcludeLabel);
+  };
+
+  const handleCaptionExcludeChange = (exclude) => {
+    setCaptionExcludeLabel(exclude);
+    updateCaptionInputText(captionLabel, captionNumber, exclude);
+  };
+
+  const handleAddNewLabel = (labelName) => {
+    const trimmed = labelName.trim();
+    if (!trimmed) return;
+    if (!captionLabelsList.includes(trimmed)) {
+      setCaptionLabelsList(prev => [...prev, trimmed]);
+    }
+    setCaptionLabel(trimmed);
+    updateCaptionInputText(trimmed, captionNumber, captionExcludeLabel);
+    setShowNewLabelModal(false);
+    setNewLabelInput('');
+  };
+
+  const handleDeleteLabel = () => {
+    const builtIn = ['Figure', 'Table', 'Equation', 'Tabel', 'Gambar'];
+    if (builtIn.includes(captionLabel)) {
+      alert(`Label bawaan Word '${captionLabel}' tidak dapat dihapus.`);
+      return;
+    }
+    setCaptionLabelsList(prev => prev.filter(l => l !== captionLabel));
+    setCaptionLabel('Figure');
+    updateCaptionInputText('Figure', captionNumber, captionExcludeLabel);
+  };
+
+  const handleApplyCaptionNumbering = () => {
+    let chapterPrefix = '';
+    if (captionIncludeChapter) {
+      const romanChapter = getRomanChapter() ? getRomanChapter().replace('BAB ', '').trim() : '2';
+      let sep = '.';
+      if (captionChapterSeparator.includes('hyphen')) sep = '-';
+      else if (captionChapterSeparator.includes('colon')) sep = ':';
+      else if (captionChapterSeparator.includes('en dash')) sep = '–';
+      chapterPrefix = `${romanChapter}${sep}`;
+    }
+
+    let subNum = '1';
+    if (captionNumberFormat.startsWith('a, b')) subNum = 'a';
+    else if (captionNumberFormat.startsWith('A, B')) subNum = 'A';
+    else if (captionNumberFormat.startsWith('i, ii')) subNum = 'i';
+    else if (captionNumberFormat.startsWith('I, II')) subNum = 'I';
+
+    const newNum = `${chapterPrefix}${subNum}`;
+    setCaptionNumber(newNum);
+    updateCaptionInputText(captionLabel, newNum, captionExcludeLabel);
+    setShowCaptionNumberingModal(false);
+  };
+
+  const insertCaption = () => {
+    const isAbove = captionPosition === 'Above selected item' || captionPosition === 'DI_ATAS';
+    const text = captionInputText.trim() || (captionExcludeLabel ? captionNumber : `${captionLabel} ${captionNumber}`);
+
+    const captionHtml = `
+      <p class="word-caption ${isAbove ? 'word-caption-above' : 'word-caption-below'}" style="font-family: inherit; font-size: 10.5pt; font-weight: bold; line-height: 1.35; margin: ${isAbove ? '14pt 0 4pt 0' : '6pt 0 10pt 0'}; text-align: ${isAbove ? 'left' : 'center'}; color: #0f172a;">
+        ${text}
+      </p>
+    `;
 
     if (viewMode === 'FULL_DOCUMENT') {
       setIsFullEditMode(true);
     }
     execCmd('insertHTML', captionHtml);
 
-    // Auto-increment caption number for next insertion (e.g. 2.1 -> 2.2)
-    const numParts = captionNumber.split('.');
-    if (numParts.length === 2 && !isNaN(parseInt(numParts[1]))) {
-      setCaptionNumber(`${numParts[0]}.${parseInt(numParts[1]) + 1}`);
+    // Auto-increment caption number for next insertion (e.g. 2.1 -> 2.2 or 1 -> 2)
+    if (captionNumber.includes('.')) {
+      const parts = captionNumber.split('.');
+      const nextSub = parseInt(parts[parts.length - 1], 10) + 1;
+      const nextNum = `${parts.slice(0, -1).join('.')}.${nextSub}`;
+      setCaptionNumber(nextNum);
+      updateCaptionInputText(captionLabel, nextNum, captionExcludeLabel);
+    } else if (captionNumber.includes('-')) {
+      const parts = captionNumber.split('-');
+      const nextSub = parseInt(parts[parts.length - 1], 10) + 1;
+      const nextNum = `${parts.slice(0, -1).join('-')}-${nextSub}`;
+      setCaptionNumber(nextNum);
+      updateCaptionInputText(captionLabel, nextNum, captionExcludeLabel);
+    } else if (!isNaN(parseInt(captionNumber, 10))) {
+      const nextNum = String(parseInt(captionNumber, 10) + 1);
+      setCaptionNumber(nextNum);
+      updateCaptionInputText(captionLabel, nextNum, captionExcludeLabel);
     }
 
     setShowCaptionModal(false);
-    setCaptionTitle('');
+  };
+
+  // Word Numbering Library Application (Gambar 2)
+  const applyNumberingFormat = (styleKey) => {
+    setActiveNumberingStyle(styleKey);
+    setShowNumberingLibrary(false);
+
+    if (styleKey === 'none') {
+      const sel = window.getSelection();
+      let node = sel?.anchorNode;
+      while (node && node !== editorRef.current && node.nodeName !== 'OL' && node.nodeName !== 'UL') {
+        node = node.parentNode;
+      }
+      if (node && (node.nodeName === 'OL' || node.nodeName === 'UL')) {
+        const parent = node.parentNode;
+        while (node.firstChild) {
+          const p = document.createElement('p');
+          p.innerHTML = node.firstChild.innerHTML || node.firstChild.textContent;
+          parent.insertBefore(p, node);
+          node.removeChild(node.firstChild);
+        }
+        parent.removeChild(node);
+        handleEditorInput();
+        return;
+      }
+      execCmd('insertOrderedList');
+      return;
+    }
+
+    const chapterNum = getRomanChapter() ? getRomanChapter().replace('BAB ', '').trim() : '2';
+    const prefixVal = `${chapterNum}.`;
+
+    const sel = window.getSelection();
+    let olNode = sel?.anchorNode;
+    while (olNode && olNode !== editorRef.current && olNode.nodeName !== 'OL') {
+      olNode = olNode.parentNode;
+    }
+
+    if (olNode && olNode.nodeName === 'OL') {
+      olNode.className = `word-list list-${styleKey}`;
+      olNode.setAttribute('data-list-style', styleKey);
+      if (styleKey === 'chapter-decimal') {
+        olNode.style.setProperty('--list-prefix', `"${prefixVal}"`);
+      } else {
+        olNode.style.removeProperty('--list-prefix');
+      }
+      handleEditorInput();
+    } else {
+      execCmd('insertOrderedList');
+      setTimeout(() => {
+        const newSel = window.getSelection();
+        let newOl = newSel?.anchorNode;
+        while (newOl && newOl !== editorRef.current && newOl.nodeName !== 'OL') {
+          newOl = newOl.parentNode;
+        }
+        if (newOl && newOl.nodeName === 'OL') {
+          newOl.className = `word-list list-${styleKey}`;
+          newOl.setAttribute('data-list-style', styleKey);
+          if (styleKey === 'chapter-decimal') {
+            newOl.style.setProperty('--list-prefix', `"${prefixVal}"`);
+          }
+        }
+        handleEditorInput();
+      }, 50);
+    }
+  };
+
+  const applyListLevel = (level) => {
+    setShowNumberingLibrary(false);
+    setShowListLevelFlyout(false);
+    const sel = window.getSelection();
+    let liNode = sel?.anchorNode;
+    while (liNode && liNode !== editorRef.current && liNode.nodeName !== 'LI') {
+      liNode = liNode.parentNode;
+    }
+    if (liNode && liNode.nodeName === 'LI') {
+      const ol = liNode.closest('ol');
+      if (ol) {
+        for (let i = 1; i <= 9; i++) {
+          ol.classList.remove(`level-${i}`);
+        }
+        if (level > 1) {
+          ol.classList.add(`level-${level}`);
+        }
+      }
+      handleEditorInput();
+    } else {
+      for (let i = 1; i < level; i++) {
+        execCmd('indent');
+      }
+    }
+  };
+
+  const applySetNumberValue = (startVal) => {
+    setShowSetNumberValueModal(false);
+    const sel = window.getSelection();
+    let olNode = sel?.anchorNode;
+    while (olNode && olNode !== editorRef.current && olNode.nodeName !== 'OL') {
+      olNode = olNode.parentNode;
+    }
+    if (olNode && olNode.nodeName === 'OL') {
+      olNode.setAttribute('start', startVal);
+      handleEditorInput();
+    }
+  };
+
+  // Right-Click Canvas Context Menu (Gambar 3)
+  const handleCanvasContextMenu = (e) => {
+    e.preventDefault();
+    const sel = window.getSelection();
+    const selectedText = sel ? sel.toString().trim() : '';
+
+    const menuWidth = 270;
+    const menuHeight = 440;
+    const posX = Math.min(e.clientX, window.innerWidth - menuWidth - 20);
+    const posY = Math.min(e.clientY, window.innerHeight - menuHeight - 20);
+
+    setContextMenu({
+      visible: true,
+      x: Math.max(10, posX),
+      y: Math.max(10, posY),
+      selectedText
+    });
+    setContextMenuSearch('');
+    setShowSynonymsSubmenu(false);
+  };
+
+  const handleReadAloud = () => {
+    if (!('speechSynthesis' in window)) {
+      alert('Browser Anda belum mendukung Web Speech Synthesis.');
+      return;
+    }
+    window.speechSynthesis.cancel();
+    const textToRead = contextMenu.selectedText || activeSection?.title || 'Dokumen RKPD Cilacap';
+    const utterance = new SpeechSynthesisUtterance(textToRead.slice(0, 500));
+    utterance.lang = 'id-ID';
+    utterance.rate = 1.0;
+    window.speechSynthesis.speak(utterance);
+  };
+
+  const handleCopyLinkToLocation = () => {
+    const url = `${window.location.origin}${window.location.pathname}#sec-${activeSection?.id || ''}`;
+    navigator.clipboard.writeText(url).then(() => {
+      alert('Tautan langsung ke lokasi bagian dokumen ini berhasil disalin ke clipboard!');
+    });
+    setContextMenu(prev => ({ ...prev, visible: false }));
+  };
+
+  const handlePasteFromClipboard = (textOnly = false) => {
+    navigator.clipboard.readText().then(clipText => {
+      if (!clipText) return;
+      if (textOnly) {
+        execCmd('insertText', clipText.replace(/<[^>]*>?/gm, ''));
+      } else {
+        execCmd('insertText', clipText);
+      }
+      handleEditorInput();
+    }).catch(() => {
+      const pasted = prompt('Tempelkan teks naskah di sini:');
+      if (pasted) {
+        execCmd('insertText', pasted);
+        handleEditorInput();
+      }
+    });
+    setContextMenu(prev => ({ ...prev, visible: false }));
+  };
+
+  const replaceSelectedWithSynonym = (synonym) => {
+    execCmd('insertText', synonym);
+    handleEditorInput();
+    setContextMenu(prev => ({ ...prev, visible: false }));
+    setShowSynonymsSubmenu(false);
   };
 
   // Filter sections
@@ -1305,6 +1555,39 @@ export default function DocumentWorkspace({
       window.removeEventListener('mouseup', handleMouseUp);
     };
   }, [activeDrag, pxPerCm, totalPaperCm, marginCm.left, marginCm.right, paperDims.width]);
+
+  // Click outside and keyboard handler for Word Context Menu and Numbering Library (Gambar 2 & 3)
+  useEffect(() => {
+    const handlePointerDown = (e) => {
+      if (contextMenu.visible && !e.target.closest('#word-context-menu')) {
+        setContextMenu(prev => ({ ...prev, visible: false }));
+      }
+      if (showNumberingLibrary && !e.target.closest('#word-numbering-library') && !e.target.closest('#word-numbering-btn')) {
+        setShowNumberingLibrary(false);
+      }
+    };
+
+    const handleKeyDown = (e) => {
+      if (e.key === 'Escape') {
+        if (contextMenu.visible) setContextMenu(prev => ({ ...prev, visible: false }));
+        if (showNumberingLibrary) setShowNumberingLibrary(false);
+        if (showCaptionModal) setShowCaptionModal(false);
+        if (showCaptionNumberingModal) setShowCaptionNumberingModal(false);
+        if (showNewLabelModal) setShowNewLabelModal(false);
+        if (showDefineNumberFormatModal) setShowDefineNumberFormatModal(false);
+        if (showSetNumberValueModal) setShowSetNumberValueModal(false);
+        if (showParagraphDialog) setShowParagraphDialog(false);
+        if (showFontDialog) setShowFontDialog(false);
+      }
+    };
+
+    window.addEventListener('pointerdown', handlePointerDown);
+    window.addEventListener('keydown', handleKeyDown);
+    return () => {
+      window.removeEventListener('pointerdown', handlePointerDown);
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [contextMenu.visible, showNumberingLibrary, showCaptionModal, showCaptionNumberingModal, showNewLabelModal, showDefineNumberFormatModal, showSetNumberValueModal, showParagraphDialog, showFontDialog]);
 
   if (loading) {
     return (
@@ -1788,14 +2071,284 @@ export default function DocumentWorkspace({
                     >
                       <List className="w-3.5 h-3.5" />
                     </button>
-                    <button
-                      onClick={() => execCmd('insertOrderedList')}
-                      disabled={!activeSection?.canEdit}
-                      className="p-1 hover:bg-[#e1dfdd] rounded text-slate-700"
-                      title="Daftar Penomoran (Numbering)"
-                    >
-                      <ListOrdered className="w-3.5 h-3.5" />
-                    </button>
+                    {/* Word Numbering Button with Numbering Library Popover (Gambar 2) */}
+                    <div className="relative inline-flex items-center" id="word-numbering-btn">
+                      <button
+                        type="button"
+                        onClick={() => applyNumberingFormat(activeNumberingStyle || 'decimal')}
+                        disabled={!activeSection?.canEdit}
+                        className={`p-1 hover:bg-[#e1dfdd] rounded-l text-slate-700 transition ${showNumberingLibrary ? 'bg-[#c7e0f4]' : ''}`}
+                        title="Daftar Penomoran (Numbering)"
+                      >
+                        <ListOrdered className="w-3.5 h-3.5" />
+                      </button>
+                      <button
+                        type="button"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setShowNumberingLibrary(!showNumberingLibrary);
+                        }}
+                        disabled={!activeSection?.canEdit}
+                        className={`p-0.5 hover:bg-[#e1dfdd] rounded-r text-slate-600 transition ${showNumberingLibrary ? 'bg-[#c7e0f4]' : ''}`}
+                        title="Pustaka Penomoran (Numbering Library)"
+                      >
+                        <ChevronDown className="w-2.5 h-2.5" />
+                      </button>
+
+                      {/* Numbering Library Popover (100% Identical to Microsoft Word - Gambar 2) */}
+                      {showNumberingLibrary && (
+                        <div
+                          id="word-numbering-library"
+                          onClick={(e) => e.stopPropagation()}
+                          className="absolute top-full left-0 mt-1 z-50 bg-white border border-slate-300 rounded shadow-2xl w-72 text-xs font-sans animate-in fade-in zoom-in-95 duration-100 p-2"
+                        >
+                          <div className="text-[11px] font-semibold text-slate-700 mb-2 px-1">
+                            Numbering Library
+                          </div>
+
+                          {/* 3x3 Card Grid matching Image 2 */}
+                          <div className="grid grid-cols-3 gap-1.5 mb-2">
+                            {/* Card 1: None */}
+                            <button
+                              type="button"
+                              onClick={() => applyNumberingFormat('none')}
+                              className="h-16 border border-slate-300 hover:border-blue-500 hover:bg-blue-50/50 rounded flex items-center justify-center text-xs font-medium text-slate-700 transition cursor-pointer p-1"
+                              title="None (Hapus Penomoran)"
+                            >
+                              <span>None</span>
+                            </button>
+
+                            {/* Card 2: 2.1 / 2.2 / 2.3 (Chapter-based) */}
+                            <button
+                              type="button"
+                              onClick={() => applyNumberingFormat('chapter-decimal')}
+                              className="h-16 border border-slate-300 hover:border-blue-500 hover:bg-blue-50/50 rounded flex flex-col justify-center px-2 py-1 text-[10px] text-slate-700 transition cursor-pointer gap-1"
+                              title="2.1, 2.2, 2.3 (Penomoran Berbasis Bab)"
+                            >
+                              <div className="flex items-center gap-1">
+                                <span className="font-semibold text-blue-700">2.1</span>
+                                <div className="h-0.5 w-6 bg-slate-300 rounded" />
+                              </div>
+                              <div className="flex items-center gap-1">
+                                <span className="font-semibold text-blue-700">2.2</span>
+                                <div className="h-0.5 w-6 bg-slate-300 rounded" />
+                              </div>
+                              <div className="flex items-center gap-1">
+                                <span className="font-semibold text-blue-700">2.3</span>
+                                <div className="h-0.5 w-6 bg-slate-300 rounded" />
+                              </div>
+                            </button>
+
+                            {/* Card 3: 1. / 2. / 3. */}
+                            <button
+                              type="button"
+                              onClick={() => applyNumberingFormat('decimal')}
+                              className="h-16 border border-slate-300 hover:border-blue-500 hover:bg-blue-50/50 rounded flex flex-col justify-center px-2 py-1 text-[10px] text-slate-700 transition cursor-pointer gap-1"
+                              title="1., 2., 3. (Angka Desimal)"
+                            >
+                              <div className="flex items-center gap-1">
+                                <span className="font-semibold">1.</span>
+                                <div className="h-0.5 w-6 bg-slate-300 rounded" />
+                              </div>
+                              <div className="flex items-center gap-1">
+                                <span className="font-semibold">2.</span>
+                                <div className="h-0.5 w-6 bg-slate-300 rounded" />
+                              </div>
+                              <div className="flex items-center gap-1">
+                                <span className="font-semibold">3.</span>
+                                <div className="h-0.5 w-6 bg-slate-300 rounded" />
+                              </div>
+                            </button>
+
+                            {/* Card 4: 1) / 2) / 3) */}
+                            <button
+                              type="button"
+                              onClick={() => applyNumberingFormat('paren-decimal')}
+                              className="h-16 border border-slate-300 hover:border-blue-500 hover:bg-blue-50/50 rounded flex flex-col justify-center px-2 py-1 text-[10px] text-slate-700 transition cursor-pointer gap-1"
+                              title="1), 2), 3) (Kurung Tutup)"
+                            >
+                              <div className="flex items-center gap-1">
+                                <span className="font-semibold">1)</span>
+                                <div className="h-0.5 w-6 bg-slate-300 rounded" />
+                              </div>
+                              <div className="flex items-center gap-1">
+                                <span className="font-semibold">2)</span>
+                                <div className="h-0.5 w-6 bg-slate-300 rounded" />
+                              </div>
+                              <div className="flex items-center gap-1">
+                                <span className="font-semibold">3)</span>
+                                <div className="h-0.5 w-6 bg-slate-300 rounded" />
+                              </div>
+                            </button>
+
+                            {/* Card 5: I. / II. / III. */}
+                            <button
+                              type="button"
+                              onClick={() => applyNumberingFormat('upper-roman')}
+                              className="h-16 border border-slate-300 hover:border-blue-500 hover:bg-blue-50/50 rounded flex flex-col justify-center px-2 py-1 text-[10px] text-slate-700 transition cursor-pointer gap-1"
+                              title="I., II., III. (Romawi Besar)"
+                            >
+                              <div className="flex items-center gap-1">
+                                <span className="font-semibold font-serif">I.</span>
+                                <div className="h-0.5 w-6 bg-slate-300 rounded" />
+                              </div>
+                              <div className="flex items-center gap-1">
+                                <span className="font-semibold font-serif">II.</span>
+                                <div className="h-0.5 w-6 bg-slate-300 rounded" />
+                              </div>
+                              <div className="flex items-center gap-1">
+                                <span className="font-semibold font-serif">III.</span>
+                                <div className="h-0.5 w-6 bg-slate-300 rounded" />
+                              </div>
+                            </button>
+
+                            {/* Card 6: A. / B. / C. */}
+                            <button
+                              type="button"
+                              onClick={() => applyNumberingFormat('upper-alpha')}
+                              className="h-16 border border-slate-300 hover:border-blue-500 hover:bg-blue-50/50 rounded flex flex-col justify-center px-2 py-1 text-[10px] text-slate-700 transition cursor-pointer gap-1"
+                              title="A., B., C. (Huruf Besar Titik)"
+                            >
+                              <div className="flex items-center gap-1">
+                                <span className="font-semibold">A.</span>
+                                <div className="h-0.5 w-6 bg-slate-300 rounded" />
+                              </div>
+                              <div className="flex items-center gap-1">
+                                <span className="font-semibold">B.</span>
+                                <div className="h-0.5 w-6 bg-slate-300 rounded" />
+                              </div>
+                              <div className="flex items-center gap-1">
+                                <span className="font-semibold">C.</span>
+                                <div className="h-0.5 w-6 bg-slate-300 rounded" />
+                              </div>
+                            </button>
+
+                            {/* Card 7: a) / b) / c) */}
+                            <button
+                              type="button"
+                              onClick={() => applyNumberingFormat('paren-alpha')}
+                              className="h-16 border border-slate-300 hover:border-blue-500 hover:bg-blue-50/50 rounded flex flex-col justify-center px-2 py-1 text-[10px] text-slate-700 transition cursor-pointer gap-1"
+                              title="a), b), c) (Huruf Kecil Kurung)"
+                            >
+                              <div className="flex items-center gap-1">
+                                <span className="font-semibold">a)</span>
+                                <div className="h-0.5 w-6 bg-slate-300 rounded" />
+                              </div>
+                              <div className="flex items-center gap-1">
+                                <span className="font-semibold">b)</span>
+                                <div className="h-0.5 w-6 bg-slate-300 rounded" />
+                              </div>
+                              <div className="flex items-center gap-1">
+                                <span className="font-semibold">c)</span>
+                                <div className="h-0.5 w-6 bg-slate-300 rounded" />
+                              </div>
+                            </button>
+
+                            {/* Card 8: a. / b. / c. */}
+                            <button
+                              type="button"
+                              onClick={() => applyNumberingFormat('lower-alpha')}
+                              className="h-16 border border-slate-300 hover:border-blue-500 hover:bg-blue-50/50 rounded flex flex-col justify-center px-2 py-1 text-[10px] text-slate-700 transition cursor-pointer gap-1"
+                              title="a., b., c. (Huruf Kecil Titik)"
+                            >
+                              <div className="flex items-center gap-1">
+                                <span className="font-semibold">a.</span>
+                                <div className="h-0.5 w-6 bg-slate-300 rounded" />
+                              </div>
+                              <div className="flex items-center gap-1">
+                                <span className="font-semibold">b.</span>
+                                <div className="h-0.5 w-6 bg-slate-300 rounded" />
+                              </div>
+                              <div className="flex items-center gap-1">
+                                <span className="font-semibold">c.</span>
+                                <div className="h-0.5 w-6 bg-slate-300 rounded" />
+                              </div>
+                            </button>
+
+                            {/* Card 9: i. / ii. / iii. */}
+                            <button
+                              type="button"
+                              onClick={() => applyNumberingFormat('lower-roman')}
+                              className="h-16 border border-slate-300 hover:border-blue-500 hover:bg-blue-50/50 rounded flex flex-col justify-center px-2 py-1 text-[10px] text-slate-700 transition cursor-pointer gap-1"
+                              title="i., ii., iii. (Romawi Kecil)"
+                            >
+                              <div className="flex items-center gap-1">
+                                <span className="font-semibold font-serif">i.</span>
+                                <div className="h-0.5 w-6 bg-slate-300 rounded" />
+                              </div>
+                              <div className="flex items-center gap-1">
+                                <span className="font-semibold font-serif">ii.</span>
+                                <div className="h-0.5 w-6 bg-slate-300 rounded" />
+                              </div>
+                              <div className="flex items-center gap-1">
+                                <span className="font-semibold font-serif">iii.</span>
+                                <div className="h-0.5 w-6 bg-slate-300 rounded" />
+                              </div>
+                            </button>
+                          </div>
+
+                          {/* Bottom options matching Image 2 */}
+                          <div className="border-t border-slate-200 pt-1.5 space-y-0.5">
+                            {/* Change List Level with flyout */}
+                            <div className="relative">
+                              <button
+                                type="button"
+                                onMouseEnter={() => setShowListLevelFlyout(true)}
+                                onClick={() => setShowListLevelFlyout(!showListLevelFlyout)}
+                                className="w-full text-left px-2 py-1.5 hover:bg-slate-100 rounded text-slate-700 flex items-center justify-between text-[11px]"
+                              >
+                                <span>Change List Level</span>
+                                <ChevronRight className="w-3 h-3 text-slate-400" />
+                              </button>
+
+                              {showListLevelFlyout && (
+                                <div
+                                  onMouseLeave={() => setShowListLevelFlyout(false)}
+                                  className="absolute left-full top-0 ml-1 bg-white border border-slate-300 rounded shadow-xl py-1 w-44 z-50 text-[11px]"
+                                >
+                                  {[1, 2, 3, 4, 5, 6, 7, 8, 9].map((lvl) => (
+                                    <button
+                                      key={lvl}
+                                      type="button"
+                                      onClick={() => applyListLevel(lvl)}
+                                      className="w-full text-left px-2.5 py-1 hover:bg-blue-50 flex items-center gap-2 text-slate-700"
+                                    >
+                                      <span className="font-mono text-slate-400 w-3">{lvl}</span>
+                                      <div style={{ marginLeft: `${(lvl - 1) * 8}px` }} className="flex items-center gap-1">
+                                        <span className="font-bold">1.</span>
+                                        <div className="h-0.5 w-6 bg-slate-400 rounded" />
+                                      </div>
+                                    </button>
+                                  ))}
+                                </div>
+                              )}
+                            </div>
+
+                            <button
+                              type="button"
+                              onClick={() => {
+                                setShowNumberingLibrary(false);
+                                setShowDefineNumberFormatModal(true);
+                              }}
+                              className="w-full text-left px-2 py-1.5 hover:bg-slate-100 rounded text-slate-700 text-[11px]"
+                            >
+                              Define New Number Format...
+                            </button>
+
+                            <button
+                              type="button"
+                              onClick={() => {
+                                setShowNumberingLibrary(false);
+                                setShowSetNumberValueModal(true);
+                              }}
+                              className="w-full text-left px-2 py-1.5 hover:bg-slate-100 rounded text-slate-700 text-[11px]"
+                            >
+                              Set Numbering Value...
+                            </button>
+                          </div>
+                        </div>
+                      )}
+                    </div>
                     <button
                       onClick={() => execCmd('outdent')}
                       disabled={!activeSection?.canEdit}
@@ -3794,6 +4347,7 @@ export default function DocumentWorkspace({
                     <div
                       key={sec.id}
                       id={`full-sec-${sec.id}`}
+                      onContextMenu={(e) => handleCanvasContextMenu(e)}
                       className={`word-page-sheet relative group ${showGridlines ? 'show-gridlines' : ''}`}
                       style={{
                         width: `${secWidth}px`,
@@ -3906,6 +4460,7 @@ export default function DocumentWorkspace({
             ) : (
               /* ================= VIEW MODE 2: SECTION EDITOR (WORD CANVAS) ================= */
               <div
+                onContextMenu={(e) => handleCanvasContextMenu(e)}
                 className={`word-page-sheet ${showGridlines ? 'show-gridlines' : ''}`}
                 style={{
                   width: `${paperDims.width}px`,
@@ -4003,6 +4558,7 @@ export default function DocumentWorkspace({
                   {/* Word Rich Text ContentEditable Canvas */}
                   <div
                     ref={editorRef}
+                    onContextMenu={(e) => handleCanvasContextMenu(e)}
                     contentEditable={activeSection?.canEdit}
                     onInput={handleEditorInput}
                     suppressContentEditableWarning={true}
@@ -4359,176 +4915,1133 @@ export default function DocumentWorkspace({
         </div>
       )}
 
-      {/* ================= INSERT CAPTION MODAL (KETERANGAN RESMI TABEL & GAMBAR) ================= */}
+      {/* ================= 1. MICROSOFT WORD CAPTION DIALOG (GAMBAR 1) ================= */}
       {showCaptionModal && (
-        <div className="fixed inset-0 z-50 overflow-y-auto bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-4">
-          <div className="bg-white rounded-2xl shadow-2xl border border-slate-200 w-full max-w-lg overflow-hidden animate-in fade-in zoom-in-95 duration-150">
-            {/* Header */}
-            <div className="p-4 border-b border-slate-200 flex items-center justify-between bg-slate-50">
-              <span className="font-bold text-slate-800 text-sm flex items-center gap-2">
-                <Tag className="w-4 h-4 text-amber-600" />
-                <span>Sisipkan Keterangan Dokumen (Insert Caption)</span>
-              </span>
-              <button
-                onClick={() => setShowCaptionModal(false)}
-                className="p-1 rounded text-slate-400 hover:text-slate-600"
-              >
-                <X className="w-4 h-4" />
-              </button>
+        <div className="fixed inset-0 z-50 overflow-y-auto bg-black/40 backdrop-blur-2xs flex items-center justify-center p-4 select-none">
+          <div className="bg-[#f0f0f0] rounded-sm shadow-2xl border border-[#707070] w-full max-w-md overflow-hidden font-sans text-xs">
+            {/* Title Bar */}
+            <div className="bg-white px-3 py-1.5 border-b border-[#e5e5e5] flex items-center justify-between">
+              <span className="font-semibold text-slate-800 text-xs">Caption</span>
+              <div className="flex items-center gap-1">
+                <button
+                  type="button"
+                  onClick={() => alert('Bantuan Caption: Sisipkan keterangan resmi penomoran gambar, tabel, atau persamaan.')}
+                  className="w-5 h-5 flex items-center justify-center hover:bg-slate-200 text-slate-600 rounded text-xs font-bold"
+                  title="Help"
+                >
+                  ?
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setShowCaptionModal(false)}
+                  className="w-5 h-5 flex items-center justify-center hover:bg-red-500 hover:text-white text-slate-600 rounded transition"
+                  title="Close"
+                >
+                  <X className="w-3.5 h-3.5" />
+                </button>
+              </div>
             </div>
 
-            {/* Body */}
-            <div className="p-5 space-y-4 text-xs font-sans">
-              <div className="grid grid-cols-2 gap-3">
-                {/* Label Selector */}
-                <div>
-                  <label className="block font-bold text-slate-700 mb-1">
-                    Label Keterangan:
-                  </label>
-                  <select
-                    value={captionLabel}
-                    onChange={(e) => {
-                      const val = e.target.value;
-                      setCaptionLabel(val);
-                      if (val === 'Tabel') {
-                        setCaptionPosition('DI_ATAS');
-                      } else {
-                        setCaptionPosition('DI_BAWAH');
-                      }
-                    }}
-                    className="w-full px-2.5 py-2 rounded-lg border border-slate-300 font-semibold text-slate-800 focus:border-blue-600 focus:outline-none"
-                  >
-                    <option value="Tabel">Tabel (Standar Dokumen Bab RKPD)</option>
-                    <option value="Gambar">Gambar (Foto / Dokumentasi)</option>
-                    <option value="Bagan">Bagan (Struktur / Kerangka Pikir)</option>
-                    <option value="Grafik">Grafik (Statistik Capaian)</option>
-                    <option value="Peta">Peta (Administrasi / Tematik)</option>
-                  </select>
-                </div>
-
-                {/* Numbering */}
-                <div>
-                  <label className="block font-bold text-slate-700 mb-1">
-                    Nomor (Bab.Nomor Urut):
-                  </label>
-                  <input
-                    type="text"
-                    value={captionNumber}
-                    onChange={(e) => setCaptionNumber(e.target.value)}
-                    placeholder="misal: 2.1"
-                    className="w-full px-2.5 py-2 rounded-lg border border-slate-300 font-mono font-bold text-blue-700 focus:border-blue-600 focus:outline-none"
-                  />
-                </div>
-              </div>
-
-              {/* Title input */}
+            {/* Dialog Body */}
+            <div className="p-4 space-y-3 bg-[#f0f0f0]">
+              {/* Caption text box */}
               <div>
-                <label className="block font-bold text-slate-700 mb-1">
-                  Judul Lengkap {captionLabel}:
+                <label className="block text-slate-700 font-medium mb-1">
+                  Caption:
                 </label>
                 <input
                   type="text"
-                  value={captionTitle}
-                  onChange={(e) => setCaptionTitle(e.target.value)}
-                  placeholder={`Contoh: Perkembangan Capaian Indikator Sasaran Makro Kabupaten Cilacap`}
-                  className="w-full px-3 py-2 rounded-lg border border-slate-300 text-slate-900 focus:border-blue-600 focus:outline-none text-xs"
+                  value={captionInputText}
+                  onChange={(e) => setCaptionInputText(e.target.value)}
+                  className="w-full px-2 py-1 bg-white border border-[#7a7a7a] focus:border-blue-600 focus:outline-none text-slate-900 font-sans text-xs shadow-inner"
                   autoFocus
                 />
               </div>
 
-              {/* Position */}
-              <div>
-                <label className="block font-bold text-slate-700 mb-1">
-                  Posisi Judul / Keterangan:
-                </label>
-                <div className="flex items-center space-x-4">
-                  <label className="flex items-center space-x-1.5 cursor-pointer">
+              {/* Options Fieldset */}
+              <fieldset className="border border-[#a0a0a0] rounded-sm p-3 space-y-2.5">
+                <legend className="px-1 text-slate-700 font-medium text-[11px]">Options</legend>
+                
+                <div className="grid grid-cols-3 items-center gap-2">
+                  <label className="text-slate-700 font-medium">Label:</label>
+                  <div className="col-span-2">
+                    <select
+                      value={captionLabel}
+                      onChange={(e) => handleCaptionLabelChange(e.target.value)}
+                      className="w-full px-2 py-0.5 bg-white border border-[#7a7a7a] text-slate-800 text-xs focus:outline-none"
+                    >
+                      {captionLabelsList.map(lbl => (
+                        <option key={lbl} value={lbl}>{lbl}</option>
+                      ))}
+                    </select>
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-3 items-center gap-2">
+                  <label className="text-slate-700 font-medium">Position:</label>
+                  <div className="col-span-2">
+                    <select
+                      value={captionPosition}
+                      onChange={(e) => setCaptionPosition(e.target.value)}
+                      className="w-full px-2 py-0.5 bg-white border border-[#7a7a7a] text-slate-800 text-xs focus:outline-none"
+                    >
+                      <option value="Below selected item">Below selected item</option>
+                      <option value="Above selected item">Above selected item</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div className="pt-1">
+                  <label className="flex items-center gap-2 cursor-pointer text-slate-800">
                     <input
-                      type="radio"
-                      name="captionPos"
-                      value="DI_ATAS"
-                      checked={captionPosition === 'DI_ATAS'}
-                      onChange={() => setCaptionPosition('DI_ATAS')}
-                      className="text-blue-600"
+                      type="checkbox"
+                      checked={captionExcludeLabel}
+                      onChange={(e) => handleCaptionExcludeChange(e.target.checked)}
+                      className="rounded text-blue-600"
                     />
-                    <span className="text-slate-700 font-medium">Di Atas Item (Standar Tabel)</span>
-                  </label>
-                  <label className="flex items-center space-x-1.5 cursor-pointer">
-                    <input
-                      type="radio"
-                      name="captionPos"
-                      value="DI_BAWAH"
-                      checked={captionPosition === 'DI_BAWAH'}
-                      onChange={() => setCaptionPosition('DI_BAWAH')}
-                      className="text-blue-600"
-                    />
-                    <span className="text-slate-700 font-medium">Di Bawah Item (Standar Gambar/Grafik)</span>
+                    <span>Exclude label from caption</span>
                   </label>
                 </div>
-              </div>
 
-              {/* Source */}
-              <div>
-                <label className="block font-bold text-slate-700 mb-1">
-                  Sumber Data Resmi:
-                </label>
-                <input
-                  type="text"
-                  value={captionSource}
-                  onChange={(e) => setCaptionSource(e.target.value)}
-                  placeholder="Sumber : Bappeda Kabupaten Cilacap Tahun 2026 (data diolah)"
-                  className="w-full px-3 py-2 rounded-lg border border-slate-300 text-slate-700 focus:border-blue-600 focus:outline-none"
-                />
-              </div>
+                {/* Sub-buttons row */}
+                <div className="flex items-center gap-2 pt-1.5 flex-wrap">
+                  <button
+                    type="button"
+                    onClick={() => setShowNewLabelModal(true)}
+                    className="px-3 py-1 bg-[#e1e1e1] hover:bg-[#d0d0d0] active:bg-[#c0c0c0] border border-[#adadad] rounded-sm text-slate-800 font-medium text-xs shadow-2xs"
+                  >
+                    New Label...
+                  </button>
+                  <button
+                    type="button"
+                    onClick={handleDeleteLabel}
+                    className="px-3 py-1 bg-[#e1e1e1] hover:bg-[#d0d0d0] active:bg-[#c0c0c0] border border-[#adadad] rounded-sm text-slate-800 font-medium text-xs shadow-2xs"
+                  >
+                    Delete Label
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setShowCaptionNumberingModal(true)}
+                    className="px-3 py-1 bg-[#e1e1e1] hover:bg-[#d0d0d0] active:bg-[#c0c0c0] border border-[#adadad] rounded-sm text-slate-800 font-medium text-xs shadow-2xs"
+                  >
+                    Numbering...
+                  </button>
+                </div>
+              </fieldset>
 
-              {/* Table Option */}
-              {captionLabel === 'Tabel' && (
-                <label className="flex items-center space-x-2 p-2.5 bg-blue-50/70 border border-blue-200 rounded-lg cursor-pointer">
-                  <input
-                    type="checkbox"
-                    checked={includeTableWithCaption}
-                    onChange={(e) => setIncludeTableWithCaption(e.target.checked)}
-                    className="rounded text-blue-600 w-4 h-4"
-                  />
-                  <span className="font-semibold text-blue-900 text-xs">
-                    Sertakan template tabel indikator makro 5 kolom di bawah judul keterangan
-                  </span>
-                </label>
-              )}
-
-              {/* Live Preview Card */}
-              <div className="p-3 bg-slate-50 border border-slate-200 rounded-xl space-y-1.5">
-                <span className="font-bold text-[10px] uppercase text-slate-400 tracking-wider">
-                  Pratinjau Format Sesuai Naskah Perbup (Bookman Old Style):
-                </span>
-                <div className="p-3 bg-white border border-slate-200 rounded shadow-2xs font-serif">
-                  <p className="font-bold text-[12px] text-slate-900 m-0">
-                    {captionLabel} {captionNumber}. {captionTitle.trim() || `[Judul ${captionLabel}]`}
-                  </p>
-                  {captionSource && (
-                    <p className="text-[10px] italic text-slate-500 m-0 mt-1">
-                      <em>{captionSource}</em>
-                    </p>
-                  )}
+              {/* Bottom Buttons */}
+              <div className="flex items-center justify-between pt-2">
+                <button
+                  type="button"
+                  onClick={() => setShowAutoCaptionModal(true)}
+                  className="px-3 py-1 bg-[#e1e1e1] hover:bg-[#d0d0d0] active:bg-[#c0c0c0] border border-[#adadad] rounded-sm text-slate-800 font-medium text-xs shadow-2xs"
+                >
+                  AutoCaption...
+                </button>
+                <div className="flex items-center gap-2">
+                  <button
+                    type="button"
+                    onClick={insertCaption}
+                    className="px-5 py-1 bg-[#0067b8] hover:bg-[#005da6] active:bg-[#005293] text-white font-medium rounded-sm border border-[#005da6] text-xs shadow-2xs"
+                  >
+                    OK
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setShowCaptionModal(false)}
+                    className="px-4 py-1 bg-[#e1e1e1] hover:bg-[#d0d0d0] active:bg-[#c0c0c0] border border-[#adadad] rounded-sm text-slate-800 font-medium text-xs shadow-2xs"
+                  >
+                    Cancel
+                  </button>
                 </div>
               </div>
             </div>
+          </div>
+        </div>
+      )}
 
-            {/* Footer Buttons */}
-            <div className="p-3.5 bg-slate-50 border-t border-slate-200 flex items-center justify-end space-x-2">
+      {/* ================= CAPTION NUMBERING SUB-DIALOG (GAMBAR 1) ================= */}
+      {showCaptionNumberingModal && (
+        <div className="fixed inset-0 z-60 overflow-y-auto bg-black/40 backdrop-blur-2xs flex items-center justify-center p-4 select-none">
+          <div className="bg-[#f0f0f0] rounded-sm shadow-2xl border border-[#707070] w-full max-w-sm overflow-hidden font-sans text-xs">
+            <div className="bg-white px-3 py-1.5 border-b border-[#e5e5e5] flex items-center justify-between">
+              <span className="font-semibold text-slate-800 text-xs">Caption Numbering</span>
               <button
-                onClick={() => setShowCaptionModal(false)}
-                className="px-4 py-2 rounded-lg text-slate-600 hover:bg-slate-200 font-semibold text-xs"
+                type="button"
+                onClick={() => setShowCaptionNumberingModal(false)}
+                className="w-5 h-5 flex items-center justify-center hover:bg-red-500 hover:text-white text-slate-600 rounded transition"
               >
-                Batal
+                <X className="w-3.5 h-3.5" />
+              </button>
+            </div>
+            <div className="p-4 space-y-3 bg-[#f0f0f0]">
+              <div className="grid grid-cols-3 items-center gap-2">
+                <label className="text-slate-700 font-medium">Format:</label>
+                <div className="col-span-2">
+                  <select
+                    value={captionNumberFormat}
+                    onChange={(e) => setCaptionNumberFormat(e.target.value)}
+                    className="w-full px-2 py-0.5 bg-white border border-[#7a7a7a] text-slate-800 text-xs focus:outline-none"
+                  >
+                    <option value="1, 2, 3, ...">1, 2, 3, ...</option>
+                    <option value="a, b, c, ...">a, b, c, ...</option>
+                    <option value="A, B, C, ...">A, B, C, ...</option>
+                    <option value="i, ii, iii, ...">i, ii, iii, ...</option>
+                    <option value="I, II, III, ...">I, II, III, ...</option>
+                  </select>
+                </div>
+              </div>
+
+              <div className="pt-1">
+                <label className="flex items-center gap-2 cursor-pointer text-slate-800">
+                  <input
+                    type="checkbox"
+                    checked={captionIncludeChapter}
+                    onChange={(e) => setCaptionIncludeChapter(e.target.checked)}
+                    className="rounded text-blue-600"
+                  />
+                  <span>Include chapter number</span>
+                </label>
+              </div>
+
+              {captionIncludeChapter && (
+                <div className="pl-5 space-y-2 border-l-2 border-blue-200">
+                  <div className="grid grid-cols-3 items-center gap-2">
+                    <label className="text-slate-700 text-[11px]">Chapter starts with style:</label>
+                    <div className="col-span-2">
+                      <select
+                        value={captionChapterStyle}
+                        onChange={(e) => setCaptionChapterStyle(e.target.value)}
+                        className="w-full px-2 py-0.5 bg-white border border-[#7a7a7a] text-slate-800 text-xs focus:outline-none"
+                      >
+                        <option value="Heading 1">Heading 1</option>
+                        <option value="Heading 2">Heading 2</option>
+                        <option value="Heading 3">Heading 3</option>
+                      </select>
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-3 items-center gap-2">
+                    <label className="text-slate-700 text-[11px]">Use separator:</label>
+                    <div className="col-span-2">
+                      <select
+                        value={captionChapterSeparator}
+                        onChange={(e) => setCaptionChapterSeparator(e.target.value)}
+                        className="w-full px-2 py-0.5 bg-white border border-[#7a7a7a] text-slate-800 text-xs focus:outline-none"
+                      >
+                        <option value=". (period)">. (period)</option>
+                        <option value="- (hyphen)">- (hyphen)</option>
+                        <option value=": (colon)">: (colon)</option>
+                        <option value="– (en dash)">– (en dash)</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              <div className="p-2 bg-white border border-slate-300 rounded text-[11px] text-slate-600">
+                <span className="font-semibold text-slate-700">Contoh format: </span>
+                <span>{captionIncludeChapter ? `2${captionChapterSeparator.slice(0, 1)}1` : '1'}, {captionIncludeChapter ? `2${captionChapterSeparator.slice(0, 1)}A` : 'A'}</span>
+              </div>
+
+              <div className="flex items-center justify-end gap-2 pt-2">
+                <button
+                  type="button"
+                  onClick={handleApplyCaptionNumbering}
+                  className="px-5 py-1 bg-[#0067b8] hover:bg-[#005da6] text-white font-medium rounded-sm border border-[#005da6] text-xs"
+                >
+                  OK
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setShowCaptionNumberingModal(false)}
+                  className="px-4 py-1 bg-[#e1e1e1] hover:bg-[#d0d0d0] border border-[#adadad] rounded-sm text-slate-800 font-medium text-xs"
+                >
+                  Cancel
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ================= NEW LABEL SUB-DIALOG (GAMBAR 1) ================= */}
+      {showNewLabelModal && (
+        <div className="fixed inset-0 z-60 overflow-y-auto bg-black/40 backdrop-blur-2xs flex items-center justify-center p-4 select-none">
+          <div className="bg-[#f0f0f0] rounded-sm shadow-2xl border border-[#707070] w-full max-w-xs overflow-hidden font-sans text-xs">
+            <div className="bg-white px-3 py-1.5 border-b border-[#e5e5e5] flex items-center justify-between">
+              <span className="font-semibold text-slate-800 text-xs">New Label</span>
+              <button
+                type="button"
+                onClick={() => setShowNewLabelModal(false)}
+                className="w-5 h-5 flex items-center justify-center hover:bg-red-500 hover:text-white text-slate-600 rounded transition"
+              >
+                <X className="w-3.5 h-3.5" />
+              </button>
+            </div>
+            <div className="p-4 space-y-3 bg-[#f0f0f0]">
+              <div>
+                <label className="block text-slate-700 font-medium mb-1">
+                  Label:
+                </label>
+                <input
+                  type="text"
+                  value={newLabelInput}
+                  onChange={(e) => setNewLabelInput(e.target.value)}
+                  placeholder="e.g. Bagan Alir / Lampiran"
+                  className="w-full px-2 py-1 bg-white border border-[#7a7a7a] focus:border-blue-600 focus:outline-none text-slate-900 text-xs shadow-inner"
+                  autoFocus
+                />
+              </div>
+
+              <div className="flex items-center justify-end gap-2 pt-2">
+                <button
+                  type="button"
+                  onClick={() => handleAddNewLabel(newLabelInput)}
+                  className="px-5 py-1 bg-[#0067b8] hover:bg-[#005da6] text-white font-medium rounded-sm border border-[#005da6] text-xs"
+                >
+                  OK
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setShowNewLabelModal(false)}
+                  className="px-4 py-1 bg-[#e1e1e1] hover:bg-[#d0d0d0] border border-[#adadad] rounded-sm text-slate-800 font-medium text-xs"
+                >
+                  Cancel
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ================= AUTOCAPTION INFO DIALOG ================= */}
+      {showAutoCaptionModal && (
+        <div className="fixed inset-0 z-60 overflow-y-auto bg-black/40 backdrop-blur-2xs flex items-center justify-center p-4 select-none">
+          <div className="bg-[#f0f0f0] rounded-sm shadow-2xl border border-[#707070] w-full max-w-sm overflow-hidden font-sans text-xs">
+            <div className="bg-white px-3 py-1.5 border-b border-[#e5e5e5] flex items-center justify-between">
+              <span className="font-semibold text-slate-800 text-xs">AutoCaption</span>
+              <button
+                type="button"
+                onClick={() => setShowAutoCaptionModal(false)}
+                className="w-5 h-5 flex items-center justify-center hover:bg-red-500 hover:text-white text-slate-600 rounded transition"
+              >
+                <X className="w-3.5 h-3.5" />
+              </button>
+            </div>
+            <div className="p-4 space-y-3 bg-[#f0f0f0]">
+              <p className="text-slate-700 leading-relaxed">
+                <strong>AutoCaption Aktif:</strong> Keterangan resmi (caption) tabel dan gambar akan otomatis diberi nomor urut teratur sesuai dengan Bab dokumen RKPD setiap kali tabel atau gambar disisipkan.
+              </p>
+              <div className="flex items-center justify-end pt-2">
+                <button
+                  type="button"
+                  onClick={() => setShowAutoCaptionModal(false)}
+                  className="px-5 py-1 bg-[#0067b8] hover:bg-[#005da6] text-white font-medium rounded-sm border border-[#005da6] text-xs"
+                >
+                  OK
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ================= DEFINE NEW NUMBER FORMAT MODAL (GAMBAR 2) ================= */}
+      {showDefineNumberFormatModal && (
+        <div className="fixed inset-0 z-60 overflow-y-auto bg-black/40 backdrop-blur-2xs flex items-center justify-center p-4 select-none">
+          <div className="bg-[#f0f0f0] rounded-sm shadow-2xl border border-[#707070] w-full max-w-sm overflow-hidden font-sans text-xs">
+            <div className="bg-white px-3 py-1.5 border-b border-[#e5e5e5] flex items-center justify-between">
+              <span className="font-semibold text-slate-800 text-xs">Define New Number Format</span>
+              <button
+                type="button"
+                onClick={() => setShowDefineNumberFormatModal(false)}
+                className="w-5 h-5 flex items-center justify-center hover:bg-red-500 hover:text-white text-slate-600 rounded transition"
+              >
+                <X className="w-3.5 h-3.5" />
+              </button>
+            </div>
+            <div className="p-4 space-y-3 bg-[#f0f0f0]">
+              <div className="grid grid-cols-3 items-center gap-2">
+                <label className="text-slate-700 font-medium">Number style:</label>
+                <div className="col-span-2">
+                  <select
+                    value={customNumberStyleChoice}
+                    onChange={(e) => setCustomNumberStyleChoice(e.target.value)}
+                    className="w-full px-2 py-0.5 bg-white border border-[#7a7a7a] text-slate-800 text-xs focus:outline-none"
+                  >
+                    <option value="1, 2, 3">1, 2, 3</option>
+                    <option value="a, b, c">a, b, c</option>
+                    <option value="A, B, C">A, B, C</option>
+                    <option value="i, ii, iii">i, ii, iii</option>
+                    <option value="I, II, III">I, II, III</option>
+                  </select>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-3 items-center gap-2">
+                <label className="text-slate-700 font-medium">Number format:</label>
+                <div className="col-span-2">
+                  <input
+                    type="text"
+                    value={customNumberFormatStr}
+                    onChange={(e) => setCustomNumberFormatStr(e.target.value)}
+                    className="w-full px-2 py-0.5 bg-white border border-[#7a7a7a] text-slate-800 text-xs focus:outline-none"
+                  />
+                </div>
+              </div>
+
+              <div className="grid grid-cols-3 items-center gap-2">
+                <label className="text-slate-700 font-medium">Alignment:</label>
+                <div className="col-span-2">
+                  <select
+                    value={customNumberAlign}
+                    onChange={(e) => setCustomNumberAlign(e.target.value)}
+                    className="w-full px-2 py-0.5 bg-white border border-[#7a7a7a] text-slate-800 text-xs focus:outline-none"
+                  >
+                    <option value="Left">Left</option>
+                    <option value="Centered">Centered</option>
+                    <option value="Right">Right</option>
+                  </select>
+                </div>
+              </div>
+
+              {/* Preview */}
+              <div className="p-2.5 bg-white border border-slate-300 rounded text-slate-800 text-xs">
+                <span className="font-semibold text-slate-500 block mb-1">Preview:</span>
+                <div className="space-y-0.5">
+                  <p>{customNumberFormatStr.replace('1', '1')} Naskah butir pertama</p>
+                  <p>{customNumberFormatStr.replace('1', '2')} Naskah butir kedua</p>
+                  <p>{customNumberFormatStr.replace('1', '3')} Naskah butir ketiga</p>
+                </div>
+              </div>
+
+              <div className="flex items-center justify-end gap-2 pt-2">
+                <button
+                  type="button"
+                  onClick={() => {
+                    setShowDefineNumberFormatModal(false);
+                    applyNumberingFormat('decimal');
+                  }}
+                  className="px-5 py-1 bg-[#0067b8] hover:bg-[#005da6] text-white font-medium rounded-sm border border-[#005da6] text-xs"
+                >
+                  OK
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setShowDefineNumberFormatModal(false)}
+                  className="px-4 py-1 bg-[#e1e1e1] hover:bg-[#d0d0d0] border border-[#adadad] rounded-sm text-slate-800 font-medium text-xs"
+                >
+                  Cancel
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ================= SET NUMBERING VALUE MODAL (GAMBAR 2) ================= */}
+      {showSetNumberValueModal && (
+        <div className="fixed inset-0 z-60 overflow-y-auto bg-black/40 backdrop-blur-2xs flex items-center justify-center p-4 select-none">
+          <div className="bg-[#f0f0f0] rounded-sm shadow-2xl border border-[#707070] w-full max-w-sm overflow-hidden font-sans text-xs">
+            <div className="bg-white px-3 py-1.5 border-b border-[#e5e5e5] flex items-center justify-between">
+              <span className="font-semibold text-slate-800 text-xs">Set Numbering Value</span>
+              <button
+                type="button"
+                onClick={() => setShowSetNumberValueModal(false)}
+                className="w-5 h-5 flex items-center justify-center hover:bg-red-500 hover:text-white text-slate-600 rounded transition"
+              >
+                <X className="w-3.5 h-3.5" />
+              </button>
+            </div>
+            <div className="p-4 space-y-3 bg-[#f0f0f0]">
+              <div className="space-y-2">
+                <label className="flex items-center gap-2 cursor-pointer text-slate-800 font-medium">
+                  <input
+                    type="radio"
+                    name="numValChoice"
+                    checked={numberValueChoice === 'NEW'}
+                    onChange={() => setNumberValueChoice('NEW')}
+                    className="text-blue-600"
+                  />
+                  <span>Start new list</span>
+                </label>
+
+                {numberValueChoice === 'NEW' && (
+                  <div className="flex items-center gap-2 pl-6">
+                    <span className="text-slate-600">Set value to:</span>
+                    <input
+                      type="number"
+                      min="1"
+                      value={numberListStartVal}
+                      onChange={(e) => setNumberListStartVal(parseInt(e.target.value) || 1)}
+                      className="w-16 px-2 py-0.5 bg-white border border-[#7a7a7a] text-slate-800 text-xs focus:outline-none"
+                    />
+                  </div>
+                )}
+
+                <label className="flex items-center gap-2 cursor-pointer text-slate-800 font-medium">
+                  <input
+                    type="radio"
+                    name="numValChoice"
+                    checked={numberValueChoice === 'CONTINUE'}
+                    onChange={() => setNumberValueChoice('CONTINUE')}
+                    className="text-blue-600"
+                  />
+                  <span>Continue from previous list</span>
+                </label>
+              </div>
+
+              <div className="flex items-center justify-end gap-2 pt-2">
+                <button
+                  type="button"
+                  onClick={() => applySetNumberValue(numberValueChoice === 'NEW' ? numberListStartVal : 1)}
+                  className="px-5 py-1 bg-[#0067b8] hover:bg-[#005da6] text-white font-medium rounded-sm border border-[#005da6] text-xs"
+                >
+                  OK
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setShowSetNumberValueModal(false)}
+                  className="px-4 py-1 bg-[#e1e1e1] hover:bg-[#d0d0d0] border border-[#adadad] rounded-sm text-slate-800 font-medium text-xs"
+                >
+                  Cancel
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ================= WORD FONT DIALOG (GAMBAR 3) ================= */}
+      {showFontDialog && (
+        <div className="fixed inset-0 z-60 overflow-y-auto bg-black/40 backdrop-blur-2xs flex items-center justify-center p-4 select-none">
+          <div className="bg-[#f0f0f0] rounded-sm shadow-2xl border border-[#707070] w-full max-w-md overflow-hidden font-sans text-xs">
+            <div className="bg-white px-3 py-1.5 border-b border-[#e5e5e5] flex items-center justify-between">
+              <span className="font-semibold text-slate-800 text-xs">Font</span>
+              <button
+                type="button"
+                onClick={() => setShowFontDialog(false)}
+                className="w-5 h-5 flex items-center justify-center hover:bg-red-500 hover:text-white text-slate-600 rounded transition"
+              >
+                <X className="w-3.5 h-3.5" />
+              </button>
+            </div>
+            <div className="p-4 space-y-3 bg-[#f0f0f0]">
+              <div className="grid grid-cols-2 gap-3">
+                <div>
+                  <label className="block text-slate-700 font-medium mb-1">Font:</label>
+                  <select
+                    value={fontFamily}
+                    onChange={(e) => setFontFamily(e.target.value)}
+                    className="w-full px-2 py-1 bg-white border border-[#7a7a7a] text-slate-800 text-xs"
+                  >
+                    <option value="'Bookman Old Style', Georgia, serif">Bookman Old Style (Perbup)</option>
+                    <option value="Aptos, sans-serif">Aptos (Body)</option>
+                    <option value="Arial, sans-serif">Arial</option>
+                    <option value="'Times New Roman', serif">Times New Roman</option>
+                    <option value="'Segoe UI', sans-serif">Segoe UI</option>
+                    <option value="Calibri, sans-serif">Calibri</option>
+                  </select>
+                </div>
+                <div>
+                  <label className="block text-slate-700 font-medium mb-1">Size:</label>
+                  <select
+                    value={fontSize}
+                    onChange={(e) => setFontSize(e.target.value)}
+                    className="w-full px-2 py-1 bg-white border border-[#7a7a7a] text-slate-800 text-xs"
+                  >
+                    {['8pt', '9pt', '10pt', '10.5pt', '11pt', '12pt', '14pt', '16pt', '18pt'].map(s => (
+                      <option key={s} value={s}>{s}</option>
+                    ))}
+                  </select>
+                </div>
+              </div>
+
+              <div className="p-3 bg-white border border-slate-300 rounded text-center">
+                <span className="text-[10px] text-slate-400 block mb-1 font-mono">Preview:</span>
+                <p style={{ fontFamily: fontFamily, fontSize: fontSize }} className="text-slate-900 m-0 font-medium">
+                  Rencana Kerja Pemerintah Daerah (RKPD) Cilacap 2027
+                </p>
+              </div>
+
+              <div className="flex items-center justify-end gap-2 pt-2">
+                <button
+                  type="button"
+                  onClick={() => {
+                    execCmd('fontName', fontFamily);
+                    setShowFontDialog(false);
+                  }}
+                  className="px-5 py-1 bg-[#0067b8] hover:bg-[#005da6] text-white font-medium rounded-sm border border-[#005da6] text-xs"
+                >
+                  OK
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setShowFontDialog(false)}
+                  className="px-4 py-1 bg-[#e1e1e1] hover:bg-[#d0d0d0] border border-[#adadad] rounded-sm text-slate-800 font-medium text-xs"
+                >
+                  Cancel
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ================= WORD PARAGRAPH DIALOG (GAMBAR 3) ================= */}
+      {showParagraphDialog && (
+        <div className="fixed inset-0 z-60 overflow-y-auto bg-black/40 backdrop-blur-2xs flex items-center justify-center p-4 select-none">
+          <div className="bg-[#f0f0f0] rounded-sm shadow-2xl border border-[#707070] w-full max-w-md overflow-hidden font-sans text-xs">
+            <div className="bg-white px-3 py-1.5 border-b border-[#e5e5e5] flex items-center justify-between">
+              <span className="font-semibold text-slate-800 text-xs">Paragraph</span>
+              <button
+                type="button"
+                onClick={() => setShowParagraphDialog(false)}
+                className="w-5 h-5 flex items-center justify-center hover:bg-red-500 hover:text-white text-slate-600 rounded transition"
+              >
+                <X className="w-3.5 h-3.5" />
+              </button>
+            </div>
+            <div className="p-4 space-y-3 bg-[#f0f0f0]">
+              <div className="grid grid-cols-3 items-center gap-2">
+                <label className="text-slate-700 font-medium">Alignment:</label>
+                <div className="col-span-2">
+                  <select
+                    value={documentAlignment}
+                    onChange={(e) => {
+                      setDocumentAlignment(e.target.value);
+                      if (e.target.value === 'left') execCmd('justifyLeft');
+                      else if (e.target.value === 'center') execCmd('justifyCenter');
+                      else if (e.target.value === 'right') execCmd('justifyRight');
+                      else if (e.target.value === 'justify') execCmd('justifyFull');
+                    }}
+                    className="w-full px-2 py-0.5 bg-white border border-[#7a7a7a] text-slate-800 text-xs focus:outline-none"
+                  >
+                    <option value="justify">Justified (Rata Kiri-Kanan Standar Perbup)</option>
+                    <option value="left">Left (Rata Kiri)</option>
+                    <option value="center">Centered (Tengah)</option>
+                    <option value="right">Right (Kanan)</option>
+                  </select>
+                </div>
+              </div>
+
+              <div className="border border-[#a0a0a0] rounded-sm p-3 space-y-2">
+                <span className="font-semibold text-slate-700 block text-[11px]">Spacing:</span>
+                <div className="grid grid-cols-2 gap-3">
+                  <div>
+                    <label className="text-slate-600 block mb-1">Before (pt):</label>
+                    <input
+                      type="number"
+                      min="0"
+                      max="36"
+                      value={spacingBeforePt}
+                      onChange={(e) => setSpacingBeforePt(parseInt(e.target.value) || 0)}
+                      className="w-full px-2 py-0.5 bg-white border border-[#7a7a7a] text-slate-800 text-xs"
+                    />
+                  </div>
+                  <div>
+                    <label className="text-slate-600 block mb-1">After (pt):</label>
+                    <input
+                      type="number"
+                      min="0"
+                      max="36"
+                      value={spacingAfterPt}
+                      onChange={(e) => setSpacingAfterPt(parseInt(e.target.value) || 0)}
+                      className="w-full px-2 py-0.5 bg-white border border-[#7a7a7a] text-slate-800 text-xs"
+                    />
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-3 items-center gap-2 pt-1">
+                  <label className="text-slate-600">Line spacing:</label>
+                  <div className="col-span-2">
+                    <select
+                      value={lineSpacing}
+                      onChange={(e) => setLineSpacing(e.target.value)}
+                      className="w-full px-2 py-0.5 bg-white border border-[#7a7a7a] text-slate-800 text-xs"
+                    >
+                      <option value="1.0">Single (1.0)</option>
+                      <option value="1.15">1.15 lines</option>
+                      <option value="1.35">1.35 lines (Standar Perbup RKPD)</option>
+                      <option value="1.5">1.5 lines</option>
+                      <option value="2.0">Double (2.0)</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+
+              <div className="flex items-center justify-end gap-2 pt-2">
+                <button
+                  type="button"
+                  onClick={() => setShowParagraphDialog(false)}
+                  className="px-5 py-1 bg-[#0067b8] hover:bg-[#005da6] text-white font-medium rounded-sm border border-[#005da6] text-xs"
+                >
+                  OK
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setShowParagraphDialog(false)}
+                  className="px-4 py-1 bg-[#e1e1e1] hover:bg-[#d0d0d0] border border-[#adadad] rounded-sm text-slate-800 font-medium text-xs"
+                >
+                  Cancel
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ================= 3. MICROSOFT WORD RIGHT-CLICK CONTEXT MENU & MINI-TOOLBAR (GAMBAR 3) ================= */}
+      {contextMenu.visible && (
+        <div
+          id="word-context-menu"
+          style={{ top: `${contextMenu.y}px`, left: `${contextMenu.x}px` }}
+          onClick={(e) => e.stopPropagation()}
+          className="fixed z-50 flex flex-col select-none animate-in fade-in zoom-in-95 duration-100 font-sans"
+        >
+          {/* FLOATING MINI-TOOLBAR */}
+          <div className="bg-white border border-slate-300 rounded-lg shadow-xl p-1.5 mb-1 flex flex-col gap-1 w-64 border-t-2 border-t-blue-600">
+            {/* Mini-Toolbar Row 1 */}
+            <div className="flex items-center gap-1">
+              {/* Font Family Dropdown */}
+              <select
+                value={fontFamily}
+                onChange={(e) => {
+                  setFontFamily(e.target.value);
+                  execCmd('fontName', e.target.value);
+                }}
+                className="text-[11px] h-6 px-1 border border-slate-300 rounded bg-white font-sans max-w-[100px] text-slate-700 focus:outline-none"
+                title="Font"
+              >
+                <option value="Aptos, sans-serif">Aptos (Body)</option>
+                <option value="'Bookman Old Style', Georgia, serif">Bookman Old Style</option>
+                <option value="Arial, sans-serif">Arial</option>
+                <option value="'Times New Roman', serif">Times New Roman</option>
+                <option value="'Segoe UI', sans-serif">Segoe UI</option>
+                <option value="Calibri, sans-serif">Calibri</option>
+              </select>
+
+              {/* Font Size Dropdown */}
+              <select
+                value={fontSize}
+                onChange={(e) => {
+                  setFontSize(e.target.value);
+                  execCmd('fontSize', '3');
+                }}
+                className="text-[11px] h-6 px-1 border border-slate-300 rounded bg-white font-sans w-12 text-slate-700 focus:outline-none"
+                title="Font Size"
+              >
+                <option value="8pt">8</option>
+                <option value="9pt">9</option>
+                <option value="10pt">10</option>
+                <option value="10.5pt">10.5</option>
+                <option value="11pt">11</option>
+                <option value="12pt">12</option>
+                <option value="14pt">14</option>
+                <option value="16pt">16</option>
+                <option value="18pt">18</option>
+              </select>
+
+              {/* Grow Font */}
+              <button
+                type="button"
+                onClick={() => {
+                  const sizes = ['8pt', '9pt', '10pt', '10.5pt', '11pt', '12pt', '14pt', '16pt', '18pt'];
+                  const idx = sizes.indexOf(fontSize);
+                  if (idx < sizes.length - 1) setFontSize(sizes[idx + 1]);
+                }}
+                className="p-1 hover:bg-slate-100 rounded text-slate-700 text-xs font-bold"
+                title="Increase Font Size (Grow Font)"
+              >
+                A<span className="text-[9px] align-top">^</span>
+              </button>
+
+              {/* Shrink Font */}
+              <button
+                type="button"
+                onClick={() => {
+                  const sizes = ['8pt', '9pt', '10pt', '10.5pt', '11pt', '12pt', '14pt', '16pt', '18pt'];
+                  const idx = sizes.indexOf(fontSize);
+                  if (idx > 0) setFontSize(sizes[idx - 1]);
+                }}
+                className="p-1 hover:bg-slate-100 rounded text-slate-700 text-xs font-bold"
+                title="Decrease Font Size (Shrink Font)"
+              >
+                A<span className="text-[9px] align-bottom">v</span>
+              </button>
+
+              {/* Format Painter */}
+              <button
+                type="button"
+                onClick={() => execCmd('removeFormat')}
+                className="p-1 hover:bg-slate-100 rounded text-slate-700"
+                title="Clear Formatting"
+              >
+                <Paintbrush className="w-3.5 h-3.5" />
+              </button>
+
+              {/* New Comment */}
+              <button
+                type="button"
+                onClick={() => {
+                  setContextMenu(prev => ({ ...prev, visible: false }));
+                  setShowReviewPane(true);
+                  setRightTab('COMMENTS');
+                  if (contextMenu.selectedText) {
+                    setNewComment(`"${contextMenu.selectedText}" - `);
+                  }
+                }}
+                className="ml-auto px-1.5 py-0.5 bg-emerald-50 hover:bg-emerald-100 text-emerald-800 border border-emerald-300 rounded text-[10px] font-semibold flex items-center gap-1 transition"
+                title="New Comment"
+              >
+                <MessageSquare className="w-3 h-3 text-emerald-600" />
+                <span>New Comment</span>
+              </button>
+            </div>
+
+            {/* Mini-Toolbar Row 2 */}
+            <div className="flex items-center gap-1 pt-0.5 border-t border-slate-100">
+              <button
+                type="button"
+                onClick={() => execCmd('bold')}
+                className="p-1 hover:bg-slate-100 rounded text-slate-700 font-bold"
+                title="Bold"
+              >
+                <Bold className="w-3.5 h-3.5" />
               </button>
               <button
-                onClick={insertCaption}
-                className="px-5 py-2 bg-[#185abd] hover:bg-[#144b9e] text-white rounded-lg font-bold text-xs shadow-sm flex items-center gap-1.5"
+                type="button"
+                onClick={() => execCmd('italic')}
+                className="p-1 hover:bg-slate-100 rounded text-slate-700 italic"
+                title="Italic"
               >
-                <Tag className="w-3.5 h-3.5" />
-                <span>Sisipkan Keterangan</span>
+                <Italic className="w-3.5 h-3.5" />
               </button>
+              <button
+                type="button"
+                onClick={() => execCmd('underline')}
+                className="p-1 hover:bg-slate-100 rounded text-slate-700 underline"
+                title="Underline"
+              >
+                <Underline className="w-3.5 h-3.5" />
+              </button>
+
+              {/* Highlight Marker */}
+              <button
+                type="button"
+                onClick={() => execCmd('hiliteColor', '#fef08a')}
+                className="p-1 hover:bg-slate-100 rounded text-amber-600"
+                title="Highlight Color"
+              >
+                <Highlighter className="w-3.5 h-3.5" />
+              </button>
+
+              {/* Font Color */}
+              <button
+                type="button"
+                onClick={() => execCmd('foreColor', '#dc2626')}
+                className="p-1 hover:bg-slate-100 rounded text-red-600 font-bold text-xs"
+                title="Font Color"
+              >
+                A
+              </button>
+
+              {/* Bullets */}
+              <button
+                type="button"
+                onClick={() => execCmd('insertUnorderedList')}
+                className="p-1 hover:bg-slate-100 rounded text-slate-700"
+                title="Bullets"
+              >
+                <List className="w-3.5 h-3.5" />
+              </button>
+
+              {/* Numbering */}
+              <button
+                type="button"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setShowNumberingLibrary(!showNumberingLibrary);
+                }}
+                className="p-1 hover:bg-slate-100 rounded text-slate-700 flex items-center"
+                title="Numbering"
+              >
+                <ListOrdered className="w-3.5 h-3.5" />
+                <ChevronDown className="w-2.5 h-2.5 text-slate-400" />
+              </button>
+
+              {/* Styles */}
+              <select
+                onChange={(e) => {
+                  const val = e.target.value;
+                  if (val === 'h1') execCmd('formatBlock', '<h1>');
+                  else if (val === 'h2') execCmd('formatBlock', '<h2>');
+                  else if (val === 'h3') execCmd('formatBlock', '<h3>');
+                  else if (val === 'h4') execCmd('formatBlock', '<h4>');
+                  else execCmd('formatBlock', '<p>');
+                }}
+                className="text-[11px] h-6 px-1 border border-slate-300 rounded bg-white font-sans max-w-[70px] text-slate-700 ml-auto focus:outline-none"
+                title="Styles"
+              >
+                <option value="p">Normal</option>
+                <option value="h1">Heading 1</option>
+                <option value="h2">Heading 2</option>
+                <option value="h3">Heading 3</option>
+                <option value="h4">Heading 4</option>
+              </select>
+            </div>
+          </div>
+
+          {/* MAIN CONTEXT MENU BOX */}
+          <div className="bg-white border border-slate-300 rounded-lg shadow-2xl w-64 py-1 text-xs text-slate-800">
+            {/* Search the menus */}
+            <div className="px-2 pb-1 mb-1 border-b border-slate-200">
+              <div className="flex items-center gap-1.5 px-2 py-1 bg-slate-50 border border-slate-200 rounded text-slate-500">
+                <Search className="w-3.5 h-3.5 text-slate-400 shrink-0" />
+                <input
+                  type="text"
+                  value={contextMenuSearch}
+                  onChange={(e) => setContextMenuSearch(e.target.value)}
+                  placeholder="Search the menus"
+                  className="w-full bg-transparent text-xs text-slate-800 focus:outline-none"
+                />
+              </div>
+            </div>
+
+            {/* Menu items matching Image 3 */}
+            <div className="space-y-0.5">
+              {/* Cut */}
+              {(!contextMenuSearch || 'cut'.includes(contextMenuSearch.toLowerCase())) && (
+                <button
+                  type="button"
+                  disabled={!contextMenu.selectedText}
+                  onClick={() => {
+                    document.execCommand('cut');
+                    setContextMenu(prev => ({ ...prev, visible: false }));
+                  }}
+                  className="w-full text-left px-3 py-1.5 hover:bg-slate-100 disabled:opacity-40 flex items-center gap-2.5 transition"
+                >
+                  <Scissors className="w-3.5 h-3.5 text-slate-500" />
+                  <span>Cut</span>
+                </button>
+              )}
+
+              {/* Copy */}
+              {(!contextMenuSearch || 'copy'.includes(contextMenuSearch.toLowerCase())) && (
+                <button
+                  type="button"
+                  disabled={!contextMenu.selectedText}
+                  onClick={() => {
+                    if (contextMenu.selectedText) {
+                      navigator.clipboard.writeText(contextMenu.selectedText);
+                    }
+                    setContextMenu(prev => ({ ...prev, visible: false }));
+                  }}
+                  className="w-full text-left px-3 py-1.5 hover:bg-slate-100 disabled:opacity-40 flex items-center gap-2.5 transition"
+                >
+                  <Copy className="w-3.5 h-3.5 text-slate-500" />
+                  <span>Copy</span>
+                </button>
+              )}
+
+              {/* Paste Options */}
+              {(!contextMenuSearch || 'paste'.includes(contextMenuSearch.toLowerCase())) && (
+                <div className="px-3 py-1 flex items-center justify-between hover:bg-slate-50">
+                  <span className="text-[11px] text-slate-600 font-medium">Paste Options:</span>
+                  <div className="flex items-center gap-1">
+                    <button
+                      type="button"
+                      onClick={() => handlePasteFromClipboard(false)}
+                      className="p-1 hover:bg-slate-200 border border-slate-300 rounded shadow-2xs text-slate-700"
+                      title="Paste (Keep Source Formatting)"
+                    >
+                      <Clipboard className="w-3.5 h-3.5 text-amber-700" />
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => handlePasteFromClipboard(true)}
+                      className="p-1 hover:bg-slate-200 border border-slate-300 rounded shadow-2xs text-slate-700 text-[10px] font-bold"
+                      title="Paste (Text Only)"
+                    >
+                      A
+                    </button>
+                  </div>
+                </div>
+              )}
+
+              {/* Copy Link to Location */}
+              {(!contextMenuSearch || 'copy link to location'.includes(contextMenuSearch.toLowerCase())) && (
+                <button
+                  type="button"
+                  onClick={handleCopyLinkToLocation}
+                  className="w-full text-left px-3 py-1.5 hover:bg-slate-100 flex items-center gap-2.5 transition"
+                >
+                  <LinkIcon className="w-3.5 h-3.5 text-blue-600" />
+                  <span>Copy Link to Location...</span>
+                </button>
+              )}
+
+              <div className="my-1 border-t border-slate-200" />
+
+              {/* Font... */}
+              {(!contextMenuSearch || 'font'.includes(contextMenuSearch.toLowerCase())) && (
+                <button
+                  type="button"
+                  onClick={() => {
+                    setContextMenu(prev => ({ ...prev, visible: false }));
+                    setShowFontDialog(true);
+                  }}
+                  className="w-full text-left px-3 py-1.5 hover:bg-slate-100 flex items-center gap-2.5 transition"
+                >
+                  <Type className="w-3.5 h-3.5 text-slate-500" />
+                  <span>Font...</span>
+                </button>
+              )}
+
+              {/* Paragraph... */}
+              {(!contextMenuSearch || 'paragraph'.includes(contextMenuSearch.toLowerCase())) && (
+                <button
+                  type="button"
+                  onClick={() => {
+                    setContextMenu(prev => ({ ...prev, visible: false }));
+                    setShowParagraphDialog(true);
+                  }}
+                  className="w-full text-left px-3 py-1.5 hover:bg-slate-100 flex items-center gap-2.5 transition"
+                >
+                  <AlignJustify className="w-3.5 h-3.5 text-slate-500" />
+                  <span>Paragraph...</span>
+                </button>
+              )}
+
+              {/* Insert Caption... */}
+              {(!contextMenuSearch || 'caption'.includes(contextMenuSearch.toLowerCase())) && (
+                <button
+                  type="button"
+                  onClick={() => {
+                    setContextMenu(prev => ({ ...prev, visible: false }));
+                    setShowCaptionModal(true);
+                  }}
+                  className="w-full text-left px-3 py-1.5 hover:bg-slate-100 flex items-center gap-2.5 transition text-blue-900 font-semibold"
+                >
+                  <Tag className="w-3.5 h-3.5 text-amber-600" />
+                  <span>Insert Caption...</span>
+                </button>
+              )}
+
+              {/* Synonyms > */}
+              {(!contextMenuSearch || 'synonyms'.includes(contextMenuSearch.toLowerCase())) && (
+                <div className="relative">
+                  <button
+                    type="button"
+                    onMouseEnter={() => setShowSynonymsSubmenu(true)}
+                    onClick={() => setShowSynonymsSubmenu(!showSynonymsSubmenu)}
+                    className="w-full text-left px-3 py-1.5 hover:bg-slate-100 flex items-center justify-between transition"
+                  >
+                    <div className="flex items-center gap-2.5">
+                      <Sparkles className="w-3.5 h-3.5 text-purple-600" />
+                      <span>Synonyms</span>
+                    </div>
+                    <ChevronRight className="w-3 h-3 text-slate-400" />
+                  </button>
+
+                  {/* Synonyms Submenu */}
+                  {showSynonymsSubmenu && (
+                    <div
+                      onMouseLeave={() => setShowSynonymsSubmenu(false)}
+                      className="absolute left-full top-0 ml-1 bg-white border border-slate-300 rounded-lg shadow-xl py-1 w-48 z-50 text-xs"
+                    >
+                      <div className="px-2.5 py-1 text-[10px] font-bold uppercase text-slate-400 tracking-wider">
+                        Kata Baku Perencanaan:
+                      </div>
+                      {[
+                        'Meningkatkan',
+                        'Mengoptimalkan',
+                        'Mengakselerasi',
+                        'Menyelenggarakan',
+                        'Mengintegrasikan',
+                        'Memantapkan',
+                        'Memberdayakan',
+                        'Mewujudkan'
+                      ].map(word => (
+                        <button
+                          key={word}
+                          type="button"
+                          onClick={() => replaceSelectedWithSynonym(word)}
+                          className="w-full text-left px-3 py-1 hover:bg-blue-50 hover:text-blue-700 text-slate-700 text-[11px]"
+                        >
+                          {word}
+                        </button>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              )}
+
+              {/* Read Aloud */}
+              {(!contextMenuSearch || 'read aloud'.includes(contextMenuSearch.toLowerCase())) && (
+                <button
+                  type="button"
+                  onClick={() => {
+                    handleReadAloud();
+                    setContextMenu(prev => ({ ...prev, visible: false }));
+                  }}
+                  className="w-full text-left px-3 py-1.5 hover:bg-slate-100 flex items-center gap-2.5 transition"
+                >
+                  <Volume2 className="w-3.5 h-3.5 text-slate-500" />
+                  <span>Read Aloud</span>
+                </button>
+              )}
+
+              {/* Translate */}
+              {(!contextMenuSearch || 'translate'.includes(contextMenuSearch.toLowerCase())) && (
+                <button
+                  type="button"
+                  onClick={() => {
+                    handleTranslate();
+                    setContextMenu(prev => ({ ...prev, visible: false }));
+                  }}
+                  className="w-full text-left px-3 py-1.5 hover:bg-slate-100 flex items-center gap-2.5 transition"
+                >
+                  <Languages className="w-3.5 h-3.5 text-slate-500" />
+                  <span>Translate</span>
+                </button>
+              )}
+
+              {/* Link */}
+              {(!contextMenuSearch || 'link'.includes(contextMenuSearch.toLowerCase())) && (
+                <button
+                  type="button"
+                  onClick={() => {
+                    setContextMenu(prev => ({ ...prev, visible: false }));
+                    const url = prompt('Masukkan tautan URL:', 'https://');
+                    if (url) execCmd('createLink', url);
+                  }}
+                  className="w-full text-left px-3 py-1.5 hover:bg-slate-100 flex items-center gap-2.5 transition"
+                >
+                  <LinkIcon className="w-3.5 h-3.5 text-slate-500" />
+                  <span>Link</span>
+                </button>
+              )}
+
+              {/* New Comment */}
+              {(!contextMenuSearch || 'comment'.includes(contextMenuSearch.toLowerCase())) && (
+                <button
+                  type="button"
+                  onClick={() => {
+                    setContextMenu(prev => ({ ...prev, visible: false }));
+                    setShowReviewPane(true);
+                    setRightTab('COMMENTS');
+                    if (contextMenu.selectedText) {
+                      setNewComment(`"${contextMenu.selectedText}" - `);
+                    }
+                  }}
+                  className="w-full text-left px-3 py-1.5 hover:bg-slate-100 flex items-center gap-2.5 transition text-emerald-800 font-semibold"
+                >
+                  <MessageSquare className="w-3.5 h-3.5 text-emerald-600" />
+                  <span>New Comment</span>
+                </button>
+              )}
             </div>
           </div>
         </div>
