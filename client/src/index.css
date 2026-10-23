@@ -588,3 +588,54 @@
   transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
+/* ================= MICROSOFT WORD AUTHENTIC PAGE BREAK STYLING ================= */
+.word-content .page-break,
+.page-break {
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin: 32pt 0 24pt 0 !important;
+  padding: 10px 0 !important;
+  background-color: #f8fafc;
+  border-top: 1.5px dashed #94a3b8;
+  border-bottom: 1.5px dashed #94a3b8;
+  user-select: none;
+  cursor: default;
+  font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 9.5pt;
+  color: #475569;
+  letter-spacing: 0.5px;
+}
+
+.word-content .page-break::before,
+.word-content .page-break::after,
+.page-break::before,
+.page-break::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: repeating-linear-gradient(90deg, #94a3b8, #94a3b8 4px, transparent 4px, transparent 8px);
+}
+
+.word-content .page-break .page-break-label,
+.page-break .page-break-label {
+  font-weight: 600;
+  color: #1e293b;
+  background: #e2e8f0;
+  padding: 2px 12px;
+  border-radius: 4px;
+  border: 1px solid #cbd5e1;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+}
+
+@media print {
+  .word-content .page-break,
+  .page-break {
+    display: none !important;
+    page-break-after: always !important;
+    break-after: page !important;
+  }
+}
+
+

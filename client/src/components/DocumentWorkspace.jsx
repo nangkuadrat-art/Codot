@@ -99,6 +99,7 @@ import TableLayoutRibbon from './TableLayoutRibbon';
 import TableContextMenu from './TableContextMenu';
 import TablePropertiesModal from './TablePropertiesModal';
 import * as tableUtils from '../utils/tableUtils';
+import { HeaderSettingsModal, PageNumberFormatModal } from './HeaderFooterModals';
 
 export default function DocumentWorkspace({
   documentId,
@@ -254,6 +255,26 @@ export default function DocumentWorkspace({
   const [selectedCell, setSelectedCell] = useState(null);
   const [tableContextMenu, setTableContextMenu] = useState({ visible: false, x: 0, y: 0 });
   const [showTablePropertiesModal, setShowTablePropertiesModal] = useState(false);
+
+  // Header, Footer & Page Break Settings (100% Persis Microsoft Word)
+  const [showHeader, setShowHeader] = useState(true);
+  const [showFooter, setShowFooter] = useState(true);
+  const [headerText, setHeaderText] = useState('RKPD Kabupaten Cilacap Tahun 2027');
+  const [footerText, setFooterText] = useState('RKPD Kabupaten Cilacap Tahun 2027');
+  const [differentFirstPage, setDifferentFirstPage] = useState(true);
+  const [pageNumberPosition, setPageNumberPosition] = useState('TOP_RIGHT'); // 'TOP_RIGHT' (Header Kanan - II-3 seperti Gambar), 'BOTTOM_RIGHT', 'BOTTOM_CENTER', 'BOTH'
+  const [pageNumberFormat, setPageNumberFormat] = useState('CHAPTER_PAGE'); // 'CHAPTER_PAGE' (II-3), 'NUMBER' (1, 2, 3), 'ROMAN' (i, ii, iii)
+  const [startPageNumber, setStartPageNumber] = useState(1);
+  const [hideWhiteSpace, setHideWhiteSpace] = useState(false); // Double-click to hide/show white space
+
+  // Dropdown states for Pages & Header/Footer in Insert/Layout Ribbon
+  const [showCoverPageDropdown, setShowCoverPageDropdown] = useState(false);
+  const [showHeaderDropdown, setShowHeaderDropdown] = useState(false);
+  const [showFooterDropdown, setShowFooterDropdown] = useState(false);
+  const [showPageNumberDropdown, setShowPageNumberDropdown] = useState(false);
+  const [showBreaksDropdown, setShowBreaksDropdown] = useState(false);
+  const [showHeaderSettingsModal, setShowHeaderSettingsModal] = useState(false);
+  const [showPageNumberFormatModal, setShowPageNumberFormatModal] = useState(false);
 
   const [watermark, setWatermark] = useState(''); // '', 'DRAFT', 'RAHASIA', 'CONFIDENTIAL'
   const [showRuler, setShowRuler] = useState(true);
@@ -865,9 +886,105 @@ export default function DocumentWorkspace({
     e.target.value = '';
   };
 
-  // Insert Page Break
+  // Get Formatted Page Number ala Microsoft Word (e.g. II-3 as in screenshot)
+  const getFormattedPageNumber = (pageIndex) => {
+    const pageNum = pageIndex + startPageNumber;
+    if (pageNumberFormat === 'CHAPTER_PAGE') {
+      return `${getRomanChapter()}-${pageNum}`;
+    } else if (pageNumberFormat === 'ROMAN') {
+      const romanArr = ['i', 'ii', 'iii', 'iv', 'v', 'vi', 'vii', 'viii', 'ix', 'x', 'xi', 'xii'];
+      return romanArr[pageNum - 1] || `${pageNum}`;
+    }
+    return `${pageNum}`;
+  };
+
+  // Insert Page Break (100% Persis Microsoft Word)
   const insertPageBreak = () => {
-    execCmd('insertHTML', '<div class="page-break"></div><p></p>');
+    const pageBreakHtml = '<div class="page-break" data-page-break="true" contenteditable="false"><span class="page-break-label">Page Break</span></div><p><br></p>';
+    execCmd('insertHTML', pageBreakHtml);
+  };
+
+  // Insert Blank Page (100% Persis Microsoft Word)
+  const insertBlankPage = () => {
+    const newSec = {
+      id: `sec-${Date.now()}`,
+      code: '',
+      title: 'Halaman Baru',
+      content: '<p><br></p>',
+      order: (activeSection?.order || sections.length) + 0.5,
+      canEdit: true,
+      canComment: true,
+      level: 2
+    };
+    const updated = [...sections, newSec].sort((a, b) => a.order - b.order).map((s, idx) => ({ ...s, order: idx + 1 }));
+    setSections(updated);
+    setActiveSectionId(newSec.id);
+  };
+
+  // Insert Official Cover Page
+  const insertOfficialCoverPage = () => {
+    const coverHtml = `
+      <div class="word-cover-page" style="text-align: center; padding: 40pt 20pt; font-family: 'Bookman Old Style', Georgia, serif; min-height: 880px; display: flex; flex-direction: column; justify-content: space-between; border-bottom: 2px solid #cbd5e1; margin-bottom: 28pt;">
+        <div>
+          <p style="font-size: 15pt; font-weight: bold; margin-bottom: 6pt; letter-spacing: 1px;">RENCANA KERJA PEMERINTAH DAERAH</p>
+          <p style="font-size: 15pt; font-weight: bold; margin-bottom: 24pt; letter-spacing: 1px;">KABUPATEN CILACAP</p>
+          <p style="font-size: 18pt; font-weight: bold; color: #1e3a8a; margin-bottom: 36pt;">TAHUN 2027</p>
+          <div style="margin: 30pt auto; width: 120px; height: 120px; border-radius: 50%; background-color: #f1f5f9; display: flex; align-items: center; justify-content: center; border: 2px solid #cbd5e1;">
+            <span style="font-size: 11pt; font-weight: bold; color: #64748b;">LOGO CILACAP</span>
+          </div>
+        </div>
+        <div>
+          <p style="font-size: 12pt; font-weight: bold; margin-bottom: 4pt;">PEMERINTAH KABUPATEN CILACAP</p>
+          <p style="font-size: 10.5pt; color: #475569;">BADAN PERENCANAAN PEMBANGUNAN DAERAH</p>
+          <p style="font-size: 10.5pt; color: #475569; margin-top: 14pt;">TAHUN 2026</p>
+        </div>
+      </div>
+      <div class="page-break" data-page-break="true" contenteditable="false"><span class="page-break-label">Page Break</span></div>
+      <p><br></p>
+    `;
+    if (viewMode === 'SECTION_EDITOR' && editorRef.current) {
+      editorRef.current.innerHTML = coverHtml + editorRef.current.innerHTML;
+      saveSectionContent(editorRef.current.innerHTML, sectionTitle, sectionCode);
+    } else if (sections.length > 0) {
+      const firstSec = sections[0];
+      const updatedHtml = coverHtml + (firstSec.content || '');
+      setSections(prev => prev.map((s, idx) => idx === 0 ? { ...s, content: updatedHtml } : s));
+      api.updateSection(firstSec.id, { content: updatedHtml }).catch(e => console.error(e));
+    }
+  };
+
+  // Insert Minimalist Cover Page
+  const insertMinimalistCoverPage = () => {
+    const coverHtml = `
+      <div class="word-cover-page" style="border: 3px double #185abd; padding: 40pt 28pt; font-family: 'Bookman Old Style', Georgia, serif; min-height: 850px; display: flex; flex-direction: column; justify-content: space-between; margin-bottom: 28pt;">
+        <div style="border-bottom: 2px solid #185abd; padding-bottom: 16pt;">
+          <span style="font-size: 10pt; color: #64748b; font-weight: bold; letter-spacing: 2px;">DOKUMEN RESMI</span>
+          <h1 style="font-size: 20pt; font-weight: bold; color: #0f172a; margin-top: 10pt; text-align: left; line-height: 1.2;">RENCANA KERJA PEMERINTAH DAERAH (RKPD)</h1>
+          <p style="font-size: 13pt; color: #185abd; font-weight: bold; margin-top: 4pt;">KABUPATEN CILACAP TAHUN 2027</p>
+        </div>
+        <div style="border-top: 1px solid #cbd5e1; padding-top: 14pt; display: flex; justify-content: space-between; font-size: 9.5pt; color: #475569;">
+          <span>BAPPEDA KABUPATEN CILACAP</span>
+          <span>TAHUN 2026</span>
+        </div>
+      </div>
+      <div class="page-break" data-page-break="true" contenteditable="false"><span class="page-break-label">Page Break</span></div>
+      <p><br></p>
+    `;
+    if (viewMode === 'SECTION_EDITOR' && editorRef.current) {
+      editorRef.current.innerHTML = coverHtml + editorRef.current.innerHTML;
+      saveSectionContent(editorRef.current.innerHTML, sectionTitle, sectionCode);
+    }
+  };
+
+  // Remove Cover Page
+  const removeCoverPage = () => {
+    if (viewMode === 'SECTION_EDITOR' && editorRef.current) {
+      const cover = editorRef.current.querySelector('.word-cover-page');
+      const pb = editorRef.current.querySelector('.page-break');
+      if (cover) cover.remove();
+      if (pb) pb.remove();
+      saveSectionContent(editorRef.current.innerHTML, sectionTitle, sectionCode);
+    }
   };
 
   // Insert Callout Box
@@ -3241,20 +3358,91 @@ export default function DocumentWorkspace({
             </div>
           )}
 
-          {/* TAB 2: INSERT (Image 2) */}
+          {/* TAB 2: INSERT (100% Persis Gambar Microsoft Word) */}
           {activeRibbonTab === 'INSERT' && (
             <div className="flex items-center space-x-1">
-              {/* Pages Group */}
+              {/* 1. Pages Group (100% Persis Kotak Merah Gambar) */}
               <div className="word-ribbon-group">
-                <div className="flex items-center gap-1 my-auto">
+                <div className="flex flex-col gap-0.5 my-auto">
+                  {/* Cover Page Dropdown */}
+                  <div className="relative">
+                    <button
+                      type="button"
+                      onClick={() => setShowCoverPageDropdown(!showCoverPageDropdown)}
+                      disabled={!activeSection?.canEdit}
+                      className="word-ribbon-btn-small"
+                      title="Cover Page: Sisipkan Halaman Sampul Resmi"
+                    >
+                      <BookOpen className="w-3.5 h-3.5 text-blue-700" />
+                      <span>Cover Page</span>
+                      <ChevronDown className="w-2.5 h-2.5 text-slate-500" />
+                    </button>
+                    {showCoverPageDropdown && (
+                      <div
+                        className="absolute left-0 top-full mt-1 bg-white border border-slate-300 shadow-xl rounded py-1 z-50 w-56 text-[11px]"
+                        onMouseLeave={() => setShowCoverPageDropdown(false)}
+                      >
+                        <div className="px-3 py-1 font-bold text-slate-700 border-b border-slate-100">Pilihan Halaman Sampul</div>
+                        <button
+                          type="button"
+                          onClick={() => {
+                            insertOfficialCoverPage();
+                            setShowCoverPageDropdown(false);
+                          }}
+                          className="w-full text-left px-3 py-2 hover:bg-blue-50 text-slate-800 flex flex-col gap-0.5"
+                        >
+                          <span className="font-semibold text-[#185abd]">Sampul Resmi RKPD Cilacap</span>
+                          <span className="text-[10px] text-slate-500">Format Perbup lengkap Lambang Daerah</span>
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => {
+                            insertMinimalistCoverPage();
+                            setShowCoverPageDropdown(false);
+                          }}
+                          className="w-full text-left px-3 py-2 hover:bg-blue-50 text-slate-800 flex flex-col gap-0.5"
+                        >
+                          <span className="font-semibold text-slate-700">Sampul Eksekutif Minimalis</span>
+                          <span className="text-[10px] text-slate-500">Border biru navy modern</span>
+                        </button>
+                        <div className="border-t border-slate-200 mt-1 pt-1">
+                          <button
+                            type="button"
+                            onClick={() => {
+                              removeCoverPage();
+                              setShowCoverPageDropdown(false);
+                            }}
+                            className="w-full text-left px-3 py-1.5 hover:bg-red-50 text-red-600 font-medium"
+                          >
+                            Hapus Halaman Sampul
+                          </button>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Blank Page Button */}
                   <button
+                    type="button"
+                    onClick={insertBlankPage}
+                    disabled={!activeSection?.canEdit}
+                    className="word-ribbon-btn-small"
+                    title="Blank Page: Sisipkan Halaman Kosong Baru"
+                  >
+                    <FilePlus className="w-3.5 h-3.5 text-blue-700" />
+                    <span>Blank Page</span>
+                  </button>
+
+                  {/* Page Break Button */}
+                  <button
+                    type="button"
                     onClick={insertPageBreak}
                     disabled={!activeSection?.canEdit}
-                    className="word-ribbon-btn-large"
-                    title="Sisipkan Hentian Halaman Baru"
+                    className="word-ribbon-btn-small"
+                    title="Page Break: Sisipkan Hentian Halaman (Ctrl+Enter)"
                   >
-                    <Layers className="w-5 h-5 text-blue-700 mb-0.5" />
-                    <span className="text-[10px]">Page Break</span>
+                    <Split className="w-3.5 h-3.5 text-blue-700" />
+                    <span>Page Break</span>
                   </button>
                 </div>
                 <div className="word-ribbon-group-label">
@@ -3408,6 +3596,184 @@ export default function DocumentWorkspace({
                 </button>
                 <div className="word-ribbon-group-label">
                   <span>Comments</span>
+                </div>
+              </div>
+
+              {/* Header & Footer Group (100% Persis Gambar Microsoft Word) */}
+              <div className="word-ribbon-group">
+                <div className="flex flex-col gap-0.5 my-auto">
+                  {/* Header Dropdown */}
+                  <div className="relative">
+                    <button
+                      type="button"
+                      onClick={() => setShowHeaderDropdown(!showHeaderDropdown)}
+                      className="word-ribbon-btn-small"
+                      title="Header: Pengaturan Kepala Halaman"
+                    >
+                      <LayoutTemplate className="w-3.5 h-3.5 text-blue-700" />
+                      <span>Header</span>
+                      <ChevronDown className="w-2.5 h-2.5 text-slate-500" />
+                    </button>
+                    {showHeaderDropdown && (
+                      <div
+                        className="absolute left-0 top-full mt-1 bg-white border border-slate-300 shadow-xl rounded py-1 z-50 w-52 text-[11px]"
+                        onMouseLeave={() => setShowHeaderDropdown(false)}
+                      >
+                        <button
+                          type="button"
+                          onClick={() => {
+                            setShowHeaderSettingsModal(true);
+                            setShowHeaderDropdown(false);
+                          }}
+                          className="w-full text-left px-3 py-1.5 hover:bg-blue-50 text-slate-700 font-medium"
+                        >
+                          Edit Header...
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => {
+                            setShowHeader(!showHeader);
+                            setShowHeaderDropdown(false);
+                          }}
+                          className="w-full text-left px-3 py-1.5 hover:bg-slate-100 text-slate-700"
+                        >
+                          {showHeader ? 'Sembunyikan Header' : 'Tampilkan Header'}
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => {
+                            setDifferentFirstPage(!differentFirstPage);
+                            setShowHeaderDropdown(false);
+                          }}
+                          className="w-full text-left px-3 py-1.5 hover:bg-slate-100 text-slate-700"
+                        >
+                          {differentFirstPage ? '✓ Halaman Pertama Berbeda' : 'Halaman Pertama Berbeda'}
+                        </button>
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Footer Dropdown */}
+                  <div className="relative">
+                    <button
+                      type="button"
+                      onClick={() => setShowFooterDropdown(!showFooterDropdown)}
+                      className="word-ribbon-btn-small"
+                      title="Footer: Pengaturan Kaki Halaman"
+                    >
+                      <LayoutTemplate className="w-3.5 h-3.5 text-blue-700 rotate-180" />
+                      <span>Footer</span>
+                      <ChevronDown className="w-2.5 h-2.5 text-slate-500" />
+                    </button>
+                    {showFooterDropdown && (
+                      <div
+                        className="absolute left-0 top-full mt-1 bg-white border border-slate-300 shadow-xl rounded py-1 z-50 w-52 text-[11px]"
+                        onMouseLeave={() => setShowFooterDropdown(false)}
+                      >
+                        <button
+                          type="button"
+                          onClick={() => {
+                            setShowHeaderSettingsModal(true);
+                            setShowFooterDropdown(false);
+                          }}
+                          className="w-full text-left px-3 py-1.5 hover:bg-blue-50 text-slate-700 font-medium"
+                        >
+                          Edit Footer...
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => {
+                            setShowFooter(!showFooter);
+                            setShowFooterDropdown(false);
+                          }}
+                          className="w-full text-left px-3 py-1.5 hover:bg-slate-100 text-slate-700"
+                        >
+                          {showFooter ? 'Sembunyikan Footer' : 'Tampilkan Footer'}
+                        </button>
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Page Number Dropdown */}
+                  <div className="relative">
+                    <button
+                      type="button"
+                      onClick={() => setShowPageNumberDropdown(!showPageNumberDropdown)}
+                      className="word-ribbon-btn-small"
+                      title="Page Number: Format dan Posisi Penomoran Halaman"
+                    >
+                      <FileText className="w-3.5 h-3.5 text-blue-700" />
+                      <span>Page Number</span>
+                      <ChevronDown className="w-2.5 h-2.5 text-slate-500" />
+                    </button>
+                    {showPageNumberDropdown && (
+                      <div
+                        className="absolute left-0 top-full mt-1 bg-white border border-slate-300 shadow-xl rounded py-1 z-50 w-56 text-[11px]"
+                        onMouseLeave={() => setShowPageNumberDropdown(false)}
+                      >
+                        <div className="px-3 py-1 font-bold text-slate-700 border-b border-slate-100">Posisi Nomor Halaman</div>
+                        <button
+                          type="button"
+                          onClick={() => {
+                            setPageNumberPosition('TOP_RIGHT');
+                            setShowPageNumberDropdown(false);
+                          }}
+                          className={`w-full text-left px-3 py-1.5 hover:bg-blue-50 flex items-center justify-between ${pageNumberPosition === 'TOP_RIGHT' ? 'bg-blue-50 font-bold text-[#185abd]' : 'text-slate-700'}`}
+                        >
+                          <span>Top of Page (Header Kanan: II-3)</span>
+                          {pageNumberPosition === 'TOP_RIGHT' && <Check className="w-3 h-3 text-[#185abd]" />}
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => {
+                            setPageNumberPosition('BOTTOM_RIGHT');
+                            setShowPageNumberDropdown(false);
+                          }}
+                          className={`w-full text-left px-3 py-1.5 hover:bg-blue-50 flex items-center justify-between ${pageNumberPosition === 'BOTTOM_RIGHT' ? 'bg-blue-50 font-bold text-[#185abd]' : 'text-slate-700'}`}
+                        >
+                          <span>Bottom of Page (Footer Kanan)</span>
+                          {pageNumberPosition === 'BOTTOM_RIGHT' && <Check className="w-3 h-3 text-[#185abd]" />}
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => {
+                            setPageNumberPosition('BOTTOM_CENTER');
+                            setShowPageNumberDropdown(false);
+                          }}
+                          className={`w-full text-left px-3 py-1.5 hover:bg-blue-50 flex items-center justify-between ${pageNumberPosition === 'BOTTOM_CENTER' ? 'bg-blue-50 font-bold text-[#185abd]' : 'text-slate-700'}`}
+                        >
+                          <span>Bottom of Page (Footer Tengah)</span>
+                          {pageNumberPosition === 'BOTTOM_CENTER' && <Check className="w-3 h-3 text-[#185abd]" />}
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => {
+                            setPageNumberPosition('BOTH');
+                            setShowPageNumberDropdown(false);
+                          }}
+                          className={`w-full text-left px-3 py-1.5 hover:bg-blue-50 flex items-center justify-between ${pageNumberPosition === 'BOTH' ? 'bg-blue-50 font-bold text-[#185abd]' : 'text-slate-700'}`}
+                        >
+                          <span>Atas & Bawah (Header & Footer)</span>
+                          {pageNumberPosition === 'BOTH' && <Check className="w-3 h-3 text-[#185abd]" />}
+                        </button>
+                        <div className="border-t border-slate-200 mt-1 pt-1">
+                          <button
+                            type="button"
+                            onClick={() => {
+                              setShowPageNumberFormatModal(true);
+                              setShowPageNumberDropdown(false);
+                            }}
+                            className="w-full text-left px-3 py-1.5 hover:bg-blue-50 text-slate-700 font-medium"
+                          >
+                            Format Page Numbers...
+                          </button>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                </div>
+                <div className="word-ribbon-group-label">
+                  <span>Header & Footer</span>
                 </div>
               </div>
 
@@ -3701,11 +4067,58 @@ export default function DocumentWorkspace({
                     <span className="text-[10px]">{textColumns} Kolom</span>
                   </button>
 
-                  <div className="flex flex-col gap-0.5 pl-1 border-l border-slate-300">
-                    <button onClick={insertPageBreak} className="word-ribbon-btn-small">
-                      <Split className="w-3 h-3 text-purple-700" />
-                      <span className="text-[10px]">Breaks</span>
-                    </button>
+                  <div className="flex flex-col gap-0.5 pl-1 border-l border-slate-300 relative">
+                    <div className="relative">
+                      <button
+                        onClick={() => setShowBreaksDropdown(!showBreaksDropdown)}
+                        className="word-ribbon-btn-small"
+                        title="Breaks: Sisipkan Hentian Halaman atau Hentian Bagian"
+                      >
+                        <Split className="w-3 h-3 text-purple-700" />
+                        <span>Breaks</span>
+                        <ChevronDown className="w-2.5 h-2.5 text-slate-500" />
+                      </button>
+                      {showBreaksDropdown && (
+                        <div
+                          className="absolute left-0 top-full mt-1 bg-white border border-slate-300 shadow-xl rounded py-1 z-50 w-56 text-[11px]"
+                          onMouseLeave={() => setShowBreaksDropdown(false)}
+                        >
+                          <div className="px-3 py-1 font-bold text-slate-700 border-b border-slate-100">Page Breaks</div>
+                          <button
+                            type="button"
+                            onClick={() => {
+                              insertPageBreak();
+                              setShowBreaksDropdown(false);
+                            }}
+                            className="w-full text-left px-3 py-1.5 hover:bg-blue-50 text-slate-700 flex items-center justify-between"
+                          >
+                            <span>Page (Hentian Halaman)</span>
+                            <span className="text-[10px] text-slate-400">Ctrl+Enter</span>
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => {
+                              insertBlankPage();
+                              setShowBreaksDropdown(false);
+                            }}
+                            className="w-full text-left px-3 py-1.5 hover:bg-blue-50 text-slate-700"
+                          >
+                            <span>Blank Page (Halaman Baru)</span>
+                          </button>
+                          <div className="border-t border-slate-200 mt-1 pt-1 px-3 py-1 font-bold text-slate-700">Section Breaks</div>
+                          <button
+                            type="button"
+                            onClick={() => {
+                              insertBlankPage();
+                              setShowBreaksDropdown(false);
+                            }}
+                            className="w-full text-left px-3 py-1.5 hover:bg-blue-50 text-slate-700"
+                          >
+                            <span>Next Page (Bagian Baru)</span>
+                          </button>
+                        </div>
+                      )}
+                    </div>
                     <button onClick={() => alert('Penomoran baris aktif')} className="word-ribbon-btn-small">
                       <span className="text-[10px] font-mono font-bold text-slate-600">123</span>
                       <span className="text-[10px]">Line Numbers</span>
@@ -5108,7 +5521,7 @@ export default function DocumentWorkspace({
           >
             {/* ================= VIEW MODE 1: FULL DOCUMENT PREVIEW (IDENTIK PER SUB-BAB & TABEL DENGAN ORIENTASI ASLI) ================= */}
             {viewMode === 'FULL_DOCUMENT' ? (
-              <div className="w-full flex flex-col items-center gap-10">
+              <div className={`w-full flex flex-col items-center ${hideWhiteSpace ? 'gap-1.5' : 'gap-6'} transition-all`}>
                 {sections.map((sec, secIdx) => {
                   const isLand = (sec.orientation || 'portrait').toLowerCase() === 'landscape';
                   const secWidth = isLand ? 1247 : 816;
@@ -5117,116 +5530,140 @@ export default function DocumentWorkspace({
                   const isFirst = secIdx === 0;
 
                   return (
-                    <div
-                      key={sec.id}
-                      id={`full-sec-${sec.id}`}
-                      onContextMenu={(e) => handleCanvasContextMenu(e)}
-                      className={`word-page-sheet relative group ${showGridlines ? 'show-gridlines' : ''}`}
-                      style={{
-                        width: `${secWidth}px`,
-                        minHeight: `${secMinHeight}px`,
-                        backgroundColor: pageColor,
-                        border: '1px solid #d2d0ce',
-                        boxShadow: '0 4px 20px rgba(0,0,0,0.12)',
-                        ...mStyle
-                      }}
-                    >
-                      {/* Watermark Diagonal Overlay */}
-                      {watermark && (
-                        <div className="absolute inset-0 flex items-center justify-center pointer-events-none select-none z-0 overflow-hidden">
-                          <span
-                            className="font-extrabold text-slate-900/5 tracking-widest uppercase transform -rotate-45"
-                            style={{ fontSize: isLand ? '9rem' : '7rem' }}
-                          >
-                            {watermark}
-                          </span>
+                    <React.Fragment key={sec.id}>
+                      {/* Word Page Separator Gap (100% Persis Panah Merah Gambar) */}
+                      {secIdx > 0 && (
+                        <div
+                          onDoubleClick={() => setHideWhiteSpace(!hideWhiteSpace)}
+                          className={`w-full flex items-center justify-center transition-all cursor-pointer group select-none ${
+                            hideWhiteSpace ? 'h-2 my-0.5' : 'h-6 my-1'
+                          }`}
+                          title={hideWhiteSpace ? "Klik ganda untuk menampilkan jarak antar halaman (White Space)" : "Klik ganda untuk menyembunyikan jarak antar halaman (White Space)"}
+                        >
+                          <div className="w-16 h-0.5 rounded-full bg-slate-300/40 group-hover:bg-[#185abd]/70 transition" />
                         </div>
                       )}
 
-                      {/* Floating Quick Action Bar on Hover */}
-                      <div className="absolute -top-3 right-4 opacity-0 group-hover:opacity-100 transition-opacity bg-white/95 border border-slate-300 shadow-md rounded-md px-2 py-1 flex items-center gap-1.5 text-[11px] font-sans z-30 select-none">
-                        <span className="font-bold text-slate-700">{sec.code || sec.title || `Bagian ${secIdx + 1}`}</span>
-                        <span className="text-slate-300">|</span>
-                        <span className={`px-1.5 py-0.5 rounded text-[10px] font-semibold ${isLand ? 'bg-amber-100 text-amber-800' : 'bg-blue-100 text-blue-800'}`}>
-                          {isLand ? 'Lanskap (330×216 mm)' : 'Potret (216×330 mm)'}
-                        </span>
-                        <button
-                          type="button"
-                          onClick={() => toggleSectionOrientation(isLand ? 'PORTRAIT' : 'LANDSCAPE', sec)}
-                          className="px-1.5 py-0.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded text-[10px] font-medium"
-                          title="Ganti Orientasi Sub-Bab"
-                        >
-                          Ubah Orientasi
-                        </button>
-                        <button
-                          type="button"
-                          onClick={() => openWordCollaboration(sec)}
-                          className="px-1.5 py-0.5 bg-[#185abd] hover:bg-[#144b9e] text-white rounded text-[10px] font-medium flex items-center gap-1"
-                          title="Buka sub-bab ini di Microsoft Word desktop"
-                        >
-                          <span className="font-bold">W</span>
-                          <span>Word</span>
-                        </button>
-                        <button
-                          type="button"
-                          onClick={() => {
-                            selectSection(sec);
-                            setViewMode('SECTION_EDITOR');
-                          }}
-                          className="px-1.5 py-0.5 bg-blue-600 hover:bg-blue-700 text-white rounded text-[10px] font-medium flex items-center gap-1"
-                        >
-                          <span>Sunting</span>
-                          <ArrowRight className="w-2.5 h-2.5" />
-                        </button>
-                      </div>
-
-                      {/* Word Header on Page */}
-                      <div className="pb-3 mb-6 border-b border-slate-300 flex items-center justify-between text-[10px] text-slate-500 select-none relative z-10 font-['Bookman_Old_Style',Georgia,serif]">
-                        <span className="font-semibold tracking-wide">RKPD Kabupaten Cilacap Tahun 2027</span>
-                        <span className="uppercase tracking-wide text-slate-400">
-                          {sec.title ? `${sec.code ? `${sec.code} ` : ''}${sec.title}` : (doc?.title?.replace('RKPD 2027 PERBUP - ', '') || 'DOKUMEN RESMI')}
-                        </span>
-                      </div>
-
-                      {/* Kop Lampiran on First Page */}
-                      {isFirst && !sec.content?.includes('kop-lampiran-perbup') && (
-                        <div className="kop-lampiran-perbup mb-8 text-right font-['Bookman_Old_Style',Georgia,serif]" style={{ marginLeft: 'auto', width: '360px', fontSize: '10.5pt', lineHeight: '1.35' }}>
-                          <div className="font-bold tracking-wider">LAMPIRAN</div>
-                          <div className="font-bold tracking-wider">PERATURAN BUPATI CILACAP</div>
-                          <div className="font-bold">NOMOR &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; TAHUN 2026</div>
-                          <div className="font-bold">TENTANG</div>
-                          <div className="font-bold">RENCANA KERJA PEMERINTAH DAERAH KABUPATEN CILACAP TAHUN 2027</div>
-                        </div>
-                      )}
-
-
-
-                      {/* Section Content with Table Anti-Overflow */}
                       <div
-                        className={`word-content focus:outline-none ${firstLineIndent ? 'with-indent' : ''}`}
+                        id={`full-sec-${sec.id}`}
+                        onContextMenu={(e) => handleCanvasContextMenu(e)}
+                        className={`word-page-sheet relative group ${showGridlines ? 'show-gridlines' : ''}`}
                         style={{
-                          fontFamily: fontFamily,
-                          fontSize: fontSize,
-                          lineHeight: lineSpacing,
-                          textAlign: documentAlignment,
-                          columnCount: textColumns === 2 ? 2 : 1,
-                          columnGap: '28pt',
-                          '--p-spacing': `${spacingAfterPt}pt`,
-                          '--p-spacing-before': `${spacingBeforePt}pt`,
-                          '--tbl-data-size': sec.tableFontSize || (isLand ? '8.5pt' : '9pt'),
-                          '--tbl-header-size': isLand ? '9pt' : '9.5pt'
+                          width: `${secWidth}px`,
+                          minHeight: `${secMinHeight}px`,
+                          backgroundColor: pageColor,
+                          border: '1px solid #d2d0ce',
+                          boxShadow: '0 4px 20px rgba(0,0,0,0.12)',
+                          ...mStyle
                         }}
-                        dangerouslySetInnerHTML={{ __html: sec.content || '<p><em>Belum ada naskah narasi.</em></p>' }}
-                      />
+                      >
+                        {/* Watermark Diagonal Overlay */}
+                        {watermark && (
+                          <div className="absolute inset-0 flex items-center justify-center pointer-events-none select-none z-0 overflow-hidden">
+                            <span
+                              className="font-extrabold text-slate-900/5 tracking-widest uppercase transform -rotate-45"
+                              style={{ fontSize: isLand ? '9rem' : '7rem' }}
+                            >
+                              {watermark}
+                            </span>
+                          </div>
+                        )}
 
-                      {/* Word Footer on Page */}
-                      <div className="mt-14 pt-3 border-t border-slate-300 flex items-center justify-between text-[10px] text-slate-600 select-none clear-both relative z-10 font-['Bookman_Old_Style',Georgia,serif]">
-                        <span className="tracking-wide">RKPD Kabupaten Cilacap Tahun 2027</span>
-                        <span className="font-semibold font-mono">
-                          {sec.pageLabel || `${getRomanChapter()}-${secIdx + 1}`}
-                        </span>
+                        {/* Floating Quick Action Bar on Hover */}
+                        <div className="absolute -top-3 right-4 opacity-0 group-hover:opacity-100 transition-opacity bg-white/95 border border-slate-300 shadow-md rounded-md px-2 py-1 flex items-center gap-1.5 text-[11px] font-sans z-30 select-none">
+                          <span className="font-bold text-slate-700">{sec.code || sec.title || `Bagian ${secIdx + 1}`}</span>
+                          <span className="text-slate-300">|</span>
+                          <span className={`px-1.5 py-0.5 rounded text-[10px] font-semibold ${isLand ? 'bg-amber-100 text-amber-800' : 'bg-blue-100 text-blue-800'}`}>
+                            {isLand ? 'Lanskap (330×216 mm)' : 'Potret (216×330 mm)'}
+                          </span>
+                          <button
+                            type="button"
+                            onClick={() => toggleSectionOrientation(isLand ? 'PORTRAIT' : 'LANDSCAPE', sec)}
+                            className="px-1.5 py-0.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded text-[10px] font-medium"
+                            title="Ganti Orientasi Sub-Bab"
+                          >
+                            Ubah Orientasi
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => openWordCollaboration(sec)}
+                            className="px-1.5 py-0.5 bg-[#185abd] hover:bg-[#144b9e] text-white rounded text-[10px] font-medium flex items-center gap-1"
+                            title="Buka sub-bab ini di Microsoft Word desktop"
+                          >
+                            <span className="font-bold">W</span>
+                            <span>Word</span>
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => {
+                              selectSection(sec);
+                              setViewMode('SECTION_EDITOR');
+                            }}
+                            className="px-1.5 py-0.5 bg-blue-600 hover:bg-blue-700 text-white rounded text-[10px] font-medium flex items-center gap-1"
+                          >
+                            <span>Sunting</span>
+                            <ArrowRight className="w-2.5 h-2.5" />
+                          </button>
+                        </div>
+
+                        {/* Word Header on Page (100% Persis Gambar Microsoft Word) */}
+                        {showHeader && (!differentFirstPage || !isFirst) && (
+                          <div className="pb-2.5 mb-6 border-b border-slate-300 flex items-center justify-between text-[10.5pt] text-slate-700 select-none relative z-10 font-['Bookman_Old_Style',Georgia,serif]">
+                            <span className="italic tracking-wide text-slate-700">
+                              {headerText}
+                            </span>
+                            <span className="font-normal font-['Bookman_Old_Style',Georgia,serif] text-slate-800">
+                              {(pageNumberPosition === 'TOP_RIGHT' || pageNumberPosition === 'BOTH')
+                                ? (sec.pageLabel || getFormattedPageNumber(secIdx))
+                                : (sec.title ? `${sec.code ? `${sec.code} ` : ''}${sec.title}` : '')}
+                            </span>
+                          </div>
+                        )}
+
+                        {/* Kop Lampiran on First Page */}
+                        {isFirst && !sec.content?.includes('kop-lampiran-perbup') && (
+                          <div className="kop-lampiran-perbup mb-8 text-right font-['Bookman_Old_Style',Georgia,serif]" style={{ marginLeft: 'auto', width: '360px', fontSize: '10.5pt', lineHeight: '1.35' }}>
+                            <div className="font-bold tracking-wider">LAMPIRAN</div>
+                            <div className="font-bold tracking-wider">PERATURAN BUPATI CILACAP</div>
+                            <div className="font-bold">NOMOR &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; TAHUN 2026</div>
+                            <div className="font-bold">TENTANG</div>
+                            <div className="font-bold">RENCANA KERJA PEMERINTAH DAERAH KABUPATEN CILACAP TAHUN 2027</div>
+                          </div>
+                        )}
+
+                        {/* Section Content with Table Anti-Overflow */}
+                        <div
+                          className={`word-content focus:outline-none ${firstLineIndent ? 'with-indent' : ''}`}
+                          style={{
+                            fontFamily: fontFamily,
+                            fontSize: fontSize,
+                            lineHeight: lineSpacing,
+                            textAlign: documentAlignment,
+                            columnCount: textColumns === 2 ? 2 : 1,
+                            columnGap: '28pt',
+                            '--p-spacing': `${spacingAfterPt}pt`,
+                            '--p-spacing-before': `${spacingBeforePt}pt`,
+                            '--tbl-data-size': sec.tableFontSize || (isLand ? '8.5pt' : '9pt'),
+                            '--tbl-header-size': isLand ? '9pt' : '9.5pt'
+                          }}
+                          dangerouslySetInnerHTML={{ __html: sec.content || '<p><em>Belum ada naskah narasi.</em></p>' }}
+                        />
+
+                        {/* Word Footer on Page (100% Persis Gambar Microsoft Word) */}
+                        {showFooter && (!differentFirstPage || !isFirst) && (
+                          <div className="mt-14 pt-3 border-t border-slate-300 flex items-center justify-between text-[10pt] text-slate-600 select-none clear-both relative z-10 font-['Bookman_Old_Style',Georgia,serif]">
+                            <span className="italic tracking-wide text-slate-600">
+                              {footerText}
+                            </span>
+                            <span className={`font-normal font-['Bookman_Old_Style',Georgia,serif] text-slate-800 ${pageNumberPosition === 'BOTTOM_CENTER' ? 'mx-auto' : ''}`}>
+                              {(pageNumberPosition === 'BOTTOM_RIGHT' || pageNumberPosition === 'BOTTOM_CENTER' || pageNumberPosition === 'BOTH')
+                                ? (sec.pageLabel || getFormattedPageNumber(secIdx))
+                                : ''}
+                            </span>
+                          </div>
+                        )}
                       </div>
-                    </div>
+                    </React.Fragment>
                   );
                 })}
               </div>
@@ -5266,13 +5703,19 @@ export default function DocumentWorkspace({
                   </div>
                 )}
 
-                {/* Word Header on Page */}
-                <div className="pb-3 mb-6 border-b border-slate-300 flex items-center justify-between text-[10px] text-slate-500 select-none relative z-10 font-['Bookman_Old_Style',Georgia,serif]">
-                  <span className="font-semibold tracking-wide">RKPD Kabupaten Cilacap Tahun 2027</span>
-                  <span className="uppercase tracking-wide text-slate-400">
-                    {doc?.title?.replace('RKPD 2027 PERBUP - ', '') || 'DOKUMEN RESMI'}
-                  </span>
-                </div>
+                {/* Word Header on Page (100% Persis Gambar Microsoft Word) */}
+                {showHeader && (!differentFirstPage || activeSection?.order !== 1) && (
+                  <div className="pb-2.5 mb-6 border-b border-slate-300 flex items-center justify-between text-[10.5pt] text-slate-700 select-none relative z-10 font-['Bookman_Old_Style',Georgia,serif]">
+                    <span className="italic tracking-wide text-slate-700">
+                      {headerText}
+                    </span>
+                    <span className="font-normal font-['Bookman_Old_Style',Georgia,serif] text-slate-800">
+                      {(pageNumberPosition === 'TOP_RIGHT' || pageNumberPosition === 'BOTH')
+                        ? (activeSection?.pageLabel || getFormattedPageNumber(currentIndex))
+                        : ''}
+                    </span>
+                  </div>
+                )}
 
                 {/* Kop Lampiran on First Section */}
                 {activeSection?.order === 1 && !activeSection?.content?.includes('kop-lampiran-perbup') && (
@@ -5352,13 +5795,19 @@ export default function DocumentWorkspace({
                   />
                 </div>
 
-                {/* Word Footer on Page */}
-                <div className="mt-14 pt-3 border-t border-slate-300 flex items-center justify-between text-[10px] text-slate-600 select-none clear-both relative z-10 font-['Bookman_Old_Style',Georgia,serif]">
-                  <span className="tracking-wide">RKPD Kabupaten Cilacap Tahun 2027</span>
-                  <span className="font-semibold font-mono">
-                    {activeSection?.pageLabel || `${getRomanChapter()}-${currentIndex + 1}`}
-                  </span>
-                </div>
+                {/* Word Footer on Page (100% Persis Gambar Microsoft Word) */}
+                {showFooter && (!differentFirstPage || activeSection?.order !== 1) && (
+                  <div className="mt-14 pt-3 border-t border-slate-300 flex items-center justify-between text-[10pt] text-slate-600 select-none clear-both relative z-10 font-['Bookman_Old_Style',Georgia,serif]">
+                    <span className="italic tracking-wide text-slate-600">
+                      {footerText}
+                    </span>
+                    <span className={`font-normal font-['Bookman_Old_Style',Georgia,serif] text-slate-800 ${pageNumberPosition === 'BOTTOM_CENTER' ? 'mx-auto' : ''}`}>
+                      {(pageNumberPosition === 'BOTTOM_RIGHT' || pageNumberPosition === 'BOTTOM_CENTER' || pageNumberPosition === 'BOTH')
+                        ? (activeSection?.pageLabel || getFormattedPageNumber(currentIndex))
+                        : ''}
+                    </span>
+                  </div>
+                )}
               </div>
             )}
           </div>
@@ -7255,6 +7704,41 @@ export default function DocumentWorkspace({
           selectedTable={selectedTable}
           selectedCell={selectedCell}
           onApply={() => persistTableChanges(selectedTable)}
+        />
+      )}
+
+      {/* Header and Footer Options Modal */}
+      {showHeaderSettingsModal && (
+        <HeaderSettingsModal
+          isOpen={showHeaderSettingsModal}
+          onClose={() => setShowHeaderSettingsModal(false)}
+          headerText={headerText}
+          setHeaderText={setHeaderText}
+          footerText={footerText}
+          setFooterText={setFooterText}
+          showHeader={showHeader}
+          setShowHeader={setShowHeader}
+          showFooter={showFooter}
+          setShowFooter={setShowFooter}
+          differentFirstPage={differentFirstPage}
+          setDifferentFirstPage={setDifferentFirstPage}
+          onSave={() => alert('Pengaturan Header & Footer berhasil diterapkan.')}
+        />
+      )}
+
+      {/* Page Number Format Modal */}
+      {showPageNumberFormatModal && (
+        <PageNumberFormatModal
+          isOpen={showPageNumberFormatModal}
+          onClose={() => setShowPageNumberFormatModal(false)}
+          pageNumberPosition={pageNumberPosition}
+          setPageNumberPosition={setPageNumberPosition}
+          pageNumberFormat={pageNumberFormat}
+          setPageNumberFormat={setPageNumberFormat}
+          startPageNumber={startPageNumber}
+          setStartPageNumber={setStartPageNumber}
+          romanChapter={getRomanChapter()}
+          onSave={() => alert('Format Nomor Halaman berhasil diperbarui.')}
         />
       )}
 
