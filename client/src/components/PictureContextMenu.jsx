@@ -36,11 +36,8 @@ export default function PictureContextMenu({
   onStartCrop
 }) {
   const [searchTerm, setSearchTerm] = useState('');
-  const [showWrapSubmenu, setShowWrapSubmenu] = useState(false);
-  const [showStylePopup, setShowStylePopup] = useState(false);
-  const [showChangePictureSubmenu, setShowChangePictureSubmenu] = useState(false);
-  const [showBringFrontSubmenu, setShowBringFrontSubmenu] = useState(false);
-  const [showSendBackSubmenu, setShowSendBackSubmenu] = useState(false);
+  // Single active submenu state so only ONE submenu can ever be open at a time
+  const [activeSubmenu, setActiveSubmenu] = useState(null); // null | 'CHANGE_PICTURE' | 'BRING_FRONT' | 'SEND_BACK' | 'WRAP' | 'STYLE'
 
   if (!visible || !selectedImage) return null;
 
@@ -65,6 +62,7 @@ export default function PictureContextMenu({
       className="fixed z-9999 select-none font-sans text-xs"
       style={{ left: `${x}px`, top: `${y}px` }}
       onClick={(e) => e.stopPropagation()}
+      onMouseLeave={() => setActiveSubmenu(null)}
     >
       {/* 1. FLOATING MINI-TOOLBAR (Style & Crop) - Persis Gambar 1 */}
       <div className="mb-1 flex items-center gap-1 bg-white border border-slate-300 rounded-lg shadow-xl px-2 py-1 w-max">
@@ -72,8 +70,10 @@ export default function PictureContextMenu({
         <div className="relative">
           <button
             type="button"
-            onClick={() => setShowStylePopup(!showStylePopup)}
-            className="flex flex-col items-center justify-center p-1.5 hover:bg-slate-100 rounded text-slate-700 transition"
+            onClick={() => setActiveSubmenu(activeSubmenu === 'STYLE' ? null : 'STYLE')}
+            className={`flex flex-col items-center justify-center p-1.5 rounded transition ${
+              activeSubmenu === 'STYLE' ? 'bg-blue-100 text-[#185abd]' : 'hover:bg-slate-100 text-slate-700'
+            }`}
             title="Picture Styles"
           >
             <div className="flex items-center gap-1">
@@ -85,7 +85,7 @@ export default function PictureContextMenu({
           </button>
 
           {/* Quick Style Palette Popup */}
-          {showStylePopup && (
+          {activeSubmenu === 'STYLE' && (
             <div className="absolute left-0 top-full mt-1 bg-white border border-slate-300 rounded-lg shadow-2xl p-2 w-64 grid grid-cols-4 gap-2 z-50">
               {stylePresets.map(st => (
                 <button
@@ -93,7 +93,7 @@ export default function PictureContextMenu({
                   type="button"
                   onClick={() => {
                     onApplyStylePreset(st.id);
-                    setShowStylePopup(false);
+                    setActiveSubmenu(null);
                   }}
                   className="p-1 border border-slate-200 hover:border-[#185abd] hover:bg-blue-50/50 rounded flex flex-col items-center gap-1 transition group"
                   title={st.label}
@@ -151,6 +151,7 @@ export default function PictureContextMenu({
           {filterItem('cut') && (
             <button
               type="button"
+              onMouseEnter={() => setActiveSubmenu(null)}
               onClick={() => {
                 if (selectedImage.el) {
                   navigator.clipboard.writeText(selectedImage.el.outerHTML);
@@ -169,6 +170,7 @@ export default function PictureContextMenu({
           {filterItem('copy') && (
             <button
               type="button"
+              onMouseEnter={() => setActiveSubmenu(null)}
               onClick={() => {
                 if (selectedImage.el) {
                   navigator.clipboard.writeText(selectedImage.el.outerHTML);
@@ -184,7 +186,10 @@ export default function PictureContextMenu({
 
           {/* Paste Options */}
           {filterItem('paste') && (
-            <div className="px-3 py-1 flex items-center justify-between hover:bg-slate-50 text-slate-700">
+            <div
+              onMouseEnter={() => setActiveSubmenu(null)}
+              className="px-3 py-1 flex items-center justify-between hover:bg-slate-50 text-slate-700"
+            >
               <span className="text-[11px] text-slate-600 font-medium">Paste Options:</span>
               <div className="flex items-center gap-1">
                 <button
@@ -202,17 +207,26 @@ export default function PictureContextMenu({
 
           {/* Convert to Office Math (disabled) */}
           {filterItem('office math') && (
-            <div className="px-3 py-1 text-slate-400 select-none cursor-not-allowed">
+            <div
+              onMouseEnter={() => setActiveSubmenu(null)}
+              className="px-3 py-1 text-slate-400 select-none cursor-not-allowed"
+            >
               Convert to Office Math
             </div>
           )}
           {filterItem('convert all to office math') && (
-            <div className="px-3 py-1 text-slate-400 select-none cursor-not-allowed">
+            <div
+              onMouseEnter={() => setActiveSubmenu(null)}
+              className="px-3 py-1 text-slate-400 select-none cursor-not-allowed"
+            >
               Convert All to Office Math
             </div>
           )}
           {filterItem('edit picture') && (
-            <div className="px-3 py-1 text-slate-400 select-none cursor-not-allowed">
+            <div
+              onMouseEnter={() => setActiveSubmenu(null)}
+              className="px-3 py-1 text-slate-400 select-none cursor-not-allowed"
+            >
               Edit Picture
             </div>
           )}
@@ -224,9 +238,11 @@ export default function PictureContextMenu({
             <div className="relative">
               <button
                 type="button"
-                onMouseEnter={() => setShowChangePictureSubmenu(true)}
-                onClick={() => setShowChangePictureSubmenu(!showChangePictureSubmenu)}
-                className="w-full text-left px-3 py-1.5 hover:bg-slate-100 flex items-center justify-between transition"
+                onMouseEnter={() => setActiveSubmenu('CHANGE_PICTURE')}
+                onClick={() => setActiveSubmenu(activeSubmenu === 'CHANGE_PICTURE' ? null : 'CHANGE_PICTURE')}
+                className={`w-full text-left px-3 py-1.5 flex items-center justify-between transition ${
+                  activeSubmenu === 'CHANGE_PICTURE' ? 'bg-blue-50 text-[#185abd]' : 'hover:bg-slate-100'
+                }`}
               >
                 <div className="flex items-center gap-2.5">
                   <ImageIcon className="w-3.5 h-3.5 text-blue-600" />
@@ -235,9 +251,8 @@ export default function PictureContextMenu({
                 <ChevronRight className="w-3 h-3 text-slate-400" />
               </button>
 
-              {showChangePictureSubmenu && (
+              {activeSubmenu === 'CHANGE_PICTURE' && (
                 <div
-                  onMouseLeave={() => setShowChangePictureSubmenu(false)}
                   className="absolute left-full top-0 ml-1 bg-white border border-slate-300 rounded-lg shadow-xl py-1 w-44 z-50 text-xs"
                 >
                   <button
@@ -267,7 +282,10 @@ export default function PictureContextMenu({
 
           {/* Group > */}
           {filterItem('group') && (
-            <div className="px-3 py-1.5 text-slate-400 flex items-center justify-between select-none cursor-not-allowed">
+            <div
+              onMouseEnter={() => setActiveSubmenu(null)}
+              className="px-3 py-1.5 text-slate-400 flex items-center justify-between select-none cursor-not-allowed"
+            >
               <div className="flex items-center gap-2.5">
                 <Layers className="w-3.5 h-3.5 text-slate-400" />
                 <span>Group</span>
@@ -281,9 +299,11 @@ export default function PictureContextMenu({
             <div className="relative">
               <button
                 type="button"
-                onMouseEnter={() => setShowBringFrontSubmenu(true)}
-                onClick={() => setShowBringFrontSubmenu(!showBringFrontSubmenu)}
-                className="w-full text-left px-3 py-1.5 hover:bg-slate-100 flex items-center justify-between transition"
+                onMouseEnter={() => setActiveSubmenu('BRING_FRONT')}
+                onClick={() => setActiveSubmenu(activeSubmenu === 'BRING_FRONT' ? null : 'BRING_FRONT')}
+                className={`w-full text-left px-3 py-1.5 flex items-center justify-between transition ${
+                  activeSubmenu === 'BRING_FRONT' ? 'bg-blue-50 text-[#185abd]' : 'hover:bg-slate-100'
+                }`}
               >
                 <div className="flex items-center gap-2.5">
                   <ArrowUp className="w-3.5 h-3.5 text-slate-500" />
@@ -292,9 +312,8 @@ export default function PictureContextMenu({
                 <ChevronRight className="w-3 h-3 text-slate-400" />
               </button>
 
-              {showBringFrontSubmenu && (
+              {activeSubmenu === 'BRING_FRONT' && (
                 <div
-                  onMouseLeave={() => setShowBringFrontSubmenu(false)}
                   className="absolute left-full top-0 ml-1 bg-white border border-slate-300 rounded-lg shadow-xl py-1 w-48 z-50 text-xs"
                 >
                   <button
@@ -337,9 +356,11 @@ export default function PictureContextMenu({
             <div className="relative">
               <button
                 type="button"
-                onMouseEnter={() => setShowSendBackSubmenu(true)}
-                onClick={() => setShowSendBackSubmenu(!showSendBackSubmenu)}
-                className="w-full text-left px-3 py-1.5 hover:bg-slate-100 flex items-center justify-between transition"
+                onMouseEnter={() => setActiveSubmenu('SEND_BACK')}
+                onClick={() => setActiveSubmenu(activeSubmenu === 'SEND_BACK' ? null : 'SEND_BACK')}
+                className={`w-full text-left px-3 py-1.5 flex items-center justify-between transition ${
+                  activeSubmenu === 'SEND_BACK' ? 'bg-blue-50 text-[#185abd]' : 'hover:bg-slate-100'
+                }`}
               >
                 <div className="flex items-center gap-2.5">
                   <ArrowDown className="w-3.5 h-3.5 text-slate-500" />
@@ -348,9 +369,8 @@ export default function PictureContextMenu({
                 <ChevronRight className="w-3 h-3 text-slate-400" />
               </button>
 
-              {showSendBackSubmenu && (
+              {activeSubmenu === 'SEND_BACK' && (
                 <div
-                  onMouseLeave={() => setShowSendBackSubmenu(false)}
                   className="absolute left-full top-0 ml-1 bg-white border border-slate-300 rounded-lg shadow-xl py-1 w-48 z-50 text-xs"
                 >
                   <button
@@ -392,6 +412,7 @@ export default function PictureContextMenu({
           {filterItem('link') && (
             <button
               type="button"
+              onMouseEnter={() => setActiveSubmenu(null)}
               onClick={() => {
                 const url = prompt('Masukkan tautan URL untuk gambar ini:', 'https://');
                 if (url && selectedImage.el) {
@@ -418,6 +439,7 @@ export default function PictureContextMenu({
           {filterItem('save as picture') && (
             <button
               type="button"
+              onMouseEnter={() => setActiveSubmenu(null)}
               onClick={() => {
                 onSaveAsPicture();
                 onClose();
@@ -435,6 +457,7 @@ export default function PictureContextMenu({
           {filterItem('insert caption') && (
             <button
               type="button"
+              onMouseEnter={() => setActiveSubmenu(null)}
               onClick={() => {
                 onOpenCaption();
                 onClose();
@@ -451,9 +474,11 @@ export default function PictureContextMenu({
             <div className="relative">
               <button
                 type="button"
-                onMouseEnter={() => setShowWrapSubmenu(true)}
-                onClick={() => setShowWrapSubmenu(!showWrapSubmenu)}
-                className="w-full text-left px-3 py-1.5 hover:bg-slate-100 flex items-center justify-between transition"
+                onMouseEnter={() => setActiveSubmenu('WRAP')}
+                onClick={() => setActiveSubmenu(activeSubmenu === 'WRAP' ? null : 'WRAP')}
+                className={`w-full text-left px-3 py-1.5 flex items-center justify-between transition ${
+                  activeSubmenu === 'WRAP' ? 'bg-blue-50 text-[#185abd]' : 'hover:bg-slate-100'
+                }`}
               >
                 <div className="flex items-center gap-2.5">
                   <AlignJustify className="w-3.5 h-3.5 text-slate-500" />
@@ -462,9 +487,8 @@ export default function PictureContextMenu({
                 <ChevronRight className="w-3 h-3 text-slate-400" />
               </button>
 
-              {showWrapSubmenu && (
+              {activeSubmenu === 'WRAP' && (
                 <div
-                  onMouseLeave={() => setShowWrapSubmenu(false)}
                   className="absolute left-full top-0 ml-1 bg-white border border-slate-300 rounded-lg shadow-xl py-1 w-48 z-50 text-xs"
                 >
                   <button
@@ -518,6 +542,7 @@ export default function PictureContextMenu({
           {filterItem('view alt text') && (
             <button
               type="button"
+              onMouseEnter={() => setActiveSubmenu(null)}
               onClick={() => {
                 onOpenAltText();
                 onClose();
@@ -533,6 +558,7 @@ export default function PictureContextMenu({
           {filterItem('size and position') && (
             <button
               type="button"
+              onMouseEnter={() => setActiveSubmenu(null)}
               onClick={() => {
                 onOpenSizePosition();
                 onClose();
@@ -548,6 +574,7 @@ export default function PictureContextMenu({
           {filterItem('format picture') && (
             <button
               type="button"
+              onMouseEnter={() => setActiveSubmenu(null)}
               onClick={() => {
                 onOpenFormatPane();
                 onClose();

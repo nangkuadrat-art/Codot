@@ -1325,6 +1325,10 @@ export default function DocumentWorkspace({
   };
 
   const handleCanvasClick = (e) => {
+    // When left-clicking anywhere, always close any open context menu
+    setPictureContextMenu(prev => ({ ...prev, visible: false }));
+    setContextMenu(prev => ({ ...prev, visible: false }));
+
     const img = e.target.closest('img');
     if (img) {
       selectImage(img);
@@ -6802,6 +6806,19 @@ export default function DocumentWorkspace({
       )}
 
       {/* ================= PICTURE FORMATTING OVERLAYS & MODALS (100% PERSIS MICROSOFT WORD) ================= */}
+      {/* Backdrop to dismiss Picture Context Menu on outside click */}
+      {pictureContextMenu.visible && (
+        <div
+          className="fixed inset-0 z-9998 bg-transparent"
+          onClick={() => setPictureContextMenu(prev => ({ ...prev, visible: false }))}
+          onContextMenu={(e) => {
+            if (!e.target.closest('img')) {
+              setPictureContextMenu(prev => ({ ...prev, visible: false }));
+            }
+          }}
+        />
+      )}
+
       {/* Picture Right-Click Context Menu (Gambar 1) */}
       <div id="word-picture-context-menu">
         <PictureContextMenu
