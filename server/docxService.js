@@ -194,18 +194,43 @@ async function parseDocxToSections(filePath, documentId) {
       return;
     }
 
-    // Abaikan jika hanya berupa keterangan gambar atau tabel (jangan dijadikan sub-bab)
-    if (/^(Gambar|Tabel|Bagan|Grafik)\s+\d/i.test(text)) {
+    // Abaikan jika hanya berupa keterangan gambar, tabel, grafik, bagan, atau peta
+    if (/^(Gambar|Tabel|Bagan|Grafik|Peta|Lampiran)\s+\d/i.test(text)) {
+      if (currentSection) currentSection.contentElements.push(elementHtml);
+      else pendingIntroElements.push(elementHtml);
+      return;
+    }
+
+    // Abaikan baris Daftar Isi (TOC) yang memiliki tabulasi ke nomor halaman di akhir (misal: "...\t IV-2" atau "...\t 25")
+    if (/\t\s*(IV|V|VI|VII|I|II|III|-|\d+)\b/i.test(text) || /\t\s*\d+$/i.test(text)) {
+      if (currentSection) currentSection.contentElements.push(elementHtml);
+      else pendingIntroElements.push(elementHtml);
+      return;
+    }
+
+    // Abaikan angka acak atau statistik narasi (misal: "2.335 jiwa", "86.1 %", "28.937.635.297")
+    if (/^\d+[\.,]\d+\s*(jiwa|orang|ha|km|m|%|persen|Rp|tahun|ribu|juta|miliar|triliun)/i.test(text)) {
+      if (currentSection) currentSection.contentElements.push(elementHtml);
+      else pendingIntroElements.push(elementHtml);
+      return;
+    }
+    if (/^\d{2,}[\.,]\d+/.test(text)) {
+      if (currentSection) currentSection.contentElements.push(elementHtml);
+      else pendingIntroElements.push(elementHtml);
+      return;
+    }
+
+    // Abaikan butir rincian narasi biasa (misal: "1) ...", "(1) ...", "a. ...")
+    if (/^(\d+\)|\([0-9]+\)|[a-z]\.|\([a-z]\))\s+/.test(text)) {
       if (currentSection) currentSection.contentElements.push(elementHtml);
       else pendingIntroElements.push(elementHtml);
       return;
     }
 
     const startsWithBab = /^BAB\s+[IVXLCDM\d]+/i.test(text);
-    const startsWithNum4 = /^\d+\.\d+\.\d+\.\d+\.?\s+/.test(text);
-    const startsWithNum3 = /^\d+\.\d+\.\d+\.?\s+/.test(text);
-    const startsWithNum2 = /^\d+\.\d+\.?\s+/.test(text);
-    const startsWithItemParen = /^\d+\)\s+/.test(text);
+    const subChapRegex2 = new RegExp(`^${chapterNum}\\.\\d+\\.?\\s+[A-Za-z]`);
+    const subChapRegex3 = new RegExp(`^${chapterNum}\\.\\d+\\.\\d+\\.?\\s+[A-Za-z]`);
+    const subChapRegex4 = new RegExp(`^${chapterNum}\\.\\d+\\.\\d+\\.\\d+\\.?\\s+[A-Za-z]`);
 
     let detectedLevel = null;
     let code = '';
@@ -213,7 +238,7 @@ async function parseDocxToSections(filePath, documentId) {
 
     if (tagName === 'h1' || startsWithBab) {
       detectedLevel = 1;
-      idxL2 = 0; idxL3 = 0; idxL4 = 0; idxL5 = 0;
+      idxL2 = 0; idxL3 = 0; idxL4 = 0;
       const m = text.match(/^(BAB\s+[IVXLCDM\d]+)[:\.\s-]*(.*)$/i);
       if (m) {
         const rawNum = m[1].replace(/BAB\s*/i, '').trim().toUpperCase();
@@ -224,32 +249,25 @@ async function parseDocxToSections(filePath, documentId) {
         code = `BAB ${romanChapter}`;
         title = text;
       }
-    } else if (tagName === 'h2' || (startsWithNum2 && !startsWithNum3 && !startsWithNum4)) {
+    } else if (tagName === 'h2' || (subChapRegex2.test(text) && !subChapRegex3.test(text) && !subChapRegex4.test(text))) {
       detectedLevel = 2;
       idxL2++;
-      idxL3 = 0; idxL4 = 0; idxL5 = 0;
+      idxL3 = 0; idxL4 = 0;
       const m = text.match(/^(\d+\.\d+)[:\.\s-]*(.*)$/);
       code = m ? m[1].trim() : `${chapterNum}.${idxL2}`;
       title = m && m[2] ? m[2].trim() : text;
-    } else if (tagName === 'h3' || (startsWithNum3 && !startsWithNum4)) {
+    } else if (tagName === 'h3' || (subChapRegex3.test(text) && !subChapRegex4.test(text))) {
       detectedLevel = 3;
       idxL3++;
-      idxL4 = 0; idxL5 = 0;
+      idxL4 = 0;
       const m = text.match(/^(\d+\.\d+\.\d+)[:\.\s-]*(.*)$/);
       code = m ? m[1].trim() : `${chapterNum}.${idxL2 || 1}.${idxL3}`;
       title = m && m[2] ? m[2].trim() : text;
-    } else if (tagName === 'h4' || startsWithNum4) {
+    } else if (tagName === 'h4' || subChapRegex4.test(text)) {
       detectedLevel = 4;
       idxL4++;
-      idxL5 = 0;
       const m = text.match(/^(\d+\.\d+\.\d+\.\d+\.?)[:\s-]*(.*)$/);
-      code = m ? m[1].trim() : `${chapterNum}.${idxL2 || 1}.${idxL3 || 1}.${idxL4}.`;
-      title = m && m[2] ? m[2].trim() : text;
-    } else if (tagName === 'h5' || startsWithItemParen) {
-      detectedLevel = 5;
-      idxL5++;
-      const m = text.match(/^(\d+\))[:\s-]*(.*)$/);
-      code = m ? m[1].trim() : `${idxL5})`;
+      code = m ? m[1].trim() : `${chapterNum}.${idxL2 || 1}.${idxL3 || 1}.${idxL4}`;
       title = m && m[2] ? m[2].trim() : text;
     }
 

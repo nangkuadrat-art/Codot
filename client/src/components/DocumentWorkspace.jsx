@@ -162,9 +162,9 @@ export default function DocumentWorkspace({
   // Active Centimeter Margins & Ruler State ala Microsoft Word
   const [marginCm, setMarginCm] = useState({
     left: 4.0,   // Perbup Cilacap standard (3.5cm for Bab II)
-    top: 2.5,    // Atas 2.5 cm
+    top: 4.0,    // Atas 4.0 cm (3.5cm for Bab II)
     right: 2.5,  // Kanan 2.5 cm (2.1cm for Bab II)
-    bottom: 2.5  // Bawah 2.5 cm
+    bottom: 2.5  // Bawah 2.5 cm (2.1cm for Bab II)
   });
   const [firstLineIndentCm, setFirstLineIndentCm] = useState(1.27); // Standar 1.27 cm (0.5 in)
   const [activeDrag, setActiveDrag] = useState(null); // 'FIRST_LINE', 'LEFT_MARGIN', 'RIGHT_MARGIN'
@@ -316,11 +316,11 @@ export default function DocumentWorkspace({
 
     const isBab2 = (doc?.title || '').includes('BAB II');
     if (isBab2) {
-      setMarginCm({ left: 3.5, right: 2.1, top: 2.5, bottom: 2.5 });
+      setMarginCm({ left: 3.5, right: 2.1, top: 3.5, bottom: 2.1 });
     } else if (secOrient === 'LANDSCAPE') {
       setMarginCm({ left: 2.5, right: 2.5, top: 2.5, bottom: 2.5 });
     } else {
-      setMarginCm({ left: 4.0, right: 2.5, top: 2.5, bottom: 2.5 });
+      setMarginCm({ left: 4.0, right: 2.5, top: 4.0, bottom: 2.5 });
     }
 
     if (editorRef.current) {
@@ -517,11 +517,11 @@ export default function DocumentWorkspace({
     setOrientation(nextOrient);
 
     if (isBab2Doc) {
-      setMarginCm({ left: 3.5, right: 2.1, top: 2.5, bottom: 2.5 });
+      setMarginCm({ left: 3.5, right: 2.1, top: 3.5, bottom: 2.1 });
     } else if (nextOrient === 'LANDSCAPE') {
       setMarginCm({ left: 2.5, right: 2.5, top: 2.5, bottom: 2.5 });
     } else {
-      setMarginCm({ left: 4.0, right: 2.5, top: 2.5, bottom: 2.5 });
+      setMarginCm({ left: 4.0, right: 2.5, top: 4.0, bottom: 2.5 });
     }
 
     if (sec) {
@@ -1188,15 +1188,19 @@ export default function DocumentWorkspace({
 
     let left = 4.0;
     let right = 2.5;
-    let top = 2.5;
+    let top = 4.0;
     let bottom = 2.5;
 
     if (isBab2Doc) {
       left = 3.5;
       right = 2.1;
+      top = 3.5;
+      bottom = 2.1;
     } else if (isLand) {
       left = 2.5;
       right = 2.5;
+      top = 2.5;
+      bottom = 2.5;
     }
 
     return {
@@ -3728,7 +3732,7 @@ export default function DocumentWorkspace({
                       </div>
 
                       {/* Kop Lampiran on First Page */}
-                      {isFirst && (
+                      {isFirst && !sec.content?.includes('kop-lampiran-perbup') && (
                         <div className="kop-lampiran-perbup mb-8 text-right font-['Bookman_Old_Style',Georgia,serif]" style={{ marginLeft: 'auto', width: '360px', fontSize: '10.5pt', lineHeight: '1.35' }}>
                           <div className="font-bold tracking-wider">LAMPIRAN</div>
                           <div className="font-bold tracking-wider">PERATURAN BUPATI CILACAP</div>
@@ -3813,7 +3817,7 @@ export default function DocumentWorkspace({
                 </div>
 
                 {/* Kop Lampiran on First Section */}
-                {activeSection?.order === 1 && (
+                {activeSection?.order === 1 && !activeSection?.content?.includes('kop-lampiran-perbup') && (
                   <div className="kop-lampiran-perbup mb-8 text-right font-['Bookman_Old_Style',Georgia,serif]" style={{ marginLeft: 'auto', width: '360px', fontSize: '10.5pt', lineHeight: '1.35' }}>
                     <div className="font-bold tracking-wider">LAMPIRAN</div>
                     <div className="font-bold tracking-wider">PERATURAN BUPATI CILACAP</div>
